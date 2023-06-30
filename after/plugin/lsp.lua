@@ -2,7 +2,6 @@ local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
 
--- Fix undefined global
 lsp.configure('lua_ls', {
     cmd = { 'lua-language-server' },
     settings = {
@@ -13,6 +12,9 @@ lsp.configure('lua_ls', {
             },
             diagnostics = {
                 globals = { 'vim' },
+                disable = {
+                    'trailing-space',
+                }
             },
             workspace = {
                 library = {

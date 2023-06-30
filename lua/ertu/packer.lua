@@ -54,6 +54,8 @@ return require('packer').startup(function(use)
     -- autopair
     use('windwp/nvim-autopairs')
 
+    use('tpope/vim-surround')
+
     -- buffer file explorer
     use {
       'stevearc/oil.nvim',
