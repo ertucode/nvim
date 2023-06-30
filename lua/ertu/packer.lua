@@ -40,10 +40,19 @@ return require('packer').startup(function(use)
 
 		-- Autocompletion
 		{'hrsh7th/nvim-cmp'},     -- Required
-		{'hrsh7th/cmp-nvim-lsp'}, -- Required
+		{'hrsh7th/cmp-nvim-lsp'}, -- Required -- Auto import
 		{'L3MON4D3/LuaSnip'},     -- Required
 	    }
     }
+
+    -- completion
+    use('hrsh7th/cmp-buffer') -- Get completion from current file even if its not a symbol
+    use('hrsh7th/cmp-path')
+    use('hrsh7th/cmp-nvim-lua') -- Knows nvim api
+    use('saadparwaiz1/cmp_luasnip') -- Snip and comp adapter ?
+
+    -- autopair
+    use('windwp/nvim-autopairs')
 
     -- buffer file explorer
     use {
@@ -54,4 +63,15 @@ return require('packer').startup(function(use)
     -- prettier
     use('jose-elias-alvarez/null-ls.nvim')
     use('MunifTanjim/prettier.nvim')
+
+    -- nextjs snips
+    use "avneesh0612/react-nextjs-snippets"
+
+    -- comment
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
 end)

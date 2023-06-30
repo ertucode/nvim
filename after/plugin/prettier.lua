@@ -51,4 +51,5 @@ prettier.setup({
   },
 })
 
-vim.keymap.set("n", "<Leader>f", function() vim.cmd('Prettier') end)
+vim.keymap.del("n",  "<Leader>f")
+vim.keymap.set("n", "<Leader>fo", function() vim.cmd('Prettier') end)
