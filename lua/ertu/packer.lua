@@ -10,15 +10,6 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-	use({
-		'rose-pine/neovim',
-		as = 'rose-pine',
-		config = function()
-			vim.cmd('colorscheme rose-pine')
-		end
-
-	})
-
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 	use('theprimeagen/harpoon')
 	use('mbbill/undotree')
@@ -76,4 +67,7 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
+
+    -- vscode theme
+    use 'Mofiqul/vscode.nvim'
 end)
