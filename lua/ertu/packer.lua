@@ -70,4 +70,10 @@ return require('packer').startup(function(use)
 
     -- vscode theme
     use 'Mofiqul/vscode.nvim'
+
+    -- Vim status line
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    }
 end)
