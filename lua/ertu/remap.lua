@@ -22,6 +22,7 @@ set("x", "<leader>p", [["_dP]])
 set({"n", "v"}, "<leader>d", [["_d]])
 
 set("n", "x", '"_x')
+set({"n", "x"}, "c", '"_c')
 
 -- system register
 set({"n", "v"}, "<leader>y", [["+y]])
@@ -41,6 +42,7 @@ set("n", "<leader>j", "<cmd>lprev<CR>zz")
 set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/ertu/packer.lua<CR>");
+set('n', '<leader>xx', '<cmd>!chmod +x %<CR>', {silent = true})
 
 set("n", "<leader><leader>", function()
     vim.cmd("so")

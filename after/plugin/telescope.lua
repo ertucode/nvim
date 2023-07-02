@@ -4,3 +4,4 @@ vim.keymap.set('n', "<leader>fs", function () builtin.grep_string({search = vim.
 vim.keymap.set('n', "<C-p>", function ()
     builtin.git_files({show_untracked = true})
 end, {})
+vim.keymap.set('n', "<leader>fd", builtin.diagnostics, {})
