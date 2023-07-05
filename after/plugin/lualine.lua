@@ -24,8 +24,8 @@ require('lualine').setup {
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
-  },
-  inactive_sections = {
+},
+    inactive_sections = {
     lualine_a = {},
     lualine_b = {},
     lualine_c = { {'filename', path = 2} },
