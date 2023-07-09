@@ -19,36 +19,29 @@ set("n", "N", "Nzzzv")
 
 -- paste and delete without buffer
 set("x", "<leader>p", [["_dP]])
-set({"n", "v"}, "<leader>d", [["_d]])
+set({ "n", "v" }, "<leader>d", [["_d]])
 
 set("n", "x", '"_x')
-set({"n", "x"}, "c", '"_c')
+set({ "n", "x" }, "c", '"_c')
 
 -- system register
-set({"n", "v"}, "<leader>y", [["+y]])
+set({ "n", "v" }, "<leader>y", [["+y]])
 set("n", "<leader>Y", [["+Y]])
 
 set("n", "Q", "<nop>")
 set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 set("n", "<leader>f", vim.lsp.buf.format)
 
--- quickfix
-set("n", "<C-k>", "<cmd>cnext<CR>zz")
-set("n", "<C-j>", "<cmd>cprev<CR>zz")
-set("n", "<leader>k", "<cmd>lnext<CR>zz")
-set("n", "<leader>j", "<cmd>lprev<CR>zz")
-
 -- change the word on the cursor
 set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/ertu/packer.lua<CR>");
-set('n', '<leader>xx', '<cmd>!chmod +x %<CR>', {silent = true})
+set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/ertu/packer.lua<CR>")
+set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
 
 -- increment decrement
-set("n", "<leader>+", '<C-a>')
-set("n", "<leader>-", '<C-x>')
-
+set("n", "<leader>+", "<C-a>")
+set("n", "<leader>-", "<C-x>")
