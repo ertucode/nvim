@@ -1,10 +1,20 @@
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fs", function()
+
+local function set(mapping, fn, desc)
+	vim.keymap.set("n", mapping, fn, { desc = desc })
+end
+
+set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
+
+set("<leader>fs", function()
 	builtin.grep_string({ search = vim.fn.input("Grep > ") })
-end)
-vim.keymap.set("n", "<C-p>", function()
+end, "[F]ind [S]tring")
+
+set("<C-p>", function()
 	builtin.git_files({ show_untracked = true })
-end, {})
-vim.keymap.set("n", "<leader>fd", builtin.diagnostics, {})
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+end, "Find gitfiles")
+
+set("<leader>fd", builtin.diagnostics, "[F]ind [D]iagnostics")
+set("<leader>fh", builtin.help_tags, "[F]ind [H]elp")
+set("<leader>ft", builtin.builtin, "[F]ind [T]elescope")
+set("<leader>fk", builtin.keymaps, "[F]ind [K]eymap")
