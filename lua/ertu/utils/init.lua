@@ -1,4 +1,5 @@
 local M = {}
+M.array = {}
 
 M.find_mapping = function(maps, lhs)
 	for _, value in ipairs(maps) do
@@ -10,7 +11,7 @@ end
 
 M.closing_char = { ")", "}", "]", ">", "'", '"' }
 
-M.includes = function(tab, val)
+M.array.includes = function(tab, val)
 	for _, value in ipairs(tab) do
 		if value == val then
 			return true
@@ -32,7 +33,7 @@ M.get_next_char_that_is_one_of = function(chrs)
 	local line = lines[row_offset]
 
 	local char = string.sub(line, col, col)
-	while not M.includes(chrs, char) do
+	while not M.array.includes(chrs, char) do
 		col = col + 1
 		char = string.sub(line, col, col)
 		if char == nil or char == "" then
@@ -45,6 +46,15 @@ M.get_next_char_that_is_one_of = function(chrs)
 		end
 	end
 	return { row_start + row_offset - 1, col }
+end
+
+M.array.find = function(array, cb)
+	for val, idx in ipairs(array) do
+		if cb(val, idx) then
+			return val, idx
+		end
+	end
+	return nil
 end
 
 return M

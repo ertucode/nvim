@@ -35,11 +35,10 @@ set("n", "<leader>f", vim.lsp.buf.format)
 -- change the word on the cursor
 set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/ertu/packer.lua<CR>")
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 set("n", "<leader><leader>", function()
-    vim.cmd("so")
+	vim.cmd("so")
 end)
 
 -- increment decrement
