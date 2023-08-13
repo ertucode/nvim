@@ -67,6 +67,9 @@ return require("packer").startup(function(use)
 	-- nextjs snips
 	use("avneesh0612/react-nextjs-snippets")
 
+	-- typescript
+	use("jose-elias-alvarez/typescript.nvim")
+
 	-- comment
 	use({
 		"numToStr/Comment.nvim",
