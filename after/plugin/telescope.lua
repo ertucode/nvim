@@ -1,8 +1,16 @@
+require("telescope").setup({
+	defaults = {
+		path_display = { "truncate" },
+	},
+})
+
 local builtin = require("telescope.builtin")
 
 local function set(mapping, fn, desc)
 	vim.keymap.set("n", mapping, fn, { desc = desc })
 end
+
+set("<leader>frp", builtin.resume, "[F]ind [R]e[P]eat")
 
 set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
 
@@ -24,7 +32,7 @@ set("<leader>ft", builtin.builtin, "[F]ind [T]elescope")
 set("<leader>fk", builtin.keymaps, "[F]ind [K]eymap")
 
 set("<leader>fgb", builtin.git_branches, "[F]ind [G]it [B]ranches")
-set("<leader>fgs", builtin.git_status, "[F]ind [G]it [B]ranches")
+set("<leader>fgs", builtin.git_status, "[F]ind [G]it [S]tatus")
 set("<leader>fcm", builtin.commands, "[F]ind [C]o[M]mands")
 set("<leader>fch", builtin.command_history, "[F]ind [C]ommand [H]istory")
 set("<leader>frs", builtin.registers, "[F]ind [R]egistered [S]trings")
