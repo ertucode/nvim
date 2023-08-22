@@ -98,4 +98,6 @@ return require("packer").startup(function(use)
 		"kana/vim-textobj-entire",
 		requires = { "kana/vim-textobj-user" },
 	})
+
+	use("wellle/targets.vim")
 end)
