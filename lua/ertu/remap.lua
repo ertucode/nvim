@@ -2,11 +2,18 @@ vim.g.mapleader = " "
 
 local set = vim.keymap.set
 
-set("n", "<leader>pv", vim.cmd.Ex)
-
 -- vs code alt-arrow
-set("v", "J", ":m '>+1<CR>gv=gv")
-set("v", "K", ":m '<-2<CR>gv=gv")
+local j = ":m '>+1<CR>gv=gv"
+local k = ":m '<-2<CR>gv=gv"
+
+set("v", "<M-j>", j)
+set("v", "<M-k>", k)
+
+set("i", "<M-j>", "<esc>v" .. j .. " <esc>i")
+set("i", "<M-k>", "<esc>v" .. k .. " <esc>i")
+
+set("n", "<M-j>", "v" .. j .. " <esc>h")
+set("n", "<M-k>", "v" .. k .. " <esc>h")
 
 -- append bottom line to current without moving the cursor
 set("n", "J", "mzJ`z")
