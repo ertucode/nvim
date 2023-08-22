@@ -93,4 +93,9 @@ return require("packer").startup(function(use)
 			require("keyseer").setup({})
 		end,
 	})
+
+	use({
+		"kana/vim-textobj-entire",
+		requires = { "kana/vim-textobj-user" },
+	})
 end)
