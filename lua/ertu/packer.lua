@@ -100,4 +100,7 @@ return require("packer").startup(function(use)
 	})
 
 	use("wellle/targets.vim")
+
+	-- My plugins
+	use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
 end)
