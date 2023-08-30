@@ -97,9 +97,34 @@ ls.add_snippets("all", {
 	),
 })
 
-local filename = f(function(_, snip)
-	return snip.env.TM_FILENAME
-end)
+local ngCompName = function(snip)
+	return vim.split(snip.env.TM_FILENAME, ".", { plain = true })[1]
+end
+
+local filename = function()
+	return f(function(_, snip)
+		return ngCompName(snip)
+	end)
+end
+
+function firstToUpper(str)
+	return (str:gsub("^%l", string.upper))
+end
+
+local camelToCapital = function(text)
+	local splits = vim.split(text, "-", { plain = true, triempty = true })
+	local ret = ""
+
+	for _, value in ipairs(splits) do
+		ret = ret .. firstToUpper(value)
+	end
+	return ret
+end
+
+local function componentNameFn(args, snip)
+	local wholeName = args[1][1] .. "-" .. ngCompName(snip)
+	return camelToCapital(wholeName)
+end
 
 ls.add_snippets("typescript", {
 	s(
@@ -111,7 +136,7 @@ import {{ Component }} from "@angular/core"
 import {{ LocalizationModule }} from "@sipaywalletgate/ngx-sipay/localization"
 
 @Component({{
-  selector: "{}",
+  selector: "{}{}",
   imports: [LocalizationModule, CommonModule],
   styleUrls: ["./{}.component.scss"],
   templateUrl: "./{}.component.html",
@@ -123,9 +148,10 @@ export class {}Component {{
             ]],
 			{
 				i(1),
-				i(2),
-				rep(2),
-				i(3),
+				filename(),
+				filename(),
+				filename(),
+				f(componentNameFn, { 1 }),
 				i(0),
 			}
 		)
