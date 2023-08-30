@@ -97,6 +97,8 @@ ls.add_snippets("all", {
 	),
 })
 
+local stringUtils = require("ertu.utils.string")
+
 local ngCompName = function(snip)
 	return vim.split(snip.env.TM_FILENAME, ".", { plain = true })[1]
 end
@@ -107,23 +109,9 @@ local filename = function()
 	end)
 end
 
-function firstToUpper(str)
-	return (str:gsub("^%l", string.upper))
-end
-
-local camelToCapital = function(text)
-	local splits = vim.split(text, "-", { plain = true, triempty = true })
-	local ret = ""
-
-	for _, value in ipairs(splits) do
-		ret = ret .. firstToUpper(value)
-	end
-	return ret
-end
-
 local function componentNameFn(args, snip)
 	local wholeName = args[1][1] .. "-" .. ngCompName(snip)
-	return camelToCapital(wholeName)
+	return stringUtils.camelToCapital(wholeName)
 end
 
 ls.add_snippets("typescript", {
