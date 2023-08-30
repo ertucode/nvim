@@ -96,3 +96,53 @@ ls.add_snippets("all", {
 		end)
 	),
 })
+
+local filename = f(function(_, snip)
+	return snip.env.TM_FILENAME
+end)
+
+ls.add_snippets("typescript", {
+	s(
+		"comp",
+		fmt(
+			[[
+import {{ CommonModule }} from "@angular/common"
+import {{ Component }} from "@angular/core"
+import {{ LocalizationModule }} from "@sipaywalletgate/ngx-sipay/localization"
+
+@Component({{
+  selector: "{}",
+  imports: [LocalizationModule, CommonModule],
+  styleUrls: ["./{}.component.scss"],
+  templateUrl: "./{}.component.html",
+  standalone: true,
+}})
+export class {}Component {{
+  {}
+}}
+            ]],
+			{
+				i(1),
+				i(2),
+				rep(2),
+				i(3),
+				i(0),
+			}
+		)
+	),
+})
+
+ls.add_snippets("html", {
+	s(
+		"ng-localize",
+		fmt(
+			[[<ng-container *localize="let t">
+  {}
+</ng-container>
+            ]],
+			{
+				i(0),
+			}
+		)
+	),
+})
