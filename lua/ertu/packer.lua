@@ -43,6 +43,7 @@ return require("packer").startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-nvim-lua") -- Knows nvim api
 	use("saadparwaiz1/cmp_luasnip") -- Snip and comp adapter ?
+	use("onsails/lspkind.nvim")
 
 	-- autopair
 	use("windwp/nvim-autopairs")
