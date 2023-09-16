@@ -160,3 +160,21 @@ ls.add_snippets("html", {
 		)
 	),
 })
+
+ls.add_snippets("oil", {
+	s(
+		"comp",
+		fmt(
+			[[
+    {}.component.ts
+    {}.component.scss
+    {}.component.html
+    ]],
+			{
+				i(1),
+				rep(1),
+				rep(1),
+			}
+		)
+	),
+})
