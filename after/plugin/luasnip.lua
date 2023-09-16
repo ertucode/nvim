@@ -178,3 +178,24 @@ ls.add_snippets("oil", {
 		)
 	),
 })
+
+ls.add_snippets("oil", {
+	s(
+		"cf",
+		fmt(
+			[[
+    {}/{}.component.ts
+    {}/{}.component.scss
+    {}/{}.component.html
+    ]],
+			{
+				i(1),
+				rep(1),
+				rep(1),
+				rep(1),
+				rep(1),
+				rep(1),
+			}
+		)
+	),
+})
