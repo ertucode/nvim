@@ -10,14 +10,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	["<C-Space>"] = cmp.mapping.complete(),
 	["<Tab>"] = function(fallback)
 		if cmp.visible() then
-			cmp.select_next_item()
-		else
-			fallback()
-		end
-	end,
-	["<S-Tab>"] = function(fallback)
-		if cmp.visible() then
-			cmp.select_prev_item()
+			cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert })
 		else
 			fallback()
 		end
