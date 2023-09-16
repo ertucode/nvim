@@ -8,13 +8,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	["<C-e"] = cmp.mapping.close(),
 	["<C-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 	["<C-Space>"] = cmp.mapping.complete(),
-	["<Tab>"] = function(fallback)
-		if cmp.visible() then
-			cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert })
-		else
-			fallback()
-		end
-	end,
+	["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 })
 
 local lspkind = require("lspkind")
