@@ -1,5 +1,20 @@
-require("indent_blankline").setup({
-	-- for example, context is off by default, use this to turn it on
-	show_current_context = true,
-	show_current_context_start = true,
+local highlight = {
+	"IBL_SOFT",
+}
+
+local hooks = require("ibl.hooks")
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+	vim.api.nvim_set_hl(0, "IBL_SOFT", { fg = "#444444" })
+end)
+
+require("ibl").setup({
+	indent = {
+		highlight = highlight,
+		char = { "▏" },
+	},
+	scope = {
+		enabled = false,
+	},
 })

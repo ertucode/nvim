@@ -6,6 +6,8 @@ require("telescope").setup({
 
 local builtin = require("telescope.builtin")
 
+require("telescope").load_extension("fzf")
+
 local function set(mapping, fn, desc)
 	vim.keymap.set("n", mapping, fn, { desc = desc })
 end
