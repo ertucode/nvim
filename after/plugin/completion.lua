@@ -9,6 +9,8 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	["<C-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 	["<C-Space>"] = cmp.mapping.complete(),
 	["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
+	["<C-j>"] = cmp.mapping.select_next_item(),
+	["<C-k>"] = cmp.mapping.select_prev_item(),
 })
 
 local lspkind = require("lspkind")
