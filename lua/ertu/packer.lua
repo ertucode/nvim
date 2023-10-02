@@ -61,6 +61,7 @@ return require("packer").startup(function(use)
 	-- buffer file explorer
 	use({
 		"stevearc/oil.nvim",
+		tag = "v2.2.0",
 		config = function()
 			require("oil").setup()
 		end,
