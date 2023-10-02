@@ -17,6 +17,7 @@ vscode.setup({
 	-- Override colors (see ./lua/vscode/colors.lua)
 	color_overrides = {
 		vscLineNumber = "#FFFFFF",
+		comment = "#222222",
 	},
 
 	-- Override highlight groups (see ./lua/vscode/theme.lua)
@@ -27,3 +28,5 @@ vscode.setup({
 	},
 })
 vscode.load()
+
+vim.api.nvim_set_hl(0, "Comment", { fg = "#ffff33" })
