@@ -1,4 +1,10 @@
-require("nvim-treesitter.configs").setup({
+local status, treesitter_config = pcall(require, "nvim-treesitter.configs")
+
+if not status then
+	return
+end
+
+treesitter_config.setup({
 	ensure_installed = {
 		"lua",
 		"javascript",

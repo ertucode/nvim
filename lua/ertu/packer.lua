@@ -110,5 +110,5 @@ return require("packer").startup(function(use)
 	use("norcalli/nvim-colorizer.lua")
 
 	-- My plugins
-	use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
+	-- use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
 end)

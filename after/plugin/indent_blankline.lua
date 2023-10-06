@@ -1,3 +1,9 @@
+local status, ibl = pcall(require, "ibl")
+
+if not status then
+	return
+end
+
 local highlight = {
 	"IBL_SOFT",
 }
@@ -9,7 +15,7 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
 	vim.api.nvim_set_hl(0, "IBL_SOFT", { fg = "#444444" })
 end)
 
-require("ibl").setup({
+ibl.setup({
 	indent = {
 		highlight = highlight,
 		char = { "▏" },
