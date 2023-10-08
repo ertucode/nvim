@@ -25,9 +25,9 @@ ls.config.set_config({
 local ertu = require("ertu.utils")
 
 local mappings = vim.api.nvim_get_keymap("i")
-local prev_k_mapping = ertu.find_mapping(mappings, "<C-K>")
+local prev_k_mapping = ertu.find_mapping(mappings, "<C-L>") -- Buyuk L onemli
 
-vim.keymap.set({ "i", "s" }, "<C-k>", function()
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
 	if ls.expand_or_jumpable() then
 		ls.expand_or_jump()
 	else
@@ -47,7 +47,7 @@ end, { silent = true })
 
 -- <c-l> is selecting within a list of options.
 -- This is useful for choice nodes (introduced in the forthcoming episode 2)
-vim.keymap.set("i", "<c-l>", function()
+vim.keymap.set("i", "<c-k>", function()
 	if ls.choice_active() then
 		ls.change_choice(1)
 	end

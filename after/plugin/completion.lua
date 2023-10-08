@@ -22,11 +22,11 @@ local lspkind = require("lspkind")
 cmp.setup({
 	mapping = cmp_mappings,
 	sources = {
-		{ name = "nvim_lua" },
 		{ name = "nvim_lsp" },
+		{ name = "nvim_lua" },
 		{ name = "path" },
 		{ name = "luasnip" },
-		{ name = "buffer", keyword_length = 1 },
+		{ name = "buffer" },
 	},
 	snippet = {
 		expand = function(args)
@@ -34,7 +34,9 @@ cmp.setup({
 		end,
 	},
 	experimental = {
-		ghost_text = true,
+		ghost_text = {
+			hl_group = "WinSeparator",
+		},
 	},
 	window = {
 		documentation = cmp.config.enable,
@@ -42,8 +44,8 @@ cmp.setup({
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
 		format = lspkind.cmp_format({
-			mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+			mode = "text_symbol", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+			maxwidth = 100, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 			menu = { -- showing type in menu
 				nvim_lsp = "[LSP]",
 				path = "[Path]",

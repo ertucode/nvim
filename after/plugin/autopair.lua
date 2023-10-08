@@ -29,7 +29,7 @@ local cmp = require("cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local ertu = require("ertu.utils")
-vim.keymap.set({ "i", "v" }, "<C-k>", function()
+vim.keymap.set({ "i", "v" }, "<C-l>", function()
 	local res = ertu.get_next_char_that_is_one_of(ertu.closing_char)
 	if res then
 		vim.api.nvim_win_set_cursor(0, { res[1], res[2] })
