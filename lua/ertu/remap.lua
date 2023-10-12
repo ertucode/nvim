@@ -52,3 +52,5 @@ end)
 -- increment decrement
 set("n", "<leader>+", "<C-a>")
 set("n", "<leader>-", "<C-x>")
+
+set("n", "<leader>cl", "$a)<esc>_iconsole.log(<esc><CR>")
