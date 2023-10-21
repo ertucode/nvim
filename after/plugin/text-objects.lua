@@ -9,7 +9,9 @@ require("nvim-treesitter.configs").setup({
 				["aa"] = "@parameters.outer",
 				["ia"] = "@parameters.inner",
 				["ac"] = "@class.outer",
-				["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+				["ic"] = "@class.inner",
+				["ak"] = "@call.outer",
+				["ik"] = "@call.inner",
 				-- You can also use captures from other query groups like `locals.scm`
 				["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
 			},
