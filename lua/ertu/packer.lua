@@ -109,6 +109,8 @@ return require("packer").startup(function(use)
 	use("wellle/targets.vim")
 	use("norcalli/nvim-colorizer.lua")
 
+	use("nvim-tree/nvim-web-devicons")
+
 	-- My plugins
 	-- use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
 end)

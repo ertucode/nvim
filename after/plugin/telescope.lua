@@ -20,11 +20,6 @@ telescope.setup({
 			width = 0.9,
 		},
 	},
-	pickers = {
-		find_files = {
-			layout_strategy = "vertical",
-		},
-	},
 })
 
 local builtin = require("telescope.builtin")
@@ -37,21 +32,12 @@ end
 
 set("<leader>frp", builtin.resume, "[F]ind [R]e[P]eat")
 
-set("<leader>ff", function()
-	builtin.find_files()
-end, "[F]ind [F]iles")
+local themes = require("telescope.themes")
+set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
 
 set("<leader>fs", builtin.live_grep, "[F]ind [S]tring")
 set("<leader>fcw", builtin.grep_string, "[F]ind [C]urrent [W]ord")
 set("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
-
-set("<C-p>", function()
-	local succ = pcall(builtin.git_files, { show_untracked = true })
-
-	if not succ then
-		builtin.find_files()
-	end
-end, "[F]ind [G]itfiles, or [F]ind [F]iles")
 
 set("<leader>fd", builtin.diagnostics, "[F]ind [D]iagnostics")
 set("<leader>fh", builtin.help_tags, "[F]ind [H]elp")
@@ -69,3 +55,33 @@ set("<leader>fli", builtin.lsp_implementations, "[F]ind [L]sp [I]mplementations"
 set("<leader>fld", builtin.lsp_document_symbols, "[F]ind [L]sp [D]ocument Symbols")
 set("<leader>flw", builtin.lsp_workspace_symbols, "[F]ind [L]sp [W]orkspace Symbols")
 set("<leader>fac", builtin.autocommands, "[F]ind [A]uto [C]ommands")
+
+local entry_maker = require("utils.telescope-filename").find_files_entry_maker
+
+set("<C-p>", function()
+	local opts = {
+		entry_maker = entry_maker(),
+		sorting_strategy = "ascending",
+		layout_strategy = "center",
+		border = true,
+		borderchars = {
+			prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+			results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+			preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		},
+		layout_config = {
+			width = 0.8,
+			height = 0.6,
+		},
+		results_title = false,
+		previewer = false,
+	}
+
+	opts.show_untracked = true
+
+	local succ = pcall(builtin.git_files, opts)
+
+	if not succ then
+		builtin.find_files(opts)
+	end
+end, "[F]ind [G]itfiles, or [F]ind [F]iles")
