@@ -30,3 +30,6 @@ vim.opt.colorcolumn = "120"
 
 -- mine
 vim.opt.cursorline = true
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
