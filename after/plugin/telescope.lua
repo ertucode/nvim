@@ -4,9 +4,26 @@ if not status then
 	return
 end
 
+local actions = require("telescope.actions")
+
 telescope.setup({
 	defaults = {
 		path_display = { "truncate" },
+		mappings = {
+			i = {
+				["<C-j>"] = actions.cycle_history_next,
+				["<C-k>"] = actions.cycle_history_next,
+			},
+		},
+		layout_config = {
+			height = 0.95,
+			width = 0.9,
+		},
+	},
+	pickers = {
+		find_files = {
+			layout_strategy = "vertical",
+		},
 	},
 })
 
@@ -20,11 +37,13 @@ end
 
 set("<leader>frp", builtin.resume, "[F]ind [R]e[P]eat")
 
-set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
+set("<leader>ff", function()
+	builtin.find_files()
+end, "[F]ind [F]iles")
 
 set("<leader>fs", builtin.live_grep, "[F]ind [S]tring")
 set("<leader>fcw", builtin.grep_string, "[F]ind [C]urrent [W]ord")
-set("<leader>fbs", builtin.current_buffer_fuzzy_find, "[F]ind [B]uffer [S]tring")
+set("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
 
 set("<C-p>", function()
 	local succ = pcall(builtin.git_files, { show_untracked = true })
