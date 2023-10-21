@@ -112,6 +112,10 @@ return require("packer").startup(function(use)
 
 	use("nvim-tree/nvim-web-devicons")
 
+	use({
+		"ray-x/lsp_signature.nvim",
+	})
+
 	-- My plugins
 	-- use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
 end)
