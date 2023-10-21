@@ -72,6 +72,16 @@ lsp.on_attach(function(_, bufnr)
 	vim.keymap.set("i", "<C-h>", function()
 		vim.lsp.buf.signature_help()
 	end, opts)
+
+	vim.keymap.set("n", "<leader>lru", function()
+		local params = {
+			command = "_typescript.organizeImports",
+			arguments = { vim.api.nvim_buf_get_name(bufnr) },
+			title = "",
+		}
+
+		vim.lsp.buf_request_sync(bufnr, "workspace/executeCommand", params)
+	end)
 end)
 
 lsp.configure("jsonls", {
