@@ -6,8 +6,10 @@ require("nvim-treesitter.configs").setup({
 			keymaps = {
 				["af"] = "@function.outer",
 				["if"] = "@function.inner",
-				["aa"] = "@parameters.outer",
-				["ia"] = "@parameters.inner",
+				["aj"] = "@parameter.outer",
+				["ij"] = "@parameter.inner",
+				["aa"] = "@attribute.outer",
+				["ia"] = "@attribute.inner",
 				["ac"] = "@class.outer",
 				["ic"] = "@class.inner",
 				["ak"] = "@call.outer",
@@ -38,15 +40,15 @@ require("nvim-treesitter.configs").setup({
 			-- and should return true of false
 			include_surrounding_whitespace = true,
 		},
-		swap = {
-			enable = true,
-			swap_next = {
-				["<leader>a"] = "@parameter.inner",
-			},
-			swap_previous = {
-				["<leader>A"] = "@parameter.inner",
-			},
-		},
+		-- swap = {
+		-- 	enable = true,
+		-- 	swap_next = {
+		-- 		["<leader>a"] = "@parameter.inner",
+		-- 	},
+		-- 	swap_previous = {
+		-- 		["<leader>A"] = "@parameter.inner",
+		-- 	},
+		-- },
 		move = {
 			enable = true,
 			set_jumps = true,
