@@ -14,6 +14,8 @@ require("nvim-treesitter.configs").setup({
 				["ic"] = "@class.inner",
 				["ak"] = "@call.outer",
 				["ik"] = "@call.inner",
+				["=r"] = "@assignment.rhs",
+				["=l"] = "@assignment.lhs",
 				-- You can also use captures from other query groups like `locals.scm`
 				["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
 			},
@@ -51,11 +53,12 @@ require("nvim-treesitter.configs").setup({
 		-- },
 		move = {
 			enable = true,
-			set_jumps = true,
+			set_jumps = false,
 			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = { query = "@class.outer", desc = "Next class start" },
+				["]f"] = "@function.outer",
 				["]a"] = "@attribute.outer",
+				["]o"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+				["]j"] = "@parameter.inner",
 				--
 				-- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
 				-- ["]o"] = "@loop.*",
@@ -64,35 +67,31 @@ require("nvim-treesitter.configs").setup({
 				-- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
 				-- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
 				-- ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" }, -- Didnt work
-				["]o"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
 			},
 			goto_next_end = {
-				["]M"] = "@function.outer",
+				["]F"] = "@function.outer",
 				["]A"] = "@attribute.outer",
-				["]["] = "@class.outer",
 				["]O"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+				["]J"] = "@parameter.inner",
 			},
 			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
+				["[f"] = "@function.outer",
 				["[a"] = "@attribute.outer",
 				["[o"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
+				["[j"] = "@parameter.inner",
 			},
 			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
+				["[F"] = "@function.outer",
 				["[A"] = "@attribute.outer",
 				["[O"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
+				["[J"] = "@parameter.inner",
 			},
-			-- Below will go to either the start or the end, whichever is closer.
-			-- Use if you want more granular movements
-			-- Make it even more gradual by adding multiple queries and regex.
-			-- goto_next = {
-			-- 	["]d"] = "@conditional.outer",
-			-- },
-			-- goto_previous = {
-			-- 	["[d"] = "@conditional.outer",
-			-- },
+			goto_next = {
+				["]]"] = "@class.outer",
+			},
+			goto_previous = {
+				["[["] = "@class.outer",
+			},
 		},
 	},
 })
