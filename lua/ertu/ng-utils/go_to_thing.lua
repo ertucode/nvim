@@ -58,8 +58,6 @@ return function(prop_name)
 			local row1, col1, row2, col2 = node:range() -- range of the capture
 			local on_same_line = row1 == row2
 
-			print()
-
 			if on_same_line then
 				vim.api.nvim_win_set_cursor(0, { row2 + 1, col2 - 1 })
 				vim.cmd("startinsert")
@@ -77,6 +75,31 @@ return function(prop_name)
 		end
 
 		if #found == 0 then
+			local decor_query = vim.treesitter.query.parse(
+				"typescript",
+				[[
+(export_statement
+    (decorator
+        (call_expression
+            (arguments(object ) @decorator))))
+            ]]
+			)
+
+			for id, node in decor_query:iter_captures(root, 0, 0, -1) do
+				if decor_query.captures[id] == "decorator" then
+					local row1, col1, row2, col2 = node:range() -- range of the capture
+
+					local line = vim.api.nvim_buf_get_lines(0, row2 - 1, row2 - 0, false)[1]
+					local fill = string.sub(line, 0, string.find(line, "[^%s]", 0) - 1) .. prop_name .. ": [],"
+					vim.api.nvim_buf_set_lines(0, row2, row2, false, { fill })
+
+					local cur_dest = #fill ~= nil and #fill - 2 or 0
+					vim.api.nvim_win_set_cursor(0, { row2 + 1, cur_dest })
+					vim.cmd("startinsert")
+					return
+				end
+			end
+
 			-- insert
 			return
 		end
