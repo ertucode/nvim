@@ -55,6 +55,7 @@ require("nvim-treesitter.configs").setup({
 			goto_next_start = {
 				["]m"] = "@function.outer",
 				["]]"] = { query = "@class.outer", desc = "Next class start" },
+				["]a"] = "@attribute.outer",
 				--
 				-- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
 				-- ["]o"] = "@loop.*",
@@ -67,17 +68,20 @@ require("nvim-treesitter.configs").setup({
 			},
 			goto_next_end = {
 				["]M"] = "@function.outer",
+				["]A"] = "@attribute.outer",
 				["]["] = "@class.outer",
 				["]O"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
 			},
 			goto_previous_start = {
 				["[m"] = "@function.outer",
 				["[["] = "@class.outer",
+				["[a"] = "@attribute.outer",
 				["[o"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
 			},
 			goto_previous_end = {
 				["[M"] = "@function.outer",
 				["[]"] = "@class.outer",
+				["[A"] = "@attribute.outer",
 				["[O"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
 			},
 			-- Below will go to either the start or the end, whichever is closer.
