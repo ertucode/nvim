@@ -22,8 +22,6 @@ return require("packer").startup(function(use)
 	use("nvim-treesitter/playground")
 
 	use("theprimeagen/harpoon")
-	use("mbbill/undotree")
-	use("tpope/vim-fugitive")
 
 	use({
 		"VonHeikemen/lsp-zero.nvim",
@@ -59,26 +57,15 @@ return require("packer").startup(function(use)
 
 	use("tpope/vim-surround")
 
-	use("mg979/vim-visual-multi")
-
 	-- buffer file explorer
 	use({
 		"stevearc/oil.nvim",
 		tag = "v2.2.0",
-		config = function()
-			require("oil").setup()
-		end,
 	})
 
 	-- prettier
 	use("jose-elias-alvarez/null-ls.nvim")
 	use("jayp0521/mason-null-ls.nvim")
-
-	-- nextjs snips
-	use("avneesh0612/react-nextjs-snippets")
-
-	-- typescript
-	use("jose-elias-alvarez/typescript.nvim")
 
 	-- comment
 	use({
@@ -97,27 +84,15 @@ return require("packer").startup(function(use)
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
 	})
 	use("lukas-reineke/indent-blankline.nvim")
-	use({
-		"jokajak/keyseer.nvim",
-		config = function()
-			require("keyseer").setup({})
-		end,
-	})
 
 	use({
 		"kana/vim-textobj-entire",
 		requires = { "kana/vim-textobj-user" },
 	})
 
-	use("wellle/targets.vim")
 	use("norcalli/nvim-colorizer.lua")
 
 	use("nvim-tree/nvim-web-devicons")
 
-	use({
-		"ray-x/lsp_signature.nvim",
-	})
-
-	-- My plugins
-	-- use("/home/ertu/dev/nvim-plugins/ngserve.nvim")
+	use("ray-x/lsp_signature.nvim")
 end)

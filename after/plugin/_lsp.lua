@@ -39,6 +39,38 @@ lsp.set_preferences({
 	},
 })
 
+local function add_missing_imports(bufnr)
+	-- https://github.com/jose-elias-alvarez/typescript.nvim/blob/4de85ef699d7e6010528dcfbddc2ed4c2c421467/lua/typescript/source-actions.lua#L38
+	-- https://github.com/typescript-language-server/typescript-language-server
+	local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
+	if not client then
+		return
+	end
+
+	local params = vim.tbl_extend("force", vim.lsp.util.make_range_params(), {
+		context = {
+			only = { "source.addMissingImports.ts" },
+			diagnostics = vim.diagnostic.get(bufnr),
+		},
+	})
+
+	local function applyEdits(res)
+		if
+			res[1]
+			and res[1].edit
+			and res[1].edit.documentChanges
+			and res[1].edit.documentChanges[1]
+			and res[1].edit.documentChanges[1].edits
+		then
+			vim.lsp.util.apply_text_edits(res[1].edit.documentChanges[1].edits, bufnr, client.offset_encoding)
+		end
+	end
+
+	client.request("textDocument/codeAction", params, function(_, res)
+		return applyEdits(res or {})
+	end, bufnr)
+end
+
 lsp.on_attach(function(_, bufnr)
 	local opts = { buffer = bufnr, remap = false }
 
@@ -81,6 +113,10 @@ lsp.on_attach(function(_, bufnr)
 		}
 
 		vim.lsp.buf_request_sync(bufnr, "workspace/executeCommand", params)
+	end)
+
+	vim.keymap.set("n", "<leader>lai", function()
+		add_missing_imports(bufnr)
 	end)
 end)
 
@@ -145,5 +181,7 @@ lsp.configure("emmet_language_server", {
 lsp.setup()
 
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = false,
+	underline = true,
+	update_in_insert = true,
 })
