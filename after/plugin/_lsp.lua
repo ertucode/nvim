@@ -180,8 +180,20 @@ lsp.configure("emmet_language_server", {
 
 lsp.setup()
 
-vim.diagnostic.config({
+local diag_config = {
 	virtual_text = false,
 	underline = true,
 	update_in_insert = true,
-})
+}
+
+vim.diagnostic.config(diag_config)
+
+vim.keymap.set("n", "<leader>lds", function()
+	diag_config.virtual_text = true
+	vim.diagnostic.config(diag_config)
+end)
+
+vim.keymap.set("n", "<leader>ldh", function()
+	diag_config.virtual_text = false
+	vim.diagnostic.config(diag_config)
+end)

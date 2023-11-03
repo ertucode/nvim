@@ -10,7 +10,7 @@ local cmp_mappings = {
 	["<C-d"] = cmp.mapping.scroll_docs(-4),
 	["<C-f"] = cmp.mapping.scroll_docs(4),
 	["<C-e"] = cmp.mapping.close(),
-	["<C-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
+	["<C-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
 	["<C-Space>"] = cmp.mapping.complete(),
 	["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 	["<C-j>"] = cmp.mapping.select_next_item(),
