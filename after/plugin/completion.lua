@@ -38,6 +38,10 @@ cmp.setup({
 			hl_group = "WinSeparator",
 		},
 	},
+	performance = {
+		debounce = 0,
+		throttle = 0,
+	},
 	window = {
 		documentation = cmp.config.enable,
 	},
