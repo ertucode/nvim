@@ -87,10 +87,14 @@ lsp.on_attach(function(_, bufnr)
 		vim.diagnostic.open_float()
 	end, opts)
 	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next()
+		vim.diagnostic.goto_next({
+			severity = vim.diagnostic.severity.ERROR,
+		})
 	end, opts)
 	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_prev()
+		vim.diagnostic.goto_prev({
+			severity = vim.diagnostic.severity.ERROR,
+		})
 	end, opts)
 	vim.keymap.set("n", "<leader>lac", function()
 		vim.lsp.buf.code_action()
