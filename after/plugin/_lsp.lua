@@ -71,8 +71,17 @@ local function add_missing_imports(bufnr)
 	end, bufnr)
 end
 
-lsp.on_attach(function(_, bufnr)
+lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
+
+	if client.name == "angularls" then
+		for _, active_client in ipairs(vim.lsp.get_active_clients({ bufnr })) do
+			if active_client.name == "tsserver" then
+				active_client.stop()
+				break
+			end
+		end
+	end
 
 	vim.keymap.set("n", "gd", function()
 		vim.lsp.buf.definition()
