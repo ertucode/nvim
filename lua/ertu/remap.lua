@@ -2,13 +2,6 @@ vim.g.mapleader = " "
 
 local set = vim.keymap.set
 
-set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move Down" })
-set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move Up" })
-set("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-set("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-set("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move Down" })
-set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
-
 -- append bottom line to current without moving the cursor
 set("n", "J", "mzJ`z")
 
@@ -48,3 +41,15 @@ set("n", "<leader>+", "<C-a>")
 set("n", "<leader>-", "<C-x>")
 
 set("n", "<leader>cl", "$a)<esc>_iconsole.log(<esc>_")
+
+-- steals from folke
+set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move Down" })
+set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move Up" })
+set("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
+set("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
+set("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move Down" })
+set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
+
+-- better indenting
+set("v", "<", "<gv")
+set("v", ">", ">gv")
