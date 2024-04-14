@@ -50,10 +50,6 @@ return {
 		tag = "v2.2.0",
 	},
 
-	-- prettier
-	"jose-elias-alvarez/null-ls.nvim",
-	"jayp0521/mason-null-ls.nvim",
-
 	-- comment
 	{
 		"numToStr/Comment.nvim",
