@@ -24,10 +24,9 @@ set("n", "<leader>Y", [["+Y]])
 
 set("n", "Q", "<nop>")
 set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-set("n", "<leader>f", vim.lsp.buf.format)
 
 -- change the word on the cursor
-set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+set("n", "<leader>sg", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Change current word" })
 
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
 set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
@@ -53,3 +52,9 @@ set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
 -- better indenting
 set("v", "<", "<gv")
 set("v", ">", ">gv")
+
+-- paste with format
+set("n", "<M-p>", "p'[v']=", { desc = "Paste with format" })
+set("n", "<leader>sp", [["*p'[v']=]], { desc = "Paste from system clipboard" })
+set("n", "gp", "'[V']", { desc = "Highlight last paste line visual" })
+set("n", "gP", "'[v']", { desc = "Highlight last paste visual" })
