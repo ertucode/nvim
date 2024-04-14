@@ -66,8 +66,4 @@ return {
 		"kana/vim-textobj-entire",
 		dependencies = { "kana/vim-textobj-user" },
 	},
-
-	"norcalli/nvim-colorizer.lua",
-
-	"ray-x/lsp_signature.nvim",
 }

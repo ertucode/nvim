@@ -28,8 +28,12 @@ return {
 		local lspkind = require("lspkind")
 
 		return {
-
 			mapping = cmp_mappings,
+			view = {
+				entries = {
+					follow_cursor = true,
+				},
+			},
 			sources = {
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lua" },
