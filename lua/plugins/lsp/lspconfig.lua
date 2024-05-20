@@ -78,7 +78,7 @@ return {
 				set("n", "]d", function()
 					vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 				end, opts)
-				set("n", "<leader>lac", function()
+				set({ "n", "v" }, "<leader>lac", function()
 					vim.lsp.buf.code_action()
 				end, opts)
 				set("n", "<leader>lrn", function()
