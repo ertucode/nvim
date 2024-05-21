@@ -40,7 +40,6 @@ return {
 
 	-- autopair
 	"windwp/nvim-autopairs",
-	"windwp/nvim-ts-autotag",
 
 	"tpope/vim-surround",
 
