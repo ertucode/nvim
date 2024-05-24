@@ -72,12 +72,26 @@ return {
 				set("n", "<leader>lf", function()
 					vim.diagnostic.open_float()
 				end, opts)
-				set("n", "[d", function()
-					vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-				end, opts)
-				set("n", "]d", function()
-					vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-				end, opts)
+				local best_diag = function(goer)
+					return function()
+						local diags = vim.diagnostic.get(0)
+						if #diags == 0 then
+							return
+						end
+
+						local best = diags[1].severity
+
+						for i = 2, #diags do
+							if diags[i].severity < best then
+								best = diags[i].severity
+							end
+						end
+
+						goer({ severity = vim.diagnostic.severity[best] })
+					end
+				end
+				set("n", "[d", best_diag(vim.diagnostic.goto_prev), opts)
+				set("n", "]d", best_diag(vim.diagnostic.goto_next), opts)
 				set({ "n", "v" }, "<leader>lac", function()
 					vim.lsp.buf.code_action()
 				end, opts)

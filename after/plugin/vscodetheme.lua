@@ -1,4 +1,4 @@
-local status, vscode = pcall(require, "vscode")
+--[[ local status, vscode = pcall(require, "vscode")
 
 if not status then
 	return
@@ -33,4 +33,4 @@ vscode.setup({
 vscode.load()
 
 -- vim.api.nvim_set_hl(0, "Comment", { fg = "#ffff33" })
--- vim.api.nvim_set_hl(0, "@comment", { link = "Comment" })
+-- vim.api.nvim_set_hl(0, "@comment", { link = "Comment" }) ]]
