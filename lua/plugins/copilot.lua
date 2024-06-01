@@ -13,7 +13,8 @@ return {
 				auto_trigger = false,
 				debounce = 75,
 				keymap = {
-					accept = "<M-;>",
+					accept = "<M-l>",
+					dismiss = "<M-;>",
 					accept_word = false,
 					accept_line = false,
 					next = "<M-o>",
