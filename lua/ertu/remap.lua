@@ -58,3 +58,8 @@ set("n", "<M-p>", "p'[v']=", { desc = "Paste with format" })
 set("n", "<leader>sp", [["*p'[v']=]], { desc = "Paste from system clipboard" })
 set("n", "gp", "'[V']", { desc = "Highlight last paste line visual" })
 set("n", "gP", "'[v']", { desc = "Highlight last paste visual" })
+
+-- quickfix list
+set("n", "<leader>qc", ":cclose<CR>")
+set("n", "<leader>qn", ":cnext<CR>")
+set("n", "<leader>qp", ":cprev<CR>")
