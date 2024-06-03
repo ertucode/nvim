@@ -1,35 +1,3 @@
-local function add_missing_imports(bufnr)
-	-- https://github.com/jose-elias-alvarez/typescript.nvim/blob/4de85ef699d7e6010528dcfbddc2ed4c2c421467/lua/typescript/source-actions.lua#L38
-	-- https://github.com/typescript-language-server/typescript-language-server
-	local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
-	if not client then
-		return
-	end
-
-	local params = vim.tbl_extend("force", vim.lsp.util.make_range_params(), {
-		context = {
-			only = { "source.addMissingImports.ts" },
-			diagnostics = vim.diagnostic.get(bufnr),
-		},
-	})
-
-	local function applyEdits(res)
-		if
-			res[1]
-			and res[1].edit
-			and res[1].edit.documentChanges
-			and res[1].edit.documentChanges[1]
-			and res[1].edit.documentChanges[1].edits
-		then
-			vim.lsp.util.apply_text_edits(res[1].edit.documentChanges[1].edits, bufnr, client.offset_encoding)
-		end
-	end
-
-	client.request("textDocument/codeAction", params, function(_, res)
-		return applyEdits(res or {})
-	end, bufnr)
-end
-
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
@@ -100,25 +68,12 @@ return {
 				end, opts)
 				set("n", "<leader>lrn", function()
 					vim.lsp.buf.rename()
-					vim.wait(50, function()
-						vim.cmd("silent! wa")
-					end)
+					-- vim.cmd("silent! wa")
 				end, opts)
 				set("i", "<C-h>", function()
 					vim.lsp.buf.signature_help()
 				end, opts)
-				set("n", "<leader>lru", function()
-					local params = {
-						command = "_typescript.organizeImports",
-						arguments = { vim.api.nvim_buf_get_name(ev.buf) },
-						title = "",
-					}
-					vim.lsp.buf_request_sync(ev.buf, "workspace/executeCommand", params)
-				end)
 				set("n", "<leader>lrs", ":LspRestart<CR>")
-				set("n", "<leader>lai", function()
-					add_missing_imports(ev.buf)
-				end)
 			end,
 		})
 
