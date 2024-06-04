@@ -63,3 +63,11 @@ set("n", "gP", "'[v']", { desc = "Highlight last paste visual" })
 set("n", "<leader>qc", ":cclose<CR>")
 set("n", "<leader>qn", ":cnext<CR>")
 set("n", "<leader>qp", ":cprev<CR>")
+
+-- This kemap makes it possible to exit the command-window (:h cmdwin)
+-- with <ESC>
+vim.api.nvim_create_autocmd({ "CmdwinEnter" }, {
+	callback = function()
+		vim.keymap.set("n", "<esc>", ":quit<CR>", { buffer = true })
+	end,
+})

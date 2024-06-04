@@ -67,6 +67,14 @@ return {
 					vim.lsp.buf.code_action()
 				end, opts)
 				set("n", "<leader>lrn", function()
+					vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
+						callback = function()
+							local key = vim.api.nvim_replace_termcodes("<C-f>", true, false, true)
+							vim.api.nvim_feedkeys(key, "c", false)
+							vim.api.nvim_feedkeys("0", "n", false)
+							return true
+						end,
+					})
 					vim.lsp.buf.rename()
 					-- vim.cmd("silent! wa")
 				end, opts)
