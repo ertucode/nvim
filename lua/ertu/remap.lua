@@ -20,6 +20,7 @@ set({ "n", "x" }, "c", '"_c')
 
 -- system register
 set({ "n", "v" }, "<leader>y", [["+y]])
+set("v", "<C-c>", [["+y]])
 set("n", "<leader>Y", [["+Y]])
 
 set("n", "Q", "<nop>")
