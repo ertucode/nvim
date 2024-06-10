@@ -14,8 +14,8 @@ require("nvim-treesitter.configs").setup({
 				["ic"] = "@class.inner",
 				["ak"] = "@call.outer",
 				["ik"] = "@call.inner",
-				["ir"] = "@assignment.rhs",
-				["ie"] = "@assignment.lhs",
+				["in"] = "@assignment.rhs",
+				["iv"] = "@assignment.lhs",
 				-- You can also use captures from other query groups like `locals.scm`
 				["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
 			},
