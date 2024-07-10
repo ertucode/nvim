@@ -72,3 +72,5 @@ vim.api.nvim_create_autocmd({ "CmdwinEnter" }, {
 		vim.keymap.set("n", "<esc>", ":quit<CR>", { buffer = true })
 	end,
 })
+
+set({ "i", "n" }, "<C-m>", ":cclose<CR>")
