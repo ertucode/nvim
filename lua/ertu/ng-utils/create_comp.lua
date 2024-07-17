@@ -1,6 +1,11 @@
 return function()
 	local folder = vim.api.nvim_buf_get_name(0):gsub("oil://", "")
 	local res = vim.fn.input("Component name: ")
+
+	if res == nil or res == "" then
+		return
+	end
+
 	local comp_folder = folder .. res
 
 	os.execute("mkdir " .. comp_folder)
