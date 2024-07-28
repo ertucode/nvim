@@ -141,13 +141,56 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			["tsserver"] = function()
-				lspconfig.tsserver.setup({
+			["volar"] = function()
+				require("lspconfig").volar.setup({
 					capabilities = capabilities,
-					handlers = {
-						["textDocument/definition"] = function(err, result, method, ...)
-							vim.notify(dump(result))
-						end,
+					init_options = {
+						vue = {
+							hybridMode = false,
+						},
+						typescript = {
+							tsdk = require("mason-registry").get_package("vue-language-server"):get_install_path()
+								.. "/node_modules/typescript/lib",
+						},
+					},
+					settings = {
+						typescript = {
+							inlayHints = {
+								enumMemberValues = {
+									enabled = true,
+								},
+								functionLikeReturnTypes = {
+									enabled = true,
+								},
+								propertyDeclarationTypes = {
+									enabled = true,
+								},
+								parameterTypes = {
+									enabled = true,
+									suppressWhenArgumentMatchesName = true,
+								},
+								variableTypes = {
+									enabled = true,
+								},
+							},
+						},
+					},
+				})
+			end,
+			["tsserver"] = function()
+				local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
+				local volar_path = mason_packages .. "/vue-language-server/node_modules/@vue/language-server"
+
+				require("lspconfig").tsserver.setup({
+					capabilities = capabilities,
+					init_options = {
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = volar_path,
+								languages = { "vue" },
+							},
+						},
 					},
 				})
 			end,
@@ -251,7 +294,7 @@ return {
 			-- })
 		})
 
-		local current_definition_handler = vim.lsp.handlers["textDocument/definition"]
+		local initial_definition_handler = vim.lsp.handlers["textDocument/definition"]
 		vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
 			local clientId = ctx.client_id
 			local client = vim.lsp.get_client_by_id(clientId)
@@ -259,7 +302,7 @@ return {
 				return
 			end
 			if client.name ~= "tsserver" then
-				current_definition_handler(err, result, ctx, config)
+				initial_definition_handler(err, result, ctx, config)
 				return
 			end
 
@@ -268,7 +311,7 @@ return {
 				return vim.lsp.handlers["textDocument/definition"](err, filtered_result, ctx, config)
 			end
 
-			return current_definition_handler(err, result, ctx, config)
+			return initial_definition_handler(err, result, ctx, config)
 		end
 	end,
 }
