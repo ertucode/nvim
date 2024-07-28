@@ -185,6 +185,45 @@ return {
 
 				lspconfig["angularls"].setup(config)
 			end,
+			["volar"] = function()
+				local config = {
+					filetypes = {
+						"vue",
+					},
+					init_options = {
+						typescript = {
+							tsdk = require("mason-registry").get_package("vue-language-server"):get_install_path()
+								.. "/node_modules/typescript/lib",
+						},
+						preferences = {
+							disableSuggestions = true,
+						},
+						languageFeatures = {
+							implementation = true,
+							references = true,
+							definition = true,
+							typeDefinition = true,
+							callHierarchy = true,
+							hover = true,
+							rename = true,
+							renameFileRefactoring = true,
+							signatureHelp = true,
+							codeAction = true,
+							workspaceSymbol = true,
+							diagnostics = true,
+							semanticTokens = true,
+							completion = {
+								defaultTagNameCase = "both",
+								defaultAttrNameCase = "kebabCase",
+								getDocumentNameCasesRequest = false,
+								getDocumentSelectionRequest = false,
+							},
+						},
+					},
+				}
+
+				lspconfig["volar"].setup(config)
+			end,
 			-- lsp.configure("jsonls", {
 			-- 	settings = {
 			-- 		json = {
