@@ -1,3 +1,40 @@
+-- https://github.com/typescript-language-server/typescript-language-server/issues/216
+
+local function dump(o)
+	if type(o) == "table" then
+		local s = "{ "
+		for k, v in pairs(o) do
+			if type(k) ~= "number" then
+				k = '"' .. k .. '"'
+			end
+			s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+		end
+		return s .. "} "
+	else
+		return tostring(o)
+	end
+end
+
+local function filter(arr, fn)
+	if type(arr) ~= "table" then
+		return arr
+	end
+
+	local filtered = {}
+	for k, v in pairs(arr) do
+		if fn(v, k, arr) then
+			table.insert(filtered, v)
+		end
+	end
+
+	return filtered
+end
+
+local function filterReactDTS(value)
+	local uri = value.uri or value.targetUri
+	return string.match(uri, "react/index.d.ts") == nil
+end
+
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
@@ -104,6 +141,16 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+			["tsserver"] = function()
+				lspconfig.tsserver.setup({
+					capabilities = capabilities,
+					handlers = {
+						["textDocument/definition"] = function(err, result, method, ...)
+							vim.notify(dump(result))
+						end,
+					},
+				})
+			end,
 			-- ["svelte"] = function()
 			-- 	-- configure svelte server
 			-- 	lspconfig["svelte"].setup({
@@ -117,13 +164,6 @@ return {
 			-- 				end,
 			-- 			})
 			-- 		end,
-			-- 	})
-			-- end,
-			-- ["graphql"] = function()
-			-- 	-- configure graphql language server
-			-- 	lspconfig["graphql"].setup({
-			-- 		capabilities = capabilities,
-			-- 		filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 			-- 	})
 			-- end,
 			["lua_ls"] = function()
@@ -210,5 +250,25 @@ return {
 			-- 	},
 			-- })
 		})
+
+		local current_definition_handler = vim.lsp.handlers["textDocument/definition"]
+		vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
+			local clientId = ctx.client_id
+			local client = vim.lsp.get_client_by_id(clientId)
+			if client == nil then
+				return
+			end
+			if client.name ~= "tsserver" then
+				current_definition_handler(err, result, ctx, config)
+				return
+			end
+
+			if vim.islist(result) and #result > 1 then
+				local filtered_result = filter(result, filterReactDTS)
+				return vim.lsp.handlers["textDocument/definition"](err, filtered_result, ctx, config)
+			end
+
+			return current_definition_handler(err, result, ctx, config)
+		end
 	end,
 }
