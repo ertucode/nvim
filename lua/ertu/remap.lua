@@ -62,6 +62,7 @@ set("n", "gP", "'[v']", { desc = "Highlight last paste visual" })
 
 -- quickfix list
 set("n", "<leader>qc", ":cclose<CR>")
+set("n", "<leader>qo", ":copen<CR>")
 set("n", "<leader>qn", ":cnext<CR>")
 set("n", "<leader>qp", ":cprev<CR>")
 
