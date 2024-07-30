@@ -307,8 +307,8 @@ return {
 			end
 
 			if vim.islist(result) and #result > 1 then
-				local filtered_result = filter(result, filterReactDTS)
-				return initial_definition_handler(err, filtered_result, ctx, config)
+				require("telescope.builtin").lsp_definitions()
+				return
 			end
 
 			return initial_definition_handler(err, result, ctx, config)
