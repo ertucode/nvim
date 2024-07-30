@@ -24,7 +24,30 @@ return {
 		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 		local cmp = require("cmp")
 
-		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		cmp.event:on("confirm_done", function()
+			return function(evt)
+				if evt.commit_character then
+					return
+				end
+				local entry = evt.entry
+				local filetype = vim.api.nvim_get_option_value("filetype", {
+					buf = 0,
+				})
+				local item = entry:get_completion_item()
+
+				-- Dont put () to typescript component function
+				if
+					item.kind == 2
+					and filetype == "typescriptreact"
+					and item.label
+					and #item.label == 1
+					and string.upper(item.label[1]) == item.label[1]
+				then
+					return
+				end
+				return cmp_autopairs.on_confirm_done()
+			end
+		end)
 
 		local ertu = require("ertu.utils")
 		vim.keymap.set({ "i", "v" }, "<C-l>", function()
