@@ -307,7 +307,12 @@ return {
 			end
 
 			if vim.islist(result) and #result > 1 then
-				require("telescope.builtin").lsp_definitions()
+				local filtered = filter(result, filterReactDTS)
+				if #filtered > 1 then
+					require("telescope.builtin").lsp_definitions()
+				else
+					initial_definition_handler(err, filtered, ctx, config)
+				end
 				return
 			end
 
