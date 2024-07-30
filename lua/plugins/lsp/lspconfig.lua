@@ -80,26 +80,61 @@ return {
 				set("n", "<leader>lf", function()
 					vim.diagnostic.open_float()
 				end, opts)
+				local find_highest_diag_severity = function()
+					local diags = vim.diagnostic.get(0)
+					if #diags == 0 then
+						return
+					end
+
+					local best = diags[1].severity
+
+					for i = 2, #diags do
+						if diags[i].severity < best then
+							best = diags[i].severity
+						end
+					end
+					return vim.diagnostic.severity[best]
+				end
 				local best_diag = function(goer)
 					return function()
-						local diags = vim.diagnostic.get(0)
-						if #diags == 0 then
-							return
-						end
-
-						local best = diags[1].severity
-
-						for i = 2, #diags do
-							if diags[i].severity < best then
-								best = diags[i].severity
-							end
-						end
-
-						goer({ severity = vim.diagnostic.severity[best] })
+						local highest = find_highest_diag_severity()
+						goer({ severity = highest })
 					end
 				end
-				set("n", "[d", best_diag(vim.diagnostic.goto_prev), opts)
-				set("n", "]d", best_diag(vim.diagnostic.goto_next), opts)
+				set("n", "[d", function()
+					if require("ertu.utils").qf.is_opened() then
+						local success = pcall(function()
+							vim.cmd("cprev")
+						end)
+						if not success then
+							pcall(function()
+								vim.cmd("clast")
+							end)
+						end
+					else
+						best_diag(vim.diagnostic.goto_prev)()
+					end
+				end, opts)
+				set("n", "]d", function()
+					if require("ertu.utils").qf.is_opened() then
+						local success = pcall(function()
+							vim.cmd("cnext")
+						end)
+						if not success then
+							pcall(function()
+								vim.cmd("cfirst")
+							end)
+						end
+					else
+						best_diag(vim.diagnostic.goto_next)()
+					end
+				end, opts)
+				set("n", "<leader>ldq", function()
+					local highest = find_highest_diag_severity()
+					vim.diagnostic.setqflist({
+						severity = highest,
+					})
+				end, opts)
 				set({ "n", "v" }, "<leader>lac", function()
 					vim.lsp.buf.code_action()
 				end, opts)

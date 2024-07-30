@@ -2,3 +2,6 @@
 let g:surround_99 = "{/* \r */}"
 
 colorscheme tokyonight
+
+" Dont know why this is needed but it fixes quickfix list window
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
