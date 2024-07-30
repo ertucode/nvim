@@ -1,18 +1,8 @@
 return {
 	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { { "nvim-lua/plenary.nvim" } },
-	},
-	{
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 	},
-	{
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-	},
-	"nvim-treesitter/nvim-treesitter-context",
-	"nvim-treesitter/nvim-treesitter-textobjects",
 	"nvim-treesitter/playground",
 
 	-- {
@@ -36,9 +26,6 @@ return {
 	-- 	},
 	-- },
 
-	-- autopair
-	"windwp/nvim-autopairs",
-
 	"tpope/vim-surround",
 
 	-- comment
@@ -48,16 +35,6 @@ return {
 			require("Comment").setup()
 		end,
 	},
-
-	-- vscode theme
-	"Mofiqul/vscode.nvim",
-
-	-- Vim status line
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons", opt = true },
-	},
-	"lukas-reineke/indent-blankline.nvim",
 
 	{
 		"kana/vim-textobj-entire",
