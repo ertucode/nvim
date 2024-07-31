@@ -180,7 +180,6 @@ return {
 							return true
 						end,
 					},
-					{ name = "nvim_lua" },
 					{ name = "path" },
 					{ name = "luasnip" },
 				},
