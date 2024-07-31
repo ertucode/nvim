@@ -77,7 +77,7 @@ return {
 				{ name = "nvim_lua" },
 				{ name = "path" },
 				{ name = "luasnip" },
-				{ name = "buffer" },
+				-- { name = "buffer" },
 			},
 			snippet = {
 				expand = function(args)

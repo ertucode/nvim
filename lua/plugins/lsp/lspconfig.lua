@@ -159,7 +159,15 @@ return {
 		})
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = vim.tbl_deep_extend(
+			-- "error": raise an error
+			-- "keep": use value from the leftmost map
+			-- "force": use value from the rightmost map
+			"force",
+			{}, -- Empty capabilities
+			vim.lsp.protocol.make_client_capabilities(), -- Minimal capabilities
+			require("cmp_nvim_lsp").default_capabilities() -- Default capabilities
+		)
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
