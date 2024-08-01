@@ -220,23 +220,6 @@ return {
 					},
 				})
 			end,
-			["tsserver"] = function()
-				local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
-				local volar_path = mason_packages .. "/vue-language-server/node_modules/@vue/language-server"
-
-				require("lspconfig").tsserver.setup({
-					capabilities = capabilities,
-					init_options = {
-						plugins = {
-							{
-								name = "@vue/typescript-plugin",
-								location = volar_path,
-								languages = { "vue" },
-							},
-						},
-					},
-				})
-			end,
 			-- ["svelte"] = function()
 			-- 	-- configure svelte server
 			-- 	lspconfig["svelte"].setup({

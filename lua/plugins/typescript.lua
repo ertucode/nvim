@@ -3,6 +3,7 @@ return {
 	config = function()
 		require("typescript").setup({})
 	end,
+	enabled = false,
 	keys = {
 		{
 			"<leader>lru",
