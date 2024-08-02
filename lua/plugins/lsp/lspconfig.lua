@@ -1,4 +1,5 @@
 -- https://github.com/typescript-language-server/typescript-language-server/issues/216
+-- http://www.lazyvim.org/extras/lang/typescript TODO
 
 local function dump(o)
 	if type(o) == "table" then

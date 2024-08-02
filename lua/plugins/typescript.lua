@@ -1,3 +1,9 @@
+--[[
+    Important: if you have require("lspconfig").tsserver.setup({}) anywhere in your config,
+    make sure to remove it and pass any options you were using under the server key.
+    lspconfig doesn't allow more than one setup call, so your config will not work as expected.
+  ]]
+
 return {
 	"jose-elias-alvarez/typescript.nvim",
 	config = function()

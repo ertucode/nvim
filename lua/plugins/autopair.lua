@@ -35,13 +35,18 @@ return {
 			})
 			local item = entry:get_completion_item()
 
+			-- print(item.kind == 2 or item.kind == 3)
+			-- print(filetype == "typescriptreact")
+			-- print(item.label)
+			-- print(#item.label ~= 1)
+			-- print(item.label:sub(1, 1))
 			-- Dont put () to typescript component function
 			if
-				item.kind == 2
+				(item.kind == 2 or item.kind == 3)
 				and filetype == "typescriptreact"
 				and item.label
-				and #item.label == 1
-				and string.upper(item.label[1]) == item.label[1]
+				and #item.label ~= 1
+				and string.upper(item.label:sub(1, 1)) == item.label:sub(1, 1)
 			then
 				return
 			end

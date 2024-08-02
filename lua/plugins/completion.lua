@@ -10,10 +10,10 @@ local function get_lsp_completion_context(completion, source)
 	end)
 	if source_name == "tsserver" then
 		return completion.detail
-		-- elseif source_name == "pyright" or source_name == "vtsls" then
-		-- 	if completion.labelDetails ~= nil then
-		-- 		return completion.labelDetails.description
-		-- 	end
+	elseif source_name == "pyright" or source_name == "vtsls" then
+		if completion.labelDetails ~= nil then
+			return completion.labelDetails.description
+		end
 		-- elseif source_name == "gopls" then
 		-- 	return completion.detail
 	end
