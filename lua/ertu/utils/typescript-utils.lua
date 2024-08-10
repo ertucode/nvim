@@ -11,9 +11,9 @@ local function diagnostic_move_pos(diag)
 	end)
 end
 
-M.remove_unused = function()
+function M.remove_unused()
 	local params = {
-		command = "_typescript.organizeImports",
+		command = "typescript.removeUnusedImports",
 		arguments = { vim.api.nvim_buf_get_name(0) },
 		title = "",
 	}
@@ -32,7 +32,7 @@ local find_missing_diag = function()
 		end
 	end
 end
-M.import_missing = function()
+function M.import_missing()
 	local missing = find_missing_diag()
 	if missing == nil then
 		return
@@ -59,6 +59,10 @@ M.import_missing = function()
 	})
 
 	-- vim.cmd(":%substitute/@radix-ui\\/react-/@\\/ui\\/components\\//")
+end
+
+function M.go_to_source()
+	-- todo
 end
 
 return M
