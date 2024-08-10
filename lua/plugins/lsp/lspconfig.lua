@@ -113,6 +113,8 @@ return {
 				set({ "n", "v" }, "<leader>lac", function()
 					vim.lsp.buf.code_action()
 				end, opts)
+				set("n", "<leader>lru", require("ertu.utils.typescript-utils").remove_unused)
+				set("n", "<leader>lai", require("ertu.utils.typescript-utils").import_missing)
 				-- set("n", "<leader>lrn", function()
 				-- 	vim.api.nvim_create_autocmd({ "CmdlineEnter" }, {
 				-- 		callback = function()
