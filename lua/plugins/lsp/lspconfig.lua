@@ -173,11 +173,16 @@ return {
 							preferences = {
 								autoImportFileExcludePatterns = { "@radix-ui/*" },
 								--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
-								-- inlayHints = {
-								-- 	includeInlayFunctionLikeReturnTypeHints = {
-								-- 		enabled = true,
-								-- 	},
-								-- },
+							},
+							inlayHints = {
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
 							},
 						},
 					},
