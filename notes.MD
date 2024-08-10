@@ -5,3 +5,8 @@
 
 ### simple picker
 https://www.youtube.com/watch?v=BMTXuY640dA
+
+### lazy.nvim
+- init: Runs before plugin is required
+- config: If not provided the default is running require("pluginname").setup(opts). Otherwise should setup plugin manually
+- opts: Useful only when config is not provided

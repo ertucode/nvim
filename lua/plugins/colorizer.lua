@@ -5,6 +5,7 @@ return {
 			"css",
 			"scss",
 			"javascript",
+			"lua",
 			html = {
 				mode = "foreground",
 			},

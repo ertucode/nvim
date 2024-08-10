@@ -144,20 +144,14 @@ return {
 		"saadparwaiz1/cmp_luasnip", -- Snip and comp adapter ?
 		"L3MON4D3/LuaSnip",
 	},
-	opts = function()
-		return getOpts()
-	end,
-
 	config = function()
+		local opts = getOpts()
 		local cmp = require("cmp")
-
-		if baseOpts == nil then
-			return
-		end
+		cmp.setup(opts)
 
 		cmp.setup.filetype(
 			{ "typescript", "typescriptreact" },
-			vim.tbl_deep_extend("force", baseOpts, {
+			vim.tbl_deep_extend("force", opts, {
 				sources = {
 					{
 						name = "nvim_lsp",

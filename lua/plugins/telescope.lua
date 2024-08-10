@@ -1,10 +1,11 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzf-native.nvim" },
-	opts = function()
+	config = function()
+		local builtin = require("telescope.builtin")
 		local actions = require("telescope.actions")
 
-		return {
+		require("telescope").setup({
 			defaults = {
 				path_display = { "truncate" },
 				mappings = {
@@ -22,10 +23,7 @@ return {
 					width = 0.9,
 				},
 			},
-		}
-	end,
-	config = function()
-		local builtin = require("telescope.builtin")
+		})
 
 		require("telescope").load_extension("fzf")
 
@@ -57,6 +55,9 @@ return {
 		set("<leader>fld", builtin.lsp_document_symbols, "[F]ind [L]sp [D]ocument Symbols")
 		set("<leader>flw", builtin.lsp_workspace_symbols, "[F]ind [L]sp [W]orkspace Symbols")
 		set("<leader>fac", builtin.autocommands, "[F]ind [A]uto [C]ommands")
+
+		set("<leader>fp", require("utils.telescope-reload-plugin").reload_plugin, "[F]ind [P]lugin")
+		set("<leader><leader>", require("utils.telescope-reload-plugin").reload_last_plugin, "Reload Last Plugin")
 
 		local entry_maker = require("utils.telescope-filename").find_files_entry_maker
 

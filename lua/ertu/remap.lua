@@ -30,11 +30,11 @@ set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 set("n", "<leader>sg", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Change current word" })
 
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
-set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
-
-set("n", "<leader><leader>", function()
-	vim.cmd("so")
-end)
+-- set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
+--
+-- set("n", "<leader><leader>", function()
+-- 	vim.cmd("so")
+-- end)
 
 -- increment decrement
 set("n", "<leader>+", "<C-a>")
@@ -63,8 +63,8 @@ set("n", "gP", "'[v']", { desc = "Highlight last paste visual" })
 -- quickfix list
 set("n", "<leader>qc", ":cclose<CR>")
 set("n", "<leader>qo", ":copen<CR>")
-set("n", "<leader>qn", ":cnext<CR>")
-set("n", "<leader>qp", ":cprev<CR>")
+set("n", "]q", ":cnext<CR>")
+set("n", "[q", ":cprev<CR>")
 
 -- This kemap makes it possible to exit the command-window (:h cmdwin)
 -- with <ESC>

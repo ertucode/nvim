@@ -21,6 +21,14 @@ M.array.includes = function(tab, val)
 	return false
 end
 
+M.array.map = function(tbl, f)
+	local t = {}
+	for k, v in pairs(tbl) do
+		t[k] = f(v)
+	end
+	return t
+end
+
 M.get_next_char_that_is_one_of = function(chrs)
 	local pos = vim.api.nvim_win_get_cursor(0)
 	local row_start = pos[1]

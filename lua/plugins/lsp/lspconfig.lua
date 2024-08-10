@@ -102,34 +102,8 @@ return {
 						goer({ severity = highest })
 					end
 				end
-				set("n", "[d", function()
-					if require("ertu.utils").qf.is_opened() then
-						local success = pcall(function()
-							vim.cmd("cprev")
-						end)
-						if not success then
-							pcall(function()
-								vim.cmd("clast")
-							end)
-						end
-					else
-						best_diag(vim.diagnostic.goto_prev)()
-					end
-				end, opts)
-				set("n", "]d", function()
-					if require("ertu.utils").qf.is_opened() then
-						local success = pcall(function()
-							vim.cmd("cnext")
-						end)
-						if not success then
-							pcall(function()
-								vim.cmd("cfirst")
-							end)
-						end
-					else
-						best_diag(vim.diagnostic.goto_next)()
-					end
-				end, opts)
+				set("n", "[d", best_diag(vim.diagnostic.goto_prev), opts)
+				set("n", "]d", best_diag(vim.diagnostic.goto_next), opts)
 				set("n", "<leader>ldq", function()
 					local highest = find_highest_diag_severity()
 					vim.diagnostic.setqflist({
