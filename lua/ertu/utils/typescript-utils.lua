@@ -51,6 +51,13 @@ M.import_missing = function()
 
 	vim.fn.winrestview(view)
 
+	vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+		callback = function()
+			print("hello")
+		end,
+		once = true,
+	})
+
 	-- vim.cmd(":%substitute/@radix-ui\\/react-/@\\/ui\\/components\\//")
 end
 

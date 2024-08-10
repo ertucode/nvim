@@ -161,6 +161,28 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+			["tsserver"] = function()
+				-- dont setup tsserver
+			end,
+			["vtsls"] = function()
+				require("lspconfig").vtsls.setup({
+					capabilities = capabilities,
+					inlay_hints = { enabled = true },
+					settings = {
+						typescript = {
+							preferences = {
+								autoImportFileExcludePatterns = { "@radix-ui/*" },
+								--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
+								-- inlayHints = {
+								-- 	includeInlayFunctionLikeReturnTypeHints = {
+								-- 		enabled = true,
+								-- 	},
+								-- },
+							},
+						},
+					},
+				})
+			end,
 			["volar"] = function()
 				require("lspconfig").volar.setup({
 					capabilities = capabilities,
