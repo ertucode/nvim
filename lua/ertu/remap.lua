@@ -75,3 +75,5 @@ vim.api.nvim_create_autocmd({ "CmdwinEnter" }, {
 })
 
 set({ "i", "n" }, "<C-m>", ":cclose<CR>")
+
+set("n", "<F2>", ":qa!<CR>")

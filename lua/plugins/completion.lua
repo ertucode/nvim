@@ -1,3 +1,14 @@
+---@param source cmp.Source
+local function get_source_name(source)
+	local suc, source_name = pcall(function()
+		return source.source.client.config.name
+	end)
+	if suc then
+		return source_name
+	end
+	return ""
+end
+
 --- Get completion context, i.e., auto-import/target module location.
 --- Depending on the LSP this information is stored in different parts of the
 --- lsp.CompletionItem payload. The process to find them is very manual: log the payloads
@@ -5,9 +16,7 @@
 ---@param completion lsp.CompletionItem
 ---@param source cmp.Source
 local function get_lsp_completion_context(completion, source)
-	local _, source_name = pcall(function()
-		return source.source.client.config.name
-	end)
+	local source_name = get_source_name(source)
 	if source_name == "tsserver" then
 		return completion.detail
 	elseif source_name == "pyright" or source_name == "vtsls" then
@@ -91,7 +100,7 @@ local function getOpts()
 			format = function(entry, vim_item)
 				local item_with_kind = lspkind.cmp_format({
 					mode = "text_symbol", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-					maxwidth = 100, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+					maxwidth = 120, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
 					menu = { -- showing type in menu
 						nvim_lsp = "[LSP]",
 						path = "[Path]",
@@ -113,19 +122,22 @@ local function getOpts()
 					end,
 				})(entry, vim_item)
 
-				item_with_kind.menu = ""
-				local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
-				if completion_context ~= nil and completion_context ~= "" then
-					local truncated_context = string.sub(completion_context, 1, 40)
-					if truncated_context ~= completion_context then
-						truncated_context = truncated_context .. "… "
-					end
-					item_with_kind.menu = item_with_kind.menu .. " " .. truncated_context
-				end
+				if item_with_kind.menu == "[LSP]" then
+					item_with_kind.menu = get_source_name(entry.source) .. " . " .. item_with_kind.menu
 
-				item_with_kind.menu_hl_group = "CmpItemAbbr"
+					local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
+					if completion_context ~= nil and completion_context ~= "" then
+						item_with_kind.menu = require("ertu.utils.string").truncated(completion_context, 40, true)
+							.. " . "
+							.. item_with_kind.menu
+					end
+
+					item_with_kind.menu_hl_group = "@lsp.type.parameter"
+					item_with_kind.menu = string.format("%60s", item_with_kind.menu)
+				end
 				return item_with_kind
 			end,
+			expandable_indicator = true,
 		},
 	}
 	return baseOpts

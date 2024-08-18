@@ -14,4 +14,12 @@ M.camelToCapital = function(text)
 	return ret
 end
 
+function M.truncated(text, max_len, with_dot)
+	local truncated_context = string.sub(text, 1, max_len)
+	if truncated_context ~= text and with_dot then
+		truncated_context = truncated_context .. ".."
+	end
+	return truncated_context
+end
+
 return M
