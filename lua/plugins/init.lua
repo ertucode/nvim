@@ -26,8 +26,6 @@ return {
 	-- 	},
 	-- },
 
-	"tpope/vim-surround",
-
 	-- comment
 	{
 		"numToStr/Comment.nvim",
