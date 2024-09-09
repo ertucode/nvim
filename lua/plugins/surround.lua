@@ -3,7 +3,6 @@ return {
 	init = function()
 		vim.cmd([[
       autocmd FileType typescript,typescriptreact
-      \ let b:surround_99 = "{/* \r */}" |
       \ let b:surround_109 = "$Maybe<\r>" | 
 
     ]])

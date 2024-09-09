@@ -83,13 +83,15 @@ local function getOpts()
 			end,
 		},
 		experimental = {
-			ghost_text = {
-				hl_group = "WinSeparator",
-			},
+			-- ghost_text = {
+			-- 	hl_group = "WinSeparator",
+			-- },
+			ghost_text = false,
 		},
 		performance = {
 			debounce = 1,
 			throttle = 1,
+			max_view_entries = 30,
 		},
 		window = {
 			documentation = cmp.config.window.bordered(),

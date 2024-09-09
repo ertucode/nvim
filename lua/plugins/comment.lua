@@ -1,6 +1,28 @@
 return {
 	"numToStr/Comment.nvim",
 	event = "VeryLazy",
+	dependencies = {
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		opts = {
+			enable_autocmd = false,
+			languages = {
+				javascript = {
+					__default = "// %s",
+					jsx_element = "{/* %s */}",
+					jsx_fragment = "{/* %s */}",
+					jsx_attribute = "// %s",
+					comment = "// %s",
+				},
+				typescript = {
+					__default = "// %s",
+					__multiline = "/* %s */",
+					jsx_element = "{/* %s */}",
+					jsx_fragment = "{/* %s */}",
+					jsx_attribute = "// %s",
+				},
+			},
+		},
+	},
 	config = function()
 		local status, comment = pcall(require, "Comment")
 
@@ -13,6 +35,7 @@ return {
 				line = "gc",
 				block = "gb",
 			},
+			pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 			mappings = {
 				-- gcc line comment
 				-- gcb block comment
