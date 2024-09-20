@@ -29,7 +29,7 @@ return function()
 	local content = string.format(
 		[[
 import { CommonModule } from "@angular/common"
-import { Component, Input } from "@angular/core"
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core"
 import { LocalizationModule } from "@sipaywalletgate/ngx-sipay/localization"
 
 @Component({
@@ -38,6 +38,7 @@ import { LocalizationModule } from "@sipaywalletgate/ngx-sipay/localization"
   styleUrls: ["./%s.component.scss"],
   templateUrl: "./%s.component.html",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class %sComponent {
   @Input() input: string
