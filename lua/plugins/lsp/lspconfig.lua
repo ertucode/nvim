@@ -268,12 +268,13 @@ return {
 			if client == nil then
 				return
 			end
-			if client.name ~= "tsserver" then
+			if not (client.name == "tsserver" or client.name == "vtsls") then
 				initial_definition_handler(err, result, ctx, config)
 				return
 			end
 
 			if vim.islist(result) and #result > 1 then
+				print(vim.inspect(ctx))
 				local filtered = filter(result, filterReactDTS)
 				if #filtered > 1 then
 					require("telescope.builtin").lsp_definitions()
