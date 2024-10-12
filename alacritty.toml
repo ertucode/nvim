@@ -1,0 +1,14 @@
+[font]
+size = 12
+
+[font.normal]
+family = "Fira Code"
+
+[window]
+startup_mode = "Maximized"
+
+[keyboard]
+bindings = [
+    { key = "F11", mods = "Control", chars = "\uf601" }, # 😁
+    { key = "F12", mods = "Control", chars = "\u2660" }, # ♠
+]
