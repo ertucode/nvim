@@ -12,6 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("ertu")
+require("winbar")
 
 -- Global
 P = function(v)
