@@ -3,6 +3,11 @@
 
 local on_attach = require("ertu.utils.lsp-utils").on_attach
 
+local function is_angular_project()
+	local filename = vim.fn.expand("%:p")
+	return vim.fn.filereadable("angular.json") == 1
+end
+
 local function dump(o)
 	if type(o) == "table" then
 		local s = "{ "
@@ -56,6 +61,11 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
+				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				if client and client.name == "vtsls" and is_angular_project() then
+					vim.lsp.stop_client({ ev.data.client_id })
+					return
+				end
 				on_attach(ev.buf)
 			end,
 		})
