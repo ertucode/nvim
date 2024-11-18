@@ -61,11 +61,12 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				-- Doing this breaks gd?
+				--[[ local client = vim.lsp.get_client_by_id(ev.data.client_id)
 				if client and client.name == "vtsls" and is_angular_project() then
 					vim.lsp.stop_client({ ev.data.client_id })
 					return
-				end
+				end ]]
 				on_attach(ev.buf)
 			end,
 		})
