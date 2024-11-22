@@ -18,3 +18,7 @@ local data = {
   buf = vim.fn.expand("<abuf>") -- afile, amatch
 }
 ```
+
+### telescope
+- fzf icin fzf ve cmake olmali sistemde
+- string grep icin ripgrep
