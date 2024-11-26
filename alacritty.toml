@@ -5,7 +5,8 @@ size = 12
 family = "JetbrainsMono Nerd Font Mono"
 
 [window]
-startup_mode = "Maximized"
+startup_mode = "Fullscreen"
+option_as_alt = "Both"
 
 [keyboard]
 bindings = [
