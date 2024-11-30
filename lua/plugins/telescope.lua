@@ -59,6 +59,7 @@ return {
 		set("<leader>flr", builtin.lsp_references, "[F]ind [L]sp [R]eferences")
 		set("<leader>fli", builtin.lsp_implementations, "[F]ind [L]sp [I]mplementations")
 		set("<leader>fld", builtin.lsp_document_symbols, "[F]ind [L]sp [D]ocument Symbols")
+		set("♠", builtin.lsp_document_symbols, "[F]ind [L]sp [D]ocument Symbols")
 		set("<leader>flw", builtin.lsp_workspace_symbols, "[F]ind [L]sp [W]orkspace Symbols")
 		set("<leader>fac", builtin.autocommands, "[F]ind [A]uto [C]ommands")
 
