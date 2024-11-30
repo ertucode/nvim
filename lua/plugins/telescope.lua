@@ -42,6 +42,7 @@ return {
 		set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
 
 		set("<leader>fs", builtin.live_grep, "[F]ind [S]tring")
+		set("<C-S>", builtin.live_grep, "[F]ind [S]tring")
 		set("<leader>fcw", builtin.grep_string, "[F]ind [C]urrent [W]ord")
 		set("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
 

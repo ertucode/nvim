@@ -11,6 +11,7 @@ return {
 		oil.setup({
 			keymaps = {
 				["<C-p>"] = false,
+				["<C-s>"] = false,
 			},
 		})
 
