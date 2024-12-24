@@ -22,7 +22,7 @@ return {
 			},
 		})
 
-		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		--[[ local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 		local cmp = require("cmp")
 
 		local compHandler = cmp_autopairs.on_confirm_done()
@@ -52,7 +52,7 @@ return {
 				return
 			end
 			return compHandler(evt)
-		end)
+		end) ]]
 
 		local ertu = require("ertu.utils")
 		vim.keymap.set({ "i", "v" }, "<C-l>", function()
