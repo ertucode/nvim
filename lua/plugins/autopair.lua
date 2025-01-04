@@ -54,12 +54,12 @@ return {
 			return compHandler(evt)
 		end)
 
-		local ertu = require("ertu.utils")
+		--[[ local ertu = require("ertu.utils")
 		vim.keymap.set({ "i", "v" }, "<C-l>", function()
 			local res = ertu.get_next_char_that_is_one_of(ertu.closing_char)
 			if res then
 				vim.api.nvim_win_set_cursor(0, { res[1], res[2] })
 			end
-		end)
+		end) ]]
 	end,
 }

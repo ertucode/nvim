@@ -26,7 +26,7 @@ return {
 			},
 		})
 
-		local ertu = require("ertu.utils")
+		--[[ local ertu = require("ertu.utils")
 
 		local mappings = vim.api.nvim_get_keymap("i")
 		local prev_k_mapping = ertu.find_mapping(mappings, "<C-L>") -- Buyuk L onemli
@@ -39,7 +39,7 @@ return {
 					prev_k_mapping.callback()
 				end
 			end
-		end, { silent = true })
+		end, { silent = true }) ]]
 
 		-- <c-j> is my jump backwards key.
 		-- this always moves to the previous item within the snippet
