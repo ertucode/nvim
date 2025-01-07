@@ -6,7 +6,7 @@ local action_state = require("telescope.actions.state")
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values
-local plugins = require("ertu.utils").array.map(require("lazy").plugins(), function(tbl)
+local plugins = require("ertu.utils.array").map(require("lazy").plugins(), function(tbl)
 	return tbl.name
 end)
 

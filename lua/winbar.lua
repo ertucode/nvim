@@ -1,4 +1,4 @@
-local folder_icon = "_"
+-- local folder_icon = "_"
 
 local M = {}
 

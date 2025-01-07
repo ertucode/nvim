@@ -8,7 +8,7 @@ return {
 			---@class ColorScheme
 			on_colors = function(colors)
 				colors.yellow = "#ffff55"
-				colors.purple = "#9037cc"
+				-- colors.purple = "#10fdcc"
 			end,
 		})
 		vim.cmd([[colorscheme tokyonight]])

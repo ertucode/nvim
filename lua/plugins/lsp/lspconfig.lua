@@ -1,26 +1,11 @@
 -- https://github.com/typescript-language-server/typescript-language-server/issues/216
 -- http://www.lazyvim.org/extras/lang/typescript TODO
 
-local on_attach = require("ertu.utils.lsp-utils").on_attach
+local on_attach = require("ertu.utils.lsp").on_attach
 
 local function is_angular_project()
 	local filename = vim.fn.expand("%:p")
 	return vim.fn.filereadable("angular.json") == 1
-end
-
-local function dump(o)
-	if type(o) == "table" then
-		local s = "{ "
-		for k, v in pairs(o) do
-			if type(k) ~= "number" then
-				k = '"' .. k .. '"'
-			end
-			s = s .. "[" .. k .. "] = " .. dump(v) .. ","
-		end
-		return s .. "} "
-	else
-		return tostring(o)
-	end
 end
 
 local function filter(arr, fn)
