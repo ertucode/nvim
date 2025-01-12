@@ -3,11 +3,6 @@
 
 local on_attach = require("ertu.utils.lsp").on_attach
 
-local function is_angular_project()
-	local filename = vim.fn.expand("%:p")
-	return vim.fn.filereadable("angular.json") == 1
-end
-
 local function filter(arr, fn)
 	if type(arr) ~= "table" then
 		return arr
