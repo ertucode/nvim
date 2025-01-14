@@ -27,3 +27,6 @@ local data = {
 - ln -s ~/.config/nvim/starsip.toml ~/.config/starship.toml
 - mkdir ~/.config/alacritty
 - ln -s ~/.config/nvim/alacritty.toml ~/.config/alacritty/alacritty.toml
+
+### macos
+-  if <C-Space> does not work, remove keyboard language shortcut from Settings
