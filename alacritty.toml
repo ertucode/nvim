@@ -12,4 +12,6 @@ option_as_alt = "Both"
 bindings = [
     { key = "F11", mods = "Control", chars = "\uf601" }, # 😁
     { key = "F12", mods = "Control", chars = "\u2660" }, # ♠
+    { key = "Right", mods = "Alt", chars = "\u001BF" },
+    { key = "Left",  mods = "Alt", chars = "\u001BB" },
 ]

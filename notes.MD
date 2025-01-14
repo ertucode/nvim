@@ -22,3 +22,8 @@ local data = {
 ### telescope
 - fzf icin fzf ve cmake olmali sistemde
 - string grep icin ripgrep
+
+### configs
+- ln -s ~/.config/nvim/starsip.toml ~/.config/starship.toml
+- mkdir ~/.config/alacritty
+- ln -s ~/.config/nvim/alacritty.toml ~/.config/alacritty/alacritty.toml
