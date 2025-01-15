@@ -3,7 +3,6 @@ return {
 	dependencies = {
 		{
 			"williamboman/mason-lspconfig.nvim",
-			commit = "482350b050bd413931c2cdd4857443c3da7d57cb",
 		},
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
@@ -31,7 +30,8 @@ return {
 			-- list of servers for mason to install
 			ensure_installed = {
 				-- "tsserver",
-				"vtsls",
+				-- "vtsls",
+				"ts_ls",
 				"html",
 				"cssls",
 				-- "tailwindcss",

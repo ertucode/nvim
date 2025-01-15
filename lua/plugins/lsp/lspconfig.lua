@@ -78,31 +78,38 @@ return {
 				})
 			end,
 			["tsserver"] = function()
-				-- dont setup tsserver
+				require("lspconfig").tsserver.setup({
+					capabilities = capabilities,
+				})
+			end,
+			["ts_ls"] = function()
+				require("lspconfig").ts_ls.setup({
+					capabilities = capabilities,
+				})
 			end,
 			["vtsls"] = function()
-				require("lspconfig").vtsls.setup({
-					capabilities = capabilities,
-					inlay_hints = { enabled = true },
-					settings = {
-						typescript = {
-							preferences = {
-								autoImportFileExcludePatterns = { "@radix-ui/*" },
-								--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
-							},
-							inlayHints = {
-								includeInlayParameterNameHints = "all",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayVariableTypeHints = true,
-								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
-							},
-						},
-					},
-				})
+				-- require("lspconfig").vtsls.setup({
+				-- 	capabilities = capabilities,
+				-- 	inlay_hints = { enabled = true },
+				-- 	settings = {
+				-- 		typescript = {
+				-- 			preferences = {
+				-- 				autoImportFileExcludePatterns = { "@radix-ui/*" },
+				-- 				--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
+				-- 			},
+				-- 			inlayHints = {
+				-- 				includeInlayParameterNameHints = "all",
+				-- 				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+				-- 				includeInlayFunctionParameterTypeHints = true,
+				-- 				includeInlayVariableTypeHints = true,
+				-- 				includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+				-- 				includeInlayPropertyDeclarationTypeHints = true,
+				-- 				includeInlayFunctionLikeReturnTypeHints = true,
+				-- 				includeInlayEnumMemberValueHints = true,
+				-- 			},
+				-- 		},
+				-- 	},
+				-- })
 			end,
 			["omnisharp"] = function()
 				lspconfig.omnisharp.setup({
@@ -259,7 +266,7 @@ return {
 			if client == nil then
 				return
 			end
-			if not (client.name == "tsserver" or client.name == "vtsls") then
+			if not (client.name == "tsserver" or client.name == "vtsls" or client.name == "ts_ls") then
 				initial_definition_handler(err, result, ctx, config)
 				return
 			end
