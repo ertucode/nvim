@@ -1,3 +1,14 @@
+local should_format_on_save = function()
+	local cwd = vim.uv.cwd()
+	if cwd == nil then
+		return
+	end
+
+	local path = "react-native/ortak"
+
+	return string.find(cwd, path)
+end
+
 return {
 	"stevearc/conform.nvim",
 	event = { "BufReadPre", "BufNewFile" },
@@ -22,11 +33,11 @@ return {
 				lua = { "stylua" },
 				-- python = { "isort", "black" },
 			},
-			format_on_save = {
+			format_on_save = should_format_on_save() and {
 				lsp_fallback = true,
 				async = false,
 				timeout_ms = 1000,
-			},
+			} or nil,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
@@ -36,5 +47,11 @@ return {
 				timeout_ms = 1000,
 			})
 		end, { desc = "Format file or range (in visual mode)" })
+	end,
+	enabled = function()
+		local path_to_match = "/home/frank/Projects/Veliol/"
+		local current_path = vim.api.nvim_buf_get_name(0)
+
+		return not (string.find(current_path, path_to_match))
 	end,
 }

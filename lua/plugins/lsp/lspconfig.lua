@@ -77,39 +77,47 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			["tsserver"] = function()
-				require("lspconfig").tsserver.setup({
-					capabilities = capabilities,
-				})
-			end,
+			-- ["tsserver"] = function()
+			-- require("lspconfig").tsserver.setup({
+			-- 	capabilities = capabilities,
+			-- })
+			-- end,
 			["ts_ls"] = function()
-				require("lspconfig").ts_ls.setup({
-					capabilities = capabilities,
-				})
+				-- require("lspconfig").ts_ls.setup({
+				-- 	capabilities = capabilities,
+				-- })
 			end,
 			["vtsls"] = function()
-				-- require("lspconfig").vtsls.setup({
-				-- 	capabilities = capabilities,
-				-- 	inlay_hints = { enabled = true },
-				-- 	settings = {
-				-- 		typescript = {
-				-- 			preferences = {
-				-- 				autoImportFileExcludePatterns = { "@radix-ui/*" },
-				-- 				--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
-				-- 			},
-				-- 			inlayHints = {
-				-- 				includeInlayParameterNameHints = "all",
-				-- 				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-				-- 				includeInlayFunctionParameterTypeHints = true,
-				-- 				includeInlayVariableTypeHints = true,
-				-- 				includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-				-- 				includeInlayPropertyDeclarationTypeHints = true,
-				-- 				includeInlayFunctionLikeReturnTypeHints = true,
-				-- 				includeInlayEnumMemberValueHints = true,
-				-- 			},
-				-- 		},
-				-- 	},
-				-- })
+				-- return
+				require("lspconfig").vtsls.setup({
+					capabilities = capabilities,
+					inlay_hints = { enabled = true },
+					root_dir = function(fname)
+						if string.find(fname, "react-native") then
+							return vim.fs.root(fname, "package.json")
+						end
+
+						return vim.uv.cwd()
+					end,
+					settings = {
+						typescript = {
+							preferences = {
+								autoImportFileExcludePatterns = { "@radix-ui/*" },
+								--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
+							},
+							inlayHints = {
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+					},
+				})
 			end,
 			["omnisharp"] = function()
 				lspconfig.omnisharp.setup({
