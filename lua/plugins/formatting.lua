@@ -1,4 +1,4 @@
-local should_format_on_save = function()
+local function should_format_on_save()
 	local cwd = vim.uv.cwd()
 	if cwd == nil then
 		return
@@ -14,6 +14,8 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")
+
+    print(should_format_on_save())
 
 		conform.setup({
 			formatters_by_ft = {
@@ -47,11 +49,5 @@ return {
 				timeout_ms = 1000,
 			})
 		end, { desc = "Format file or range (in visual mode)" })
-	end,
-	enabled = function()
-		local path_to_match = "/home/frank/Projects/Veliol/"
-		local current_path = vim.api.nvim_buf_get_name(0)
-
-		return not (string.find(current_path, path_to_match))
 	end,
 }
