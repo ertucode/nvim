@@ -41,8 +41,15 @@ return {
 
 		set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
 
-		set("<leader>fs", builtin.live_grep, "[F]ind [S]tring")
 		set("<C-S>", builtin.live_grep, "[F]ind [S]tring")
+		set("<leader>fcs", function()
+			builtin.grep_string({ search = vim.fn.expand("<cword>") })
+		end, "[F]ind [C]urrent [S]tring")
+		vim.keymap.set("v", "<leader>fs", function()
+			builtin.grep_string({ search = require("ertu.utils.misc").get_visual_selection_text_string() })
+		end, {
+			desc = "[F]ind Current [S]tring",
+		})
 		set("<leader>fcw", builtin.grep_string, "[F]ind [C]urrent [W]ord")
 		set("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
 
