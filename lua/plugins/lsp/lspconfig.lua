@@ -18,9 +18,23 @@ local function filter(arr, fn)
 	return filtered
 end
 
+local function gdUri(value)
+  return value.uri or value.targetUri
+end
+
 local function filterReactDTS(value)
-	local uri = value.uri or value.targetUri
+	local uri = gdUri(value)
 	return string.match(uri, "react/index.d.ts") == nil
+end
+
+local function everyOneIsSameLine(values)
+  local uri = gdUri(values[1])
+  for _, value in pairs(values) do
+    if gdUri(value) ~= uri then
+      return nil
+    end
+  end
+  return values[1]
 end
 
 return {
@@ -34,6 +48,8 @@ return {
 	config = function()
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
+
+    lspconfig.sourcekit.setup {}
 
 		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
@@ -280,13 +296,19 @@ return {
 			end
 
 			if vim.islist(result) and #result > 1 then
-				print(vim.inspect(ctx))
 				local filtered = filter(result, filterReactDTS)
-				if #filtered > 1 then
-					require("telescope.builtin").lsp_definitions()
-				else
-					initial_definition_handler(err, filtered, ctx, config)
-				end
+				if #filtered <= 1 then
+          initial_definition_handler(err, filtered, ctx, config)
+          return
+        end
+
+        local sameLine = everyOneIsSameLine(result)
+        if sameLine ~= nil then
+          initial_definition_handler(err, sameLine, ctx, config)
+          return
+        end
+
+        require("telescope.builtin").lsp_definitions()
 				return
 			end
 

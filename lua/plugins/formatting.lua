@@ -15,8 +15,6 @@ return {
 	config = function()
 		local conform = require("conform")
 
-    print(should_format_on_save())
-
 		conform.setup({
 			formatters_by_ft = {
 				javascript = { "prettierd" },
