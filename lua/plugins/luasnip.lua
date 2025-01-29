@@ -95,15 +95,6 @@ return {
 			),
 		})
 
-		ls.add_snippets("all", {
-			s(
-				"curtime",
-				f(function()
-					return os.date("%D - %H:%M")
-				end)
-			),
-		})
-
 		local stringUtils = require("ertu.utils.string")
 
 		local ngCompName = function(snip)
