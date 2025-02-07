@@ -46,3 +46,8 @@ autocmd("TextYankPost", {
 		})
 	end,
 })
+
+autocmd({ "BufEnter", "FocusGained" }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = { "*" },
+})
