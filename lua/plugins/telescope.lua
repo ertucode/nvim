@@ -45,7 +45,7 @@ return {
 		set("<leader>fcs", function()
 			builtin.grep_string({ search = vim.fn.expand("<cword>") })
 		end, "[F]ind [C]urrent [S]tring")
-		vim.keymap.set("v", "<leader>fs", function()
+		vim.keymap.set("v", "<C-S>", function()
 			builtin.grep_string({ search = require("ertu.utils.misc").get_visual_selection_text_string() })
 		end, {
 			desc = "[F]ind Current [S]tring",

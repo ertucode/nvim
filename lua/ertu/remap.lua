@@ -80,3 +80,5 @@ set({ "i", "n" }, "<C-m>", ":cclose<CR>")
 set("n", "<F2>", ":qa!<CR>")
 
 set("i", "<C-l>", "<ESC>")
+
+set('n', '<leader>oc', ':silent !code .<CR>')
