@@ -285,6 +285,16 @@ return {
 
 		local initial_definition_handler = vim.lsp.handlers["textDocument/definition"]
 		vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
+      if not vim.islist(result) or #result == 1 then
+        local first = result[1]
+        local target = first.targetRange
+        local origin = first.originSelectionRange
+        if target["end"]["character"] == origin["end"].character and target["end"]["line"] == origin["end"].line and target["start"]["character"] == origin["start"].character and target["start"]["line"] == origin["start"].line then
+          require("telescope.builtin").lsp_references()
+          return
+        end
+      end
+
 			local clientId = ctx.client_id
 			local client = vim.lsp.get_client_by_id(clientId)
 			if client == nil then
