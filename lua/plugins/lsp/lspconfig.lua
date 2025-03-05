@@ -285,7 +285,6 @@ return {
 
 		local initial_definition_handler = vim.lsp.handlers["textDocument/definition"]
 		vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
-      print(vim.inspect(result))
       if not vim.islist(result) or #result == 1 then
         local first = result[1]
         local target = first.targetSelectionRange -- targetRange?
