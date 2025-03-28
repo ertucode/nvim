@@ -31,37 +31,37 @@ return {
 			},
 		})
 
-		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-		local cmp = require("cmp")
+		-- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		-- local cmp = require("cmp")
 
-		local compHandler = cmp_autopairs.on_confirm_done()
-		cmp.event:on("confirm_done", function(evt)
-			if evt.commit_character then
-				return
-			end
-			local entry = evt.entry
-			local filetype = vim.api.nvim_get_option_value("filetype", {
-				buf = 0,
-			})
-			local item = entry:get_completion_item()
-
-			-- print(item.kind == 2 or item.kind == 3)
-			-- print(filetype == "typescriptreact")
-			-- print(item.label)
-			-- print(#item.label ~= 1)
-			-- print(item.label:sub(1, 1))
-			-- Dont put () to typescript component function
-			if
-				(item.kind == 2 or item.kind == 3)
-				and filetype == "typescriptreact"
-				and item.label
-				and #item.label ~= 1
-				and string.upper(item.label:sub(1, 1)) == item.label:sub(1, 1)
-			then
-				return
-			end
-			return compHandler(evt)
-		end)
+		-- local compHandler = cmp_autopairs.on_confirm_done()
+		-- cmp.event:on("confirm_done", function(evt)
+		-- 	if evt.commit_character then
+		-- 		return
+		-- 	end
+		-- 	local entry = evt.entry
+		-- 	local filetype = vim.api.nvim_get_option_value("filetype", {
+		-- 		buf = 0,
+		-- 	})
+		-- 	local item = entry:get_completion_item()
+		--
+		-- 	-- print(item.kind == 2 or item.kind == 3)
+		-- 	-- print(filetype == "typescriptreact")
+		-- 	-- print(item.label)
+		-- 	-- print(#item.label ~= 1)
+		-- 	-- print(item.label:sub(1, 1))
+		-- 	-- Dont put () to typescript component function
+		-- 	if
+		-- 		(item.kind == 2 or item.kind == 3)
+		-- 		and filetype == "typescriptreact"
+		-- 		and item.label
+		-- 		and #item.label ~= 1
+		-- 		and string.upper(item.label:sub(1, 1)) == item.label:sub(1, 1)
+		-- 	then
+		-- 		return
+		-- 	end
+		-- 	return compHandler(evt)
+		-- end)
 
 		--[[ local ertu = require("ertu.utils")
 		vim.keymap.set({ "i", "v" }, "<C-l>", function()

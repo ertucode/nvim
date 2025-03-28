@@ -19,7 +19,7 @@ local function filter(arr, fn)
 end
 
 local function gdUri(value)
-  return value.uri or value.targetUri
+	return value.uri or value.targetUri
 end
 
 local function filterReactDTS(value)
@@ -28,20 +28,20 @@ local function filterReactDTS(value)
 end
 
 local function everyOneIsSameLine(values)
-  local uri = gdUri(values[1])
-  for _, value in pairs(values) do
-    if gdUri(value) ~= uri then
-      return nil
-    end
-  end
-  return values[1]
+	local uri = gdUri(values[1])
+	for _, value in pairs(values) do
+		if gdUri(value) ~= uri then
+			return nil
+		end
+	end
+	return values[1]
 end
 
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
+		-- "hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
 	},
@@ -49,7 +49,7 @@ return {
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
 
-    lspconfig.sourcekit.setup {}
+		lspconfig.sourcekit.setup({})
 
 		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
@@ -75,7 +75,8 @@ return {
 			"force",
 			{}, -- Empty capabilities
 			vim.lsp.protocol.make_client_capabilities(), -- Minimal capabilities
-			require("cmp_nvim_lsp").default_capabilities() -- Default capabilities
+			-- require("cmp_nvim_lsp").default_capabilities() -- Default capabilities
+			require("blink.cmp").get_lsp_capabilities({}, false)
 		)
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
@@ -285,15 +286,20 @@ return {
 
 		local initial_definition_handler = vim.lsp.handlers["textDocument/definition"]
 		vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
-      if not vim.islist(result) or #result == 1 then
-        local first = result[1]
-        local target = first.targetSelectionRange -- targetRange?
-        local origin = first.originSelectionRange
-        if target["end"]["character"] == origin["end"].character and target["end"]["line"] == origin["end"].line and target["start"]["character"] == origin["start"].character and target["start"]["line"] == origin["start"].line then
-          require("telescope.builtin").lsp_references()
-          return
-        end
-      end
+			if not vim.islist(result) or #result == 1 then
+				local first = result[1]
+				local target = first.targetSelectionRange -- targetRange?
+				local origin = first.originSelectionRange
+				if
+					target["end"]["character"] == origin["end"].character
+					and target["end"]["line"] == origin["end"].line
+					and target["start"]["character"] == origin["start"].character
+					and target["start"]["line"] == origin["start"].line
+				then
+					require("telescope.builtin").lsp_references()
+					return
+				end
+			end
 
 			local clientId = ctx.client_id
 			local client = vim.lsp.get_client_by_id(clientId)
@@ -308,17 +314,17 @@ return {
 			if vim.islist(result) and #result > 1 then
 				local filtered = filter(result, filterReactDTS)
 				if #filtered <= 1 then
-          initial_definition_handler(err, filtered, ctx, config)
-          return
-        end
+					initial_definition_handler(err, filtered, ctx, config)
+					return
+				end
 
-        local sameLine = everyOneIsSameLine(result)
-        if sameLine ~= nil then
-          initial_definition_handler(err, sameLine, ctx, config)
-          return
-        end
+				local sameLine = everyOneIsSameLine(result)
+				if sameLine ~= nil then
+					initial_definition_handler(err, sameLine, ctx, config)
+					return
+				end
 
-        require("telescope.builtin").lsp_definitions()
+				require("telescope.builtin").lsp_definitions()
 				return
 			end
 

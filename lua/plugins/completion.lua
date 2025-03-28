@@ -149,6 +149,7 @@ return {
 	"hrsh7th/nvim-cmp",
 	version = false,
 	event = "InsertEnter",
+	enabled = false,
 	dependencies = {
 		"hrsh7th/cmp-buffer", -- Get completion from current file even if its not a symbol
 		"hrsh7th/cmp-path",
