@@ -119,7 +119,7 @@ return {
 					settings = {
 						typescript = {
 							preferences = {
-								autoImportFileExcludePatterns = { "@radix-ui/*" },
+								autoImportFileExcludePatterns = { "@radix-ui/*", "react-day-picker" },
 								--[[importModuleSpecifierPreference [string] Supported values: 'shortest', 'project-relative', 'relative', 'non-relative'. Default: 'shortest']]
 							},
 							inlayHints = {

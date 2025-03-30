@@ -1,16 +1,5 @@
 local M = {}
 
-local function diagnostic_move_pos(diag)
-	local win_id = vim.api.nvim_get_current_win()
-	local pos = { diag.lnum, diag.col }
-
-	vim.api.nvim_win_call(win_id, function()
-		vim.api.nvim_win_set_cursor(win_id, { pos[1] + 1, pos[2] })
-		-- Open folds under the cursor
-		vim.cmd("normal! zv")
-	end)
-end
-
 function M.remove_unused()
 	local params = {
 		command = "typescript.removeUnusedImports",
@@ -20,49 +9,35 @@ function M.remove_unused()
 	vim.lsp.buf.execute_command(params)
 end
 
-local find_missing_diag = function()
-	local diags = vim.diagnostic.get(0)
-	if #diags == 0 then
-		return
-	end
-
-	for _, diag in ipairs(diags) do
-		if diag.message ~= nil and diag.message:find("^Cannot find name") then
-			return diag
-		end
-	end
-end
 function M.import_missing()
-	local missing = find_missing_diag()
-	if missing == nil then
-		return
-	end
-
-	local view = vim.fn.winsaveview()
-
-	diagnostic_move_pos(missing)
-
 	vim.lsp.buf.code_action({
-		filter = function(action)
-			return action.title == "Add all missing imports"
-		end,
 		apply = true,
+		context = { only = { "source.addMissingImports.ts" } },
 	})
-
-	vim.fn.winrestview(view)
-
-	vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-		callback = function()
-			print("hello")
-		end,
-		once = true,
-	})
-
-	-- vim.cmd(":%substitute/@radix-ui\\/react-/@\\/ui\\/components\\//")
 end
 
 function M.go_to_source()
-	-- todo
+	local client = vim.lsp.get_clients({ name = "vtsls" })[1]
+	if client == nil then
+		print("vtsls not found")
+		return
+	end
+	local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
+
+	client.request("workspace/executeCommand", {
+		command = "typescript.goToSourceDefinition",
+		arguments = { params.textDocument.uri, params.position },
+	}, function(err, result, _, _)
+		if err then
+			print("Go to source definition failed: " .. vim.inspect(err))
+			return
+		end
+		if not result or vim.tbl_isempty(result) then
+			print("No source definition found")
+			return
+		end
+		vim.lsp.util.jump_to_location(result[1], "utf-8")
+	end)
 end
 
 return M
