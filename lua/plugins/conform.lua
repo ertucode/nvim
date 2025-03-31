@@ -6,12 +6,14 @@ local function should_format_on_save()
 
 	local path = "react-native/ortak"
 
-	return string.find(cwd, path) == nil
+	print(cwd, path)
+
+	return string.find(cwd, path, 1, true) == nil
 end
 
 return {
 	"stevearc/conform.nvim",
-  event = "VeryLazy",
+	event = "VeryLazy",
 	config = function()
 		local conform = require("conform")
 		local format_on_save = should_format_on_save()
@@ -22,21 +24,21 @@ return {
 				}
 			or nil
 
-    vim.keymap.set({"n", "v"}, "<leader>mp", function()
-      require("conform").format({
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 1000,
-      })
-    end, { desc = "Format file or range (in visual mode)", })
+		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+			require("conform").format({
+				lsp_fallback = true,
+				async = false,
+				timeout_ms = 1000,
+			})
+		end, { desc = "Format file or range (in visual mode)" })
 
 		conform.setup({
-      formatters_by_ft = {
-        javascript = { "prettierd" },
-        typescript = { "prettierd" },
-        angular = { "prettierd" },
-        javascriptreact = { "prettierd" },
-        typescriptreact = { "prettierd" },
+			formatters_by_ft = {
+				javascript = { "prettierd" },
+				typescript = { "prettierd" },
+				angular = { "prettierd" },
+				javascriptreact = { "prettierd" },
+				typescriptreact = { "prettierd" },
 				svelte = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },
