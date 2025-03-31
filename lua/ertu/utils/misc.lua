@@ -51,4 +51,19 @@ function M.get_visual_selection_text_string()
 	return table.concat(res, "\n")
 end
 
+function M.get_string_under_cursor()
+	local ts_utils = require("nvim-treesitter.ts_utils")
+	local node = ts_utils.get_node_at_cursor()
+	if not node then
+		return nil
+	end
+
+	-- Check if the node is a string (adjust the query based on the language)
+	local type = node:type()
+	if type == "string" or type == "string_literal" or type == "string_content" then
+		return vim.treesitter.get_node_text(node, 0)
+	end
+	return nil
+end
+
 return M
