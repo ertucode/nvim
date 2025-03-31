@@ -31,7 +31,7 @@ return {
 			["<C-j>"] = { "select_next", "fallback" },
 			["<C-space>"] = {
 				function(cmp)
-					cmp.show({ providers = { "snippets" } })
+					cmp.show()
 				end,
 			},
 			["<Tab>"] = {
