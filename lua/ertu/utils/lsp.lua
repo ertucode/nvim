@@ -13,7 +13,9 @@ function M.on_attach(buf)
 	set("n", "gD", function()
 		vim.lsp.buf.type_definition()
 	end, opts)
-	set("n", "<leader>lss", require("ertu.utils.typescript").go_to_source)
+	set("n", "<leader>lss", require("ertu.utils.typescript").go_to_source, {
+		desc = "Go to source definition",
+	})
 	set("n", "<leader>d", function()
 		vim.diagnostic.open_float()
 	end, opts)
