@@ -6,8 +6,6 @@ local function should_format_on_save()
 
 	local path = "react-native/ortak"
 
-	print(cwd, path)
-
 	return string.find(cwd, path, 1, true) == nil
 end
 
