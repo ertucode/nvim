@@ -40,14 +40,18 @@ function M.on_attach(buf)
 		end
 		return vim.diagnostic.severity[best]
 	end
-	local best_diag = function(goer)
+	local best_diag = function(count)
 		return function()
-			local highest = find_highest_diag_severity()
-			goer({ severity = highest })
+			vim.diagnostic.jump({
+				-- severity = find_highest_diag_severity(),
+				float = true,
+				count = count,
+				_highest = true,
+			})
 		end
 	end
-	set("n", "[d", best_diag(vim.diagnostic.goto_prev), opts)
-	set("n", "]d", best_diag(vim.diagnostic.goto_next), opts)
+	set("n", "[d", best_diag(-1), opts)
+	set("n", "]d", best_diag(1), opts)
 	set("n", "<leader>ldq", function()
 		local highest = find_highest_diag_severity()
 		vim.diagnostic.setqflist({

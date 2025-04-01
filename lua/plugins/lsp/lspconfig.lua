@@ -74,6 +74,12 @@ return {
 			vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), completion_capabilities)
 
 		vim.diagnostic.config({
+			-- virtual_lines = {
+			-- 	current_line = true,
+			-- },
+			virtual_text = true,
+			severity_sort = true,
+			update_in_insert = true,
 			signs = {
 				text = {
 					[vim.diagnostic.severity.ERROR] = " ",
