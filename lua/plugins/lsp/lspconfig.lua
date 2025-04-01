@@ -67,25 +67,28 @@ return {
 			end,
 		})
 
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = vim.tbl_deep_extend(
-			-- "error": raise an error
-			-- "keep": use value from the leftmost map
-			-- "force": use value from the rightmost map
-			"force",
-			{}, -- Empty capabilities
-			vim.lsp.protocol.make_client_capabilities(), -- Minimal capabilities
-			-- require("cmp_nvim_lsp").default_capabilities() -- Default capabilities
-			require("blink.cmp").get_lsp_capabilities({}, false)
-		)
+		-- local completion_capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local completion_capabilities = require("blink.cmp").get_lsp_capabilities({}, false)
 
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+		local capabilities =
+			vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), completion_capabilities)
+
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN] = " ",
+					[vim.diagnostic.severity.INFO] = " ",
+					[vim.diagnostic.severity.HINT] = "󰠠 ",
+				},
+				linehl = {
+					[vim.diagnostic.severity.ERROR] = "Error",
+					[vim.diagnostic.severity.WARN] = "Warn",
+					[vim.diagnostic.severity.INFO] = "Info",
+					[vim.diagnostic.severity.HINT] = "Hint",
+				},
+			},
+		})
 
 		mason_lspconfig.setup_handlers({
 			-- default handler for installed servers
@@ -251,7 +254,7 @@ return {
 
 				local config = {
 					cmd = cmd,
-					on_new_config = function(new_config, new_root_dir)
+					on_new_config = function(new_config, _)
 						new_config.cmd = cmd
 					end,
 				}
