@@ -75,7 +75,7 @@ return {
 		set("<leader>fac", builtin.autocommands, "[F]ind [A]uto [C]ommands")
 
 		set("<leader>fp", require("utils.telescope-reload-plugin").reload_plugin, "[F]ind [P]lugin")
-		set("<leader><leader>", require("utils.telescope-reload-plugin").reload_last_plugin, "Reload Last Plugin")
+		set("<leader><leader>p", require("utils.telescope-reload-plugin").reload_last_plugin, "Reload Last Plugin")
 
 		local entry_maker = require("utils.telescope-filename").find_files_entry_maker
 
