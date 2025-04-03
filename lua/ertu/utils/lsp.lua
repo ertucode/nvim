@@ -5,7 +5,7 @@ function M.on_attach(buf)
 	local opts = { buffer = buf, silent = true }
 
 	set("n", "gd", function()
-		vim.lsp.buf.definition()
+		require("ertu.utils.lsp_definition").definition()
 	end, opts)
 	set("n", "gi", function()
 		vim.lsp.buf.implementation()
