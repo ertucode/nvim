@@ -14,7 +14,7 @@ set("n", "N", "Nzzzv")
 
 -- paste and delete without buffer
 set("x", "<leader>p", [["_dP]])
-set({ "n", "v" }, "<leader>d", [["_d]])
+-- set({ "n", "v" }, "<leader>d", [["_d]])
 
 set("n", "x", '"_x')
 set({ "n", "x" }, "c", '"_c')
