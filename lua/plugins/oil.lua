@@ -23,6 +23,18 @@ return {
 			lsp_file_methods = {
 				autosave_changes = "unmodified",
 			},
+			view_options = {
+				is_hidden_file = function(name, _)
+					local m = name:match("^%.")
+					if m == nil then
+						return false
+					end
+					if vim.startswith(name, ".env") then
+						return false
+					end
+					return true
+				end,
+			},
 		})
 
 		vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
