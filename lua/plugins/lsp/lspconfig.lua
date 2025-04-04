@@ -1,6 +1,3 @@
--- https://github.com/typescript-language-server/typescript-language-server/issues/216
--- http://www.lazyvim.org/extras/lang/typescript TODO
-
 local on_attach = require("ertu.utils.lsp").on_attach
 
 return {
