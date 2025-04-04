@@ -43,3 +43,26 @@ vim.opt.cursorline = true
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+vim.diagnostic.config({
+	-- virtual_lines = {
+	-- 	current_line = true,
+	-- },
+	virtual_text = true,
+	severity_sort = true,
+	update_in_insert = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+		},
+		-- linehl = {
+		-- 	[vim.diagnostic.severity.ERROR] = "Error",
+		-- 	[vim.diagnostic.severity.WARN] = "Warn",
+		-- 	[vim.diagnostic.severity.INFO] = "Info",
+		-- 	[vim.diagnostic.severity.HINT] = "Hint",
+		-- },
+	},
+})
