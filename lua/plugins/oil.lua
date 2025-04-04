@@ -1,7 +1,7 @@
 return {
 	"stevearc/oil.nvim",
-  lazy = false,
-  priority = 100000,
+	lazy = false,
+	priority = 100000,
 	-- tag = "v2.2.0",
 	config = function()
 		local status, oil = pcall(require, "oil")
@@ -20,6 +20,9 @@ return {
 				["<C-s>"] = false,
 			},
 			watch_for_changes = true,
+			lsp_file_methods = {
+				autosave_changes = "unmodified",
+			},
 		})
 
 		vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
@@ -39,8 +42,8 @@ return {
 --     })
 --
 --     vim.keymap.set("n", "-", function ()
---       -- mini.open() 
---       mini.open(vim.api.nvim_buf_get_name(0)) 
+--       -- mini.open()
+--       mini.open(vim.api.nvim_buf_get_name(0))
 --     end, { desc = "Open parent directory" })
 --
 --     vim.api.nvim_create_autocmd("User", {
