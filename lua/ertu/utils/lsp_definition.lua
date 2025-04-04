@@ -37,6 +37,9 @@ end
 
 --- @param client vim.lsp.Client
 local function custom_on_response(error, result, client, on_response)
+	if result == nil then
+		return on_response(error, result, client)
+	end
 	if not vim.islist(result) or #result == 1 then
 		local first = result[1]
 		local target = first.targetSelectionRange -- targetRange?
