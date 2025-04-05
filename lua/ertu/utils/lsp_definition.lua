@@ -1,20 +1,6 @@
--- vim internalları kopyalanarak yapıldı.
 local M = {}
 
-local function filter(arr, fn)
-	if type(arr) ~= "table" then
-		return arr
-	end
-
-	local filtered = {}
-	for k, v in pairs(arr) do
-		if fn(v, k, arr) then
-			table.insert(filtered, v)
-		end
-	end
-
-	return filtered
-end
+local filter = require("ertu.utils.array").filter
 
 local function is_typescript_client(client)
 	return client.name == "tsserver" or client.name == "vtsls" or client.name == "ts_ls"
@@ -24,12 +10,12 @@ local function result_item_uri(value)
 	return value.uri or value.targetUri
 end
 
-local function filterReactDTS(value)
+local function filter_react_dts(value)
 	local uri = result_item_uri(value)
 	return string.match(uri, "react/index.d.ts") == nil
 end
 
-local function everyOneIsSameLine(values)
+local function results_are_same_line(values)
 	local uri = result_item_uri(values[1])
 	local line = values[1].targetRange.start.line
 
@@ -57,6 +43,12 @@ local function origin_and_target_same(result_item)
 		and target["start"]["line"] == origin["start"].line
 end
 
+local function filter_non_moving(results)
+	return filter(results, function(result)
+		return not origin_and_target_same(result)
+	end)
+end
+
 local function on_response_or_references(error, result_item, client, on_response)
 	if origin_and_target_same(result_item) then
 		require("telescope.builtin").lsp_references()
@@ -75,18 +67,20 @@ local function custom_on_response(error, result, client, on_response)
 		return on_response_or_references(error, result[1], client, on_response)
 	end
 
+	result = filter_non_moving(result)
+
 	if (not vim.islist(result)) or #result == 1 then
 		return on_response(error, result, client, on_response)
 	end
 
 	if is_typescript_client(client) then
-		local filtered = filter(result, filterReactDTS)
+		local filtered = filter(result, filter_react_dts)
 		if #filtered <= 1 then
 			return on_response_or_references(error, filtered[1], client, on_response)
 		end
 	end
 
-	if everyOneIsSameLine(result) then
+	if results_are_same_line(result) then
 		return on_response_or_references(error, result[1], client, on_response)
 	end
 

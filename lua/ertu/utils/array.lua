@@ -1,5 +1,7 @@
 local M = {}
 
+--- @param tab table
+--- @param val any
 M.includes = function(tab, val)
 	for _, value in ipairs(tab) do
 		if value == val then
@@ -10,6 +12,8 @@ M.includes = function(tab, val)
 	return false
 end
 
+--- @param tbl table
+--- @param f function
 M.map = function(tbl, f)
 	local t = {}
 	for k, v in pairs(tbl) do
@@ -18,6 +22,8 @@ M.map = function(tbl, f)
 	return t
 end
 
+--- @param array table
+--- @param cb function
 M.find = function(array, cb)
 	for val, idx in ipairs(array) do
 		if cb(val, idx) then
@@ -27,6 +33,7 @@ M.find = function(array, cb)
 	return nil
 end
 
+--- @param o table
 M.dump = function(o)
 	if type(o) == "table" then
 		local s = "{ "
@@ -40,6 +47,23 @@ M.dump = function(o)
 	else
 		return tostring(o)
 	end
+end
+
+--- @param arr table
+--- @param fn function
+M.filter = function(arr, fn)
+	if type(arr) ~= "table" then
+		return arr
+	end
+
+	local filtered = {}
+	for k, v in pairs(arr) do
+		if fn(v, k, arr) then
+			table.insert(filtered, v)
+		end
+	end
+
+	return filtered
 end
 
 return M
