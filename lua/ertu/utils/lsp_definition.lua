@@ -51,8 +51,7 @@ end
 
 local function on_response_or_find_references(error, result_item, client, on_response)
 	if origin_and_target_same(result_item) then
-		require("telescope.builtin").lsp_references()
-		return
+		return require("telescope.builtin").lsp_references()
 	end
 
 	on_response(error, result_item, client)
@@ -66,8 +65,12 @@ local function custom_on_response(error, result, client, on_response)
 
 	result = filter_non_moving(result)
 
+	if #result == 0 then
+		return require("telescope.builtin").lsp_references()
+	end
+
 	if #result == 1 then
-		return on_response_or_find_references(error, result[1], client, on_response)
+		return on_response(error, result, client)
 	end
 
 	if is_typescript_client(client) then
