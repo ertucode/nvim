@@ -49,7 +49,7 @@ local function filter_non_moving(results)
 	end)
 end
 
-local function on_response_or_references(error, result_item, client, on_response)
+local function on_response_or_find_references(error, result_item, client, on_response)
 	if origin_and_target_same(result_item) then
 		require("telescope.builtin").lsp_references()
 		return
@@ -60,28 +60,25 @@ end
 
 --- @param client vim.lsp.Client
 local function custom_on_response(error, result, client, on_response)
-	if result == nil then
+	if result == nil or not vim.islist(result) then
 		return on_response(error, result, client)
-	end
-	if not vim.islist(result) or #result == 1 then
-		return on_response_or_references(error, result[1], client, on_response)
 	end
 
 	result = filter_non_moving(result)
 
-	if (not vim.islist(result)) or #result == 1 then
-		return on_response(error, result, client, on_response)
+	if #result == 1 then
+		return on_response_or_find_references(error, result[1], client, on_response)
 	end
 
 	if is_typescript_client(client) then
 		local filtered = filter(result, filter_react_dts)
-		if #filtered <= 1 then
-			return on_response_or_references(error, filtered[1], client, on_response)
+		if #filtered == 1 then
+			return on_response_or_find_references(error, filtered[1], client, on_response)
 		end
 	end
 
 	if results_are_same_line(result) then
-		return on_response_or_references(error, result[1], client, on_response)
+		return on_response_or_find_references(error, result[1], client, on_response)
 	end
 
 	require("telescope.builtin").lsp_definitions()
