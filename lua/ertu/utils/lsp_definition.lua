@@ -60,7 +60,7 @@ end
 
 --- @param client vim.lsp.Client
 local function custom_on_response(error, result, client, on_response)
-	if result == nil or not vim.islist(result) then
+	if not vim.islist(result) then
 		return on_response(error, result, client)
 	end
 
