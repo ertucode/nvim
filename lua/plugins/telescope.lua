@@ -55,6 +55,7 @@ return {
 		})
 		set("<leader>fcw", builtin.grep_string, "[F]ind [C]urrent [W]ord")
 		set("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
+		set("<M-o>", builtin.buffers, "[F]ind [B]uffers")
 
 		set("<leader>fd", builtin.diagnostics, "[F]ind [D]iagnostics")
 		set("<leader>fh", builtin.help_tags, "[F]ind [H]elp")
