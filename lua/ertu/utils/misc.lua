@@ -51,6 +51,11 @@ function M.get_visual_selection_text_string()
 	return table.concat(res, "\n")
 end
 
+function M.is_string_node(node)
+	local type = node:type()
+	return type == "string" or type == "string_literal" or type == "string_content" or type == "string_fragment"
+end
+
 function M.get_string_under_cursor()
 	local ts_utils = require("nvim-treesitter.ts_utils")
 	local node = ts_utils.get_node_at_cursor()
@@ -59,11 +64,26 @@ function M.get_string_under_cursor()
 	end
 
 	-- Check if the node is a string (adjust the query based on the language)
-	local type = node:type()
-	if type == "string" or type == "string_literal" or type == "string_content" then
+	if M.is_string_node(node) then
 		return vim.treesitter.get_node_text(node, 0)
 	end
 	return nil
+end
+
+function M.replace_string_under_cursor(new_string)
+	local ts_utils = require("nvim-treesitter.ts_utils")
+	local node = ts_utils.get_node_at_cursor()
+	if not node then
+		return nil
+	end
+
+	if not M.is_string_node(node) then
+		return
+	end
+
+	local start_row, start_col, end_row, end_col = node:range()
+	print(start_row, start_col, end_row, end_col)
+	vim.api.nvim_buf_set_text(0, start_row, start_col, end_row, end_col, { new_string })
 end
 
 return M

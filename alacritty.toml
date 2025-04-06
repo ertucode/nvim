@@ -10,9 +10,11 @@ option_as_alt = "Both"
 
 [keyboard]
 bindings = [
-    { key = "F11", mods = "Control", chars = "\uf601" }, # 😁
+    { key = "F11", mods = "Control", chars = "\u2665" }, # ♥️
     { key = "F12", mods = "Control", chars = "\u2660" }, # ♠
+    { key = "j", mods = "Control|Super", chars = "\u2666" }, # ♦
+    { key = "k", mods = "Control|Super", chars = "\u2663" }, # ♣
     { key = "Right", mods = "Alt", chars = "\u001BF" },
     { key = "Left",  mods = "Alt", chars = "\u001BB" },
-    { key = "F10", action = "ToggleFullscreen" }, # 😁
+    { key = "F10", action = "ToggleFullscreen" },
 ]

@@ -4,9 +4,13 @@ local function should_format_on_save()
 		return false
 	end
 
-	local path = "react-native/ortak"
-
-	return string.find(cwd, path, 1, true) == nil
+	local paths = { "react-native/ortak", "node/bff" }
+	for _, path in ipairs(paths) do
+		if string.find(cwd, path, 1, true) ~= nil then
+			return false
+		end
+	end
+	return true
 end
 
 return {

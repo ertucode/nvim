@@ -83,11 +83,27 @@ set("i", "<C-l>", "<ESC>")
 
 set("n", "<leader>oc", ":silent !code .<CR>")
 
--- copy string to system clipboard with yank highlight
-set("n", "<leader><leader>c", function()
+set("n", "♦", function()
+	print("heree")
 	local str = require("ertu.utils.misc").get_string_under_cursor()
 	if str == "" or str == nil then
 		return
 	end
 	vim.fn.setreg("+", str)
-end)
+end, {
+	desc = "Copy string under cursor to system clipboard",
+})
+
+set("n", "♣", function()
+	print("here")
+	local clipboard_contents = vim.fn.getreg("+")
+
+	if clipboard_contents:find("\n") then
+		print("Clipboard has new line")
+		return
+	end
+
+	require("ertu.utils.misc").replace_string_under_cursor(clipboard_contents)
+end, {
+	desc = "Replace string under cursor with system clipboard",
+})
