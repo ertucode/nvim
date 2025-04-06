@@ -82,7 +82,6 @@ function M.replace_string_under_cursor(new_string)
 	end
 
 	local start_row, start_col, end_row, end_col = node:range()
-	print(start_row, start_col, end_row, end_col)
 	vim.api.nvim_buf_set_text(0, start_row, start_col, end_row, end_col, { new_string })
 end
 
