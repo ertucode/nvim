@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("ertu")
 require("winbar")
+require("dot_repeat")
 
 -- Global
 P = function(v)

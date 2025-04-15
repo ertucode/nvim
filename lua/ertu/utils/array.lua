@@ -66,4 +66,20 @@ M.filter = function(arr, fn)
 	return filtered
 end
 
+--- Returns a slice of a table.
+--- @param tbl table The table to slice.
+--- @param from integer The starting index (inclusive).
+--- @param to integer? The ending index (inclusive). If nil, defaults to the end of the table.
+--- @return table A new table containing the slice.
+M.slice = function(tbl, from, to)
+	local to_index = to or #tbl
+	local result = {}
+
+	for i = from, to_index do
+		result[#result + 1] = tbl[i]
+	end
+
+	return result
+end
+
 return M

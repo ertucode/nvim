@@ -10,7 +10,7 @@ option_as_alt = "Both"
 
 [keyboard]
 bindings = [
-    { key = "F11", mods = "Control", chars = "\u2665" }, # ♥️
+    { key = "F11", mods = "Control", chars = "\u2665" }, # ♥
     { key = "F12", mods = "Control", chars = "\u2660" }, # ♠
     { key = ";", mods = "Control", chars = "\u001b" },
     { key = "j", mods = "Control|Super", chars = "\u2666" }, # ♦
