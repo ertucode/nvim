@@ -32,6 +32,7 @@ set("n", "<leader>uu", "<cmd>:source ~/.config/nvim/git.lua<CR>", { desc = "Sour
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 set("n", "<leader><leader>m", "<cmd>:messages<CR>", { desc = "Show messages" })
+set("n", "<leader><leader>o", "<cmd>:only<CR>", { desc = "Close all other windows" })
 -- set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
 --
 -- set("n", "<leader><leader>", function()
