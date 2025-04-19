@@ -39,6 +39,7 @@
   "telescope.nvim": { "branch": "master", "commit": "a4ed82509cecc56df1c7138920a1aeaf246c0ac5" },
   "tokyonight.nvim": { "branch": "main", "commit": "057ef5d260c1931f1dffd0f052c685dcd14100a3" },
   "tsc.nvim": { "branch": "main", "commit": "5bd25bb5c399b6dc5c00392ade6ac6198534b53a" },
+  "vim-fugitive": { "branch": "master", "commit": "4a745ea72fa93bb15dd077109afbb3d1809383f2" },
   "vim-plist": { "branch": "master", "commit": "60e69bec50dfca32f0a62ee2dacdfbe63fd92038" },
   "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
   "vim-textobj-entire": { "branch": "master", "commit": "64a856c9dff3425ed8a863b9ec0a21dbaee6fb3a" },

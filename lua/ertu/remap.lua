@@ -27,8 +27,7 @@ set("n", "<leader>Y", [["+Y]])
 set("n", "Q", "<nop>")
 set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
--- change the word on the cursor
-set("n", "<leader>sg", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Change current word" })
+set("n", "<leader>uu", "<cmd>:source ~/.config/nvim/git.lua<CR>", { desc = "Source file" })
 
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
 -- set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
