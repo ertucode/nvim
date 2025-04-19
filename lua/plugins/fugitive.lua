@@ -7,7 +7,7 @@ return {
 			callback = function()
 				vim.keymap.set("n", "S", ":Git add .<CR>", { buffer = true, silent = true })
 				vim.keymap.set("n", "P", function()
-					vim.cmd("silent Git push<CR>")
+					vim.cmd("Git push")
 					vim.cmd("quit")
 				end, { buffer = true, silent = true })
 
