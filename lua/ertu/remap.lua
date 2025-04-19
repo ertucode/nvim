@@ -107,3 +107,6 @@ set("n", "♣", function()
 end, {
 	desc = "Replace string under cursor with system clipboard",
 })
+
+set("n", "n", ":keepjumps normal! n<cr>", { desc = "n but don't change jump list" })
+set("n", "N", ":keepjumps normal! N<cr>", { desc = "N but don't change jump list" })
