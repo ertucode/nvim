@@ -30,6 +30,8 @@ set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 set("n", "<leader>uu", "<cmd>:source ~/.config/nvim/git.lua<CR>", { desc = "Source file" })
 
 set("n", "<leader>xx", "<cmd>!chmod +x %<CR>", { silent = true })
+
+set("n", "<leader><leader>m", "<cmd>:messages<CR>", { desc = "Show messages" })
 -- set("n", "<leader><leader>k", ":w<CR> :so %<CR>")
 --
 -- set("n", "<leader><leader>", function()
