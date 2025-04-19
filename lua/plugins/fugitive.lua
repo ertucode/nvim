@@ -11,5 +11,12 @@ return {
 				vim.api.nvim_command("normal! 5G")
 			end,
 		})
+
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "gitcommit",
+			callback = function()
+				vim.api.nvim_command("startinsert")
+			end,
+		})
 	end,
 }
