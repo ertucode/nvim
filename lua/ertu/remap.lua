@@ -112,3 +112,9 @@ end, {
 
 set("n", "n", ":keepjumps normal! n<cr>", { desc = "n but don't change jump list" })
 set("n", "N", ":keepjumps normal! N<cr>", { desc = "N but don't change jump list" })
+
+set("n", "<leader>gc", "<cmd>tabc<CR>", { desc = "Close current tab" })
+set("n", "<leader>gs", function()
+	vim.cmd("Gwrite")
+	vim.cmd("tabc")
+end, { desc = "Git stage current file" })
