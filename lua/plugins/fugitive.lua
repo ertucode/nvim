@@ -3,6 +3,7 @@ return {
 	cmd = { "Git", "G" },
 	keys = {
 		{ "<leader>gt", "<cmd>Git difftool -y<CR>", desc = "Fugitive. Put all diffs to tabs" },
+		{ "<leader>gl", "<cmd>Git log --oneline<CR>", desc = "Fugitive. Git log --oneline" },
 	},
 	config = function()
 		vim.api.nvim_create_autocmd("FileType", {
