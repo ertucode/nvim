@@ -6,7 +6,9 @@ return {
 		{ "<leader>gl", "<cmd>Git log --oneline<CR>", desc = "Fugitive. Git log --oneline" },
 	},
 	config = function()
+		local augroup = vim.api.nvim_create_augroup("Fugitive", { clear = true })
 		vim.api.nvim_create_autocmd("FileType", {
+			group = augroup,
 			pattern = "fugitive",
 			callback = function()
 				vim.keymap.set("n", "S", ":Git add .<CR>", { buffer = true, silent = true })
@@ -20,9 +22,21 @@ return {
 		})
 
 		vim.api.nvim_create_autocmd("FileType", {
+			group = augroup,
 			pattern = "gitcommit",
 			callback = function()
-				vim.api.nvim_command("startinsert")
+				local git_utils = require("ertu.utils.git")
+				local ls = require("luasnip")
+				local s = ls.snippet
+				local i = ls.insert_node
+				local fmt = require("luasnip.extras.fmt").fmt
+
+				ls.snip_expand(s(
+					"autocommit",
+					fmt("{}", {
+						i(1, git_utils.get_branch(), nil),
+					})
+				))
 			end,
 		})
 	end,
