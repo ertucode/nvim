@@ -1,0 +1,55 @@
+let mapleader = " "
+
+set nu rnu
+set visualbell
+set noerrorbells
+set ideajoin
+
+Plug 'tpope/vim-surround'
+Plug 'machakann/vim-highlightedyank'
+Plug 'vim-scripts/argtextobj.vim'
+Plug 'kana/vim-textobj-entire'
+
+let g:highlightedyank_highlight_duration = "200"
+
+" IdeaVim: Track Action Ids
+
+nnoremap K :action ShowHoverInfo<CR>
+" Main menu => Navigate => Goto By Name Actions => Goto File
+nnoremap <C-p> :action GotoFile<CR>
+nnoremap <C-a>s :action $LRU<CR>
+nnoremap <C-a>q :action CloseProject<CR>
+map <leader>fwc :action GotoClass<CR>
+map <leader>fws :action GotoSymbol<CR>
+map <leader>fs :action FindInPath<CR>
+map <C-s> :action FindInPath<CR>
+map <leader>: :action ReplaceInPath<CR>
+map <leader>rr :action RecentFiles<CR>
+map <leader>lrn :action RenameElement<CR>
+map ]d :action GotoNextError<CR>
+map [d :action GotoPreviousError<CR>
+map <leader>flr :action FindUsages<CR>
+
+map <leader>ce :action copilot.enableCopilot<CR>
+map <leader>cd :action copilot.disableCopilot<CR>
+
+nnoremap gi :action GotoImplementation<CR>
+
+
+" better indenting
+vnoremap < <gv
+vnoremap > >gv
+
+" paste with format
+nnoremap <M-p> p'[v']=
+nnoremap <leader>sp \"*p'[v']=
+nnoremap gp '[V']
+nnoremap gP '[v']
+
+" https://github.com/citizenmatt/dotfiles/blob/master/ideavimrc
+" https://centic9.github.io/IntelliJ-Action-IDs/
+" :actionlist
+" https://stackoverflow.com/questions/74764299/action-for-find-in-files-in-jetbrains-ides
+" https://gist.github.com/zchee/9c78f91cc5ad771c1f5d
+" IdeaVim: track action Ids
+
