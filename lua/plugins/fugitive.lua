@@ -37,6 +37,7 @@ return {
 						i(1, git_utils.get_branch(), nil),
 					})
 				))
+				vim.keymap.set({ "i", "n", "s" }, "<C-k>", "<ESC>:wq<CR>", { buffer = true, silent = true })
 			end,
 		})
 	end,
