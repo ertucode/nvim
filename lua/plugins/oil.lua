@@ -38,6 +38,27 @@ return {
 		})
 
 		vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+
+		local augroup = vim.api.nvim_create_augroup("myoil", { clear = true })
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "OilActionsPost",
+			group = augroup,
+			callback = function(e)
+				if e.data.actions == nil then
+					return
+				end
+				for _, action in ipairs(e.data.actions) do
+					if action.entry_type == "file" and action.type == "delete" then
+						local file = action.url:sub(7)
+						local bufnr = vim.fn.bufnr(file)
+
+						if bufnr >= 0 then
+							vim.api.nvim_buf_delete(bufnr, { force = true })
+						end
+					end
+				end
+			end,
+		})
 	end,
 }
 
