@@ -80,3 +80,5 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	group = vim.api.nvim_create_augroup("DiffColors", { clear = true }),
 	callback = set_diff_highlights,
 })
+
+require("ertu.utils.inter-session-yanking").setup()
