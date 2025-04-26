@@ -21,13 +21,11 @@ function M.save_last_yank()
 end
 
 function M.custom_paste(paste_letter)
-	-- Check if file exists
 	if vim.fn.filereadable(FILE_PATH) == 0 then
 		print("No last yank available.")
 		return ""
 	end
 
-	-- Read and decode
 	local lines = vim.fn.readfile(FILE_PATH)
 	if not lines or #lines == 0 then
 		print("Empty lastcopy file.")
@@ -40,35 +38,27 @@ function M.custom_paste(paste_letter)
 		return ""
 	end
 
-	-- Put contents into register
 	local regtype = data.type or "v"
 	local contents = data.contents or {}
 
 	vim.fn.setreg(REGISTER, contents, regtype)
 
-	-- Return zp or zP
 	return '"' .. REGISTER .. paste_letter
 end
 
-function M.p_handler()
-	if vim.v.register == '"' then
-		return M.custom_paste("p")
-	else
-		return "p"
-	end
-end
-
-function M.P_handler()
-	if vim.v.register == '"' then
-		return M.custom_paste("P")
-	else
-		return "P"
+function M.create_handler(letter)
+	return function()
+		if vim.v.register == '"' then
+			return M.custom_paste(letter)
+		else
+			return letter
+		end
 	end
 end
 
 function M.setup()
-	vim.keymap.set("n", "p", M.p_handler, { expr = true })
-	vim.keymap.set("n", "P", M.P_handler, { expr = true })
+	vim.keymap.set("n", "p", M.create_handler("p"), { expr = true })
+	vim.keymap.set("n", "P", M.create_handler("P"), { expr = true })
 
 	vim.api.nvim_create_autocmd("TextYankPost", {
 		group = vim.api.nvim_create_augroup("YankPaste", { clear = true }),
