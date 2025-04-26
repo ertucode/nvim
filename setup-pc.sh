@@ -20,5 +20,6 @@ ensure_line_in_file() {
 
 ensure_line_in_file "source ~/.config/nvim/helpers.zshrc" "$HOME/.zshrc"
 ensure_line_in_file "export MANPAGER='nvim +Man!'" "$HOME/.zshrc"
+ensure_line_in_file "export TERM=xterm-256color" "$HOME/.zshrc"
 ensure_line_in_file "defaults write -g InitialKeyRepeat -int 10" "$HOME/.zshrc"
 ensure_line_in_file "defaults write -g KeyRepeat -int 2" "$HOME/.zshrc"
