@@ -71,7 +71,7 @@ local function set_diff_highlights()
 	vim.api.nvim_set_hl(0, "DiffAdd", { fg = "none", bg = "#283B4D", bold = true })
 	vim.api.nvim_set_hl(0, "DiffDelete", { fg = "none", bg = "#6B2F4B", bold = true })
 	vim.api.nvim_set_hl(0, "DiffChange", { fg = "none", bg = "#2B3C66", bold = true })
-	vim.api.nvim_set_hl(0, "DiffText", { fg = "none", bg = "#00EE00", bold = true })
+	vim.api.nvim_set_hl(0, "DiffText", { fg = "none", bg = "#004400", bold = true })
 end
 
 set_diff_highlights()

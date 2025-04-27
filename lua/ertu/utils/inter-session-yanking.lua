@@ -57,8 +57,8 @@ function M.create_handler(letter)
 end
 
 function M.setup()
-	vim.keymap.set("n", "p", M.create_handler("p"), { expr = true })
-	vim.keymap.set("n", "P", M.create_handler("P"), { expr = true })
+	vim.keymap.set({ "n", "v" }, "p", M.create_handler("p"), { expr = true })
+	vim.keymap.set({ "n", "v" }, "P", M.create_handler("P"), { expr = true })
 
 	vim.api.nvim_create_autocmd("TextYankPost", {
 		group = vim.api.nvim_create_augroup("YankPaste", { clear = true }),
