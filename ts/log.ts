@@ -22,7 +22,12 @@ export function logWithHeader(
   headerColor: Color,
   messageColor: Color,
 ) {
-  coloredLogFromParts(headerColor, `[${header}] `, messageColor, message);
+  coloredLogFromParts(
+    headerColor,
+    `${header.padEnd(8, " ")} |   `,
+    messageColor,
+    message,
+  );
 }
 
 export function rgb(r: number, g: number, b: number): Color {

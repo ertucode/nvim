@@ -67,5 +67,6 @@ export function ensureLinesInFile({
   result.push(wrappedKey);
   result.push("");
 
+  logWithHeader("WRITE", normalizedPath, rgb(255, 255, 0), rgb(0, 180, 255));
   fs.writeFileSync(normalizedPath, result.join("\n"), "utf8");
 }
