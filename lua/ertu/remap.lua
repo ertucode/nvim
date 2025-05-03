@@ -130,6 +130,14 @@ set("n", "<leader>gp", function()
 
 	local OutputBuffer = require("ertu.utils.output_buffer")
 
+	local current_filetype = vim.bo.filetype
+	if current_filetype == "fugitive" then
+		local window_count = #vim.api.nvim_list_wins()
+		if window_count > 1 then
+			vim.cmd("quit")
+		end
+	end
+
 	local output = OutputBuffer:new("git")
 	output:append_header("Git commit and push operation")
 	output:append_header("Commit message: " .. message)
