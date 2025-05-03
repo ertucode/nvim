@@ -122,10 +122,10 @@ set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last co
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
 
 local function notify(message, level)
-	-- vim.schedule(function()
-	-- 	vim.notify(message, level)
-	-- end)
-	vim.print(message)
+	vim.schedule(function()
+		vim.notify(message, level)
+	end)
+	-- vim.print(message)
 end
 
 set("n", "<leader>gp", function()
@@ -146,6 +146,7 @@ set("n", "<leader>gp", function()
 		args = commit_args,
 		stdio = { nil, stdout, stderr },
 	}, function(exit_code)
+		notify(vim.inspect(exit_code), vim.log.levels.INFO)
 		if exit_code == 0 then
 			uv.spawn("git", {
 				args = push_args,
