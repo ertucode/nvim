@@ -1,14 +1,13 @@
 ---@class OutputBuffer
----@field cmd_name string
 ---@field buf number
 ---@field win number
 ---@field ns_id number
 OutputBuffer = {}
 OutputBuffer.__index = OutputBuffer
 
-function OutputBuffer:new(cmd_name)
+function OutputBuffer:new(buf_name)
 	local buf = vim.api.nvim_create_buf(false, true)
-	local buffer_name = "[" .. cmd_name .. "]"
+	local buffer_name = "[" .. buf_name .. "]"
 	if vim.fn.bufexists(buffer_name) == 1 then
 		vim.api.nvim_buf_delete(vim.fn.bufnr(buffer_name), { force = true })
 	end
@@ -21,10 +20,10 @@ function OutputBuffer:new(cmd_name)
 	-- Create a window to display the buffer
 	local win = vim.api.nvim_open_win(buf, true, {
 		relative = "editor",
-		width = math.floor(vim.o.columns * 0.8),
+		width = math.floor(vim.o.columns),
 		height = math.floor(vim.o.lines * 0.3),
 		row = math.floor(vim.o.lines * 0.7),
-		col = math.floor(vim.o.columns * 0.1),
+		col = math.floor(0),
 		style = "minimal",
 		border = "single",
 	})
@@ -54,7 +53,6 @@ function OutputBuffer:new(cmd_name)
 	local ns_id = vim.api.nvim_create_namespace("git_output")
 
 	local instance = setmetatable({}, OutputBuffer)
-	instance.cmd_name = cmd_name
 	instance.buf = buf
 	instance.win = win
 	instance.ns_id = ns_id
@@ -138,6 +136,22 @@ function OutputBuffer:append_info(lines)
 	self:append(lines, "GitOutputInfo")
 end
 
+function OutputBuffer:stdout_handler()
+	return function(_, data)
+		if data then
+			self:append_info(data)
+		end
+	end
+end
+
+function OutputBuffer:stderr_handler()
+	return function(_, data)
+		if data then
+			self:append_error(data)
+		end
+	end
+end
+
 function OutputBuffer:finish(success)
 	vim.schedule(function()
 		-- Add a status line at the end
@@ -160,6 +174,8 @@ function OutputBuffer:finish(success)
 				silent = true,
 				desc = "Close git output window",
 			})
+
+			self:append_info("Press q to exit")
 
 			-- Set buffer options for completed output
 			vim.api.nvim_buf_set_option(self.buf, "modified", false)

@@ -128,8 +128,8 @@ set("n", "<leader>gp", function()
 		return
 	end
 
-	local OutputBuffer = require("ertu.output_buffer")
-	-- Create output display for git operations
+	local OutputBuffer = require("ertu.utils.output_buffer")
+
 	local output = OutputBuffer:new("git")
 	output:append_header("Git commit and push operation")
 	output:append_header("Commit message: " .. message)
@@ -140,16 +140,8 @@ set("n", "<leader>gp", function()
 		output:append_success("Commit successful, starting push...")
 
 		vim.fn.jobstart("git push", {
-			on_stdout = function(_, data)
-				if data then
-					output:append_info(data)
-				end
-			end,
-			on_stderr = function(_, data)
-				if data then
-					output:append_error(data)
-				end
-			end,
+			on_stdout = output:stdout_handler(),
+			on_stderr = output:stderr_handler(),
 			on_exit = function(_, exit_code)
 				if exit_code == 0 then
 					output:append_success("Push completed successfully")
@@ -165,16 +157,8 @@ set("n", "<leader>gp", function()
 	-- Start with commit operation
 	output:append_command("Running: git commit -m '" .. message .. "'")
 	vim.fn.jobstart("git commit -m '" .. message:gsub("'", "'\\''") .. "'", {
-		on_stdout = function(_, data)
-			if data then
-				output:append_info(data)
-			end
-		end,
-		on_stderr = function(_, data)
-			if data then
-				output:append_error(data)
-			end
-		end,
+		on_stdout = output:stdout_handler(),
+		on_stderr = output:stderr_handler(),
 		on_exit = function(_, exit_code)
 			if exit_code == 0 then
 				handle_push()
