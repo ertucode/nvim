@@ -150,13 +150,16 @@ set("n", "<leader>gp", function()
 		stdio = { nil, stdout, stderr },
 	}, function(exit_code)
 		if exit_code == 0 then
-			uv.spawn("git", {
+			notify("Pushing", vim.log.levels.INFO)
+			local handle, pid = uv.spawn("git", {
 				args = push_args,
 				stdio = { nil, stdout, stderr },
 			}, function()
+				notify("Pushed", vim.log.levels.INFO)
 				stderr:read_stop()
 				stdout:read_stop()
 			end)
+			notify(pid, vim.log.levels.INFO)
 		end
 	end)
 
