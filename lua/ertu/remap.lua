@@ -135,32 +135,29 @@ set("n", "<leader>gp", function()
 	local stderr = uv.new_pipe()
 	local stdout = uv.new_pipe()
 
-	local handle, pid = uv.spawn("git", {
+	uv.spawn("git", {
 		args = commit_args,
 		stdio = { nil, stdout, stderr },
 	}, function(exit_code)
 		if exit_code == 0 then
-			local push_process = uv.spawn("git", {
+			uv.spawn("git", {
 				args = push_args,
 				stdio = { nil, stdout, stderr },
-			}, function(push_exit_code)
-
-				-- if push_exit_code == 0 then
-				-- 	vim.notify("Git push successful.")
-				-- else
-				-- 	vim.notify("Git push failed.", vim.log.levels.ERROR)
-				-- end
-			end)
+			})
 		end
 	end)
 
 	uv.read_start(stdout, function(err, data)
-		assert(not err, err)
-		vim.notify(vim.inspect(data), vim.log.levels.INFO)
+		-- assert(not err, err)
+		vim.schedule(function()
+			vim.notify(vim.inspect(data), vim.log.levels.INFO)
+		end)
 	end)
 
 	uv.read_start(stderr, function(err, data)
-		assert(not err, err)
-		vim.notify(vim.inspect(data), vim.log.levels.ERROR)
+		-- assert(not err, err)
+		vim.schedule(function()
+			vim.notify(vim.inspect(data), vim.log.levels.ERROR)
+		end)
 	end)
 end, { desc = "Commit and push" })
