@@ -122,6 +122,9 @@ set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last co
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
 
 local function notify(message, level)
+	if message == nil then
+		return
+	end
 	vim.schedule(function()
 		vim.notify(message, level)
 	end)
