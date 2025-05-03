@@ -154,8 +154,9 @@ set("n", "<leader>gp", function()
 			local handle, pid = uv.spawn("git", {
 				args = push_args,
 				stdio = { nil, stdout, stderr },
-			}, function()
+			}, function(exit)
 				notify("Pushed", vim.log.levels.INFO)
+				notify(exit, vim.log.levels.INFO)
 				stderr:read_stop()
 				stdout:read_stop()
 			end)
