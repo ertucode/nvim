@@ -127,6 +127,6 @@ set("n", "<leader>gp", function()
 		print("No commit message")
 		return
 	end
-	vim.fn.system("git commit -m " .. message)
-	vim.fn.system("git push")
+	vim.cmd("Git commit -m " .. vim.fn.shellescape(message))
+	vim.cmd("Git push")
 end, { desc = "Commit and push" })
