@@ -48,6 +48,7 @@ function OutputBuffer:new(cmd_name)
 	ensure_highlight("GitOutputSuccess", { fg = "#50FA7B", bold = true })
 	ensure_highlight("GitOutputHeader", { fg = "#BD93F9", bold = true })
 	ensure_highlight("GitOutputCommand", { fg = "#8BE9FD", italic = true })
+	ensure_highlight("GitOutputInfo", { fg = "#8BA0FD", italic = true })
 
 	-- Initialize namespace for highlighting
 	local ns_id = vim.api.nvim_create_namespace("git_output")
@@ -131,6 +132,10 @@ end
 
 function OutputBuffer:append_command(lines)
 	self:append(lines, "GitOutputCommand")
+end
+
+function OutputBuffer:append_info(lines)
+	self:append(lines, "GitOutputInfo")
 end
 
 function OutputBuffer:finish(success)

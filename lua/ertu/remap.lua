@@ -136,13 +136,13 @@ set("n", "<leader>gp", function()
 	output:append_header("----------------------------")
 
 	local function handle_push()
-		output:append("")
+		output:append_info("")
 		output:append_success("Commit successful, starting push...")
 
 		vim.fn.jobstart("git push", {
 			on_stdout = function(_, data)
 				if data then
-					output:append(data)
+					output:append_info(data)
 				end
 			end,
 			on_stderr = function(_, data)
@@ -167,7 +167,7 @@ set("n", "<leader>gp", function()
 	vim.fn.jobstart("git commit -m '" .. message:gsub("'", "'\\''") .. "'", {
 		on_stdout = function(_, data)
 			if data then
-				output:append(data)
+				output:append_info(data)
 			end
 		end,
 		on_stderr = function(_, data)
