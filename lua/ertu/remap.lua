@@ -142,12 +142,12 @@ set("n", "<leader>gp", function()
 		vim.fn.jobstart("git push", {
 			on_stdout = function(_, data)
 				if data then
-					output.append(data)
+					output:append(data)
 				end
 			end,
 			on_stderr = function(_, data)
 				if data then
-					output.append_error(data)
+					output:append_error(data)
 				end
 			end,
 			on_exit = function(_, exit_code)

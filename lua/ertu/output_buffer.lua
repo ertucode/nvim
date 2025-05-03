@@ -7,9 +7,13 @@ OutputBuffer = {}
 OutputBuffer.__index = OutputBuffer
 
 function OutputBuffer:new(cmd_name)
-	-- Create a temporary buffer for output
 	local buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_name(buf, "[" .. cmd_name .. "]")
+	local buffer_name = "[" .. cmd_name .. "]"
+	if vim.fn.bufexists(buffer_name) == 1 then
+		vim.api.nvim_buf_delete(vim.fn.bufnr(buffer_name), { force = true })
+	end
+
+	vim.api.nvim_buf_set_name(buf, buffer_name)
 	vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
 	vim.api.nvim_buf_set_option(buf, "swapfile", false)
 	vim.api.nvim_buf_set_option(buf, "modifiable", true)
