@@ -42,7 +42,7 @@ function OutputBuffer:new(buf_name)
 		end
 	end
 
-	ensure_highlight("GitOutputError", { fg = "#FF5555", bold = true })
+	ensure_highlight("GitOutputError", { fg = "#CC5555", bold = true })
 	ensure_highlight("GitOutputWarning", { fg = "#FFCC00" })
 	ensure_highlight("GitOutputSuccess", { fg = "#50FA7B", bold = true })
 	ensure_highlight("GitOutputHeader", { fg = "#BD93F9", bold = true })
