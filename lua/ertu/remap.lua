@@ -125,7 +125,7 @@ local function notify(message, level)
 	-- vim.schedule(function()
 	-- 	vim.notify(message, level)
 	-- end)
-	print(message)
+	vim.print(message)
 end
 
 set("n", "<leader>gp", function()
@@ -150,7 +150,10 @@ set("n", "<leader>gp", function()
 			uv.spawn("git", {
 				args = push_args,
 				stdio = { nil, stdout, stderr },
-			})
+			}, function()
+				stderr:read_stop()
+				stdout:read_stop()
+			end)
 		end
 	end)
 
