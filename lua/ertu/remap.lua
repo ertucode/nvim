@@ -127,6 +127,50 @@ set("n", "<leader>gp", function()
 		print("No commit message")
 		return
 	end
-	vim.cmd("Git commit -m " .. vim.fn.shellescape(message))
-	vim.cmd("Git push")
+	local uv = vim.loop
+
+	local commit_args = { "commit", "-m", message }
+	local push_args = { "push" }
+
+	local stderr = uv.new_pipe()
+	local stdout = uv.new_pipe()
+
+	local handle, pid = uv.spawn("git", {
+		args = commit_args,
+		stdio = { nil, stdout, stderr },
+	}, function(exit_code)
+		if exit_code == 0 then
+			local push_process = uv.spawn("git", {
+				args = push_args,
+				stdio = { nil, stdout, stderr },
+			}, function(push_exit_code)
+
+				-- if push_exit_code == 0 then
+				-- 	vim.notify("Git push successful.")
+				-- else
+				-- 	vim.notify("Git push failed.", vim.log.levels.ERROR)
+				-- end
+			end)
+		else
+			vim.notify("Git commit failed. Aborting push.", vim.log.levels.ERROR)
+		end
+	end)
+
+	uv.read_start(stdout, function(err, data)
+		assert(not err, err)
+		if data then
+			print("stdout chunk", stdout, data)
+		else
+			print("stdout end", stdout)
+		end
+	end)
+
+	uv.read_start(stderr, function(err, data)
+		assert(not err, err)
+		if data then
+			print("stderr chunk", stderr, data)
+		else
+			print("stderr end", stderr)
+		end
+	end)
 end, { desc = "Commit and push" })
