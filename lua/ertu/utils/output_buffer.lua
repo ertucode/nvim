@@ -168,14 +168,16 @@ function OutputBuffer:finish(success)
 
 			vim.api.nvim_buf_set_option(self.buf, "modifiable", false)
 
-			-- Add a keymap to close the window
-			vim.api.nvim_buf_set_keymap(self.buf, "n", "q", "<cmd>close<cr>", {
-				noremap = true,
-				silent = true,
-				desc = "Close git output window",
-			})
+			local keys = { "q", "<CR>" }
+			for _, key in ipairs(keys) do
+				vim.api.nvim_buf_set_keymap(self.buf, "n", key, "<cmd>close<cr>", {
+					noremap = true,
+					silent = true,
+					desc = "Close git output window",
+				})
+			end
 
-			self:append_info("Press q to exit")
+			self:append_info("Press q or enter to exit")
 
 			-- Set buffer options for completed output
 			vim.api.nvim_buf_set_option(self.buf, "modified", false)
