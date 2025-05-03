@@ -160,7 +160,8 @@ set("n", "<leader>gp", function()
 				stderr:read_stop()
 				stdout:read_stop()
 			end)
-			notify(pid, vim.log.levels.INFO)
+			notify("pid", vim.log.levels.INFO)
+			notify(tostring(pid), vim.log.levels.INFO)
 		end
 	end)
 
