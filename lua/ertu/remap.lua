@@ -156,7 +156,7 @@ set("n", "<leader>gp", function()
 				stdio = { nil, stdout, stderr },
 			}, function(exit)
 				notify("Pushed", vim.log.levels.INFO)
-				notify(exit, vim.log.levels.INFO)
+				notify(tostring(exit), vim.log.levels.INFO)
 				stderr:read_stop()
 				stdout:read_stop()
 			end)
