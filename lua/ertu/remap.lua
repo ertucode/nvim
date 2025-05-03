@@ -151,26 +151,16 @@ set("n", "<leader>gp", function()
 				-- 	vim.notify("Git push failed.", vim.log.levels.ERROR)
 				-- end
 			end)
-		else
-			vim.notify("Git commit failed. Aborting push.", vim.log.levels.ERROR)
 		end
 	end)
 
 	uv.read_start(stdout, function(err, data)
 		assert(not err, err)
-		if data then
-			print("stdout chunk", stdout, data)
-		else
-			print("stdout end", stdout)
-		end
+		vim.notify(vim.inspect(data), vim.log.levels.INFO)
 	end)
 
 	uv.read_start(stderr, function(err, data)
 		assert(not err, err)
-		if data then
-			print("stderr chunk", stderr, data)
-		else
-			print("stderr end", stderr)
-		end
+		vim.notify(vim.inspect(data), vim.log.levels.ERROR)
 	end)
 end, { desc = "Commit and push" })
