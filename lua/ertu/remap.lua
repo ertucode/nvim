@@ -120,3 +120,13 @@ set("n", "<leader>gs", function()
 end, { desc = "Git stage current file" })
 set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last commit" })
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
+
+set("n", "<leader>gp", function()
+	local message = vim.fn.input("Commit message: ")
+	if message == nil or message == "" then
+		print("No commit message")
+		return
+	end
+	vim.fn.system("git commit -m " .. message)
+	vim.fn.system("git push")
+end, { desc = "Commit and push" })

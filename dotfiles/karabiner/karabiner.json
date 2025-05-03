@@ -96,7 +96,7 @@
               },
               {
                 "from": {
-                  "key_code": "l",
+                  "key_code": "]",
                   "modifiers": { "mandatory": ["option"] }
                 },
                 "to": [{ "shell_command": "open -a 'Lens'" }],
@@ -163,3 +163,4 @@
     }
   ]
 }
+
