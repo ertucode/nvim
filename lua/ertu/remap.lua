@@ -121,59 +121,67 @@ end, { desc = "Git stage current file" })
 set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last commit" })
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
 
-local function notify(message, level)
-	if message == nil then
-		return
-	end
-	vim.schedule(function()
-		vim.notify(message, level)
-	end)
-	-- vim.print(message)
-end
-
 set("n", "<leader>gp", function()
 	local message = vim.fn.input("Commit message: ")
 	if message == nil or message == "" then
-		print("No commit message")
+		vim.notify("No commit message provided", vim.log.levels.WARN)
 		return
 	end
-	local uv = vim.loop
 
-	local commit_args = { "commit", "-m", message }
-	local push_args = { "push" }
+	local OutputBuffer = require("ertu.output_buffer")
+	-- Create output display for git operations
+	local output = OutputBuffer:new("git")
+	output:append_header("Git commit and push operation")
+	output:append_header("Commit message: " .. message)
+	output:append_header("----------------------------")
 
-	local stderr = uv.new_pipe()
-	local stdout = uv.new_pipe()
+	local function handle_push()
+		output:append("")
+		output:append_success("Commit successful, starting push...")
 
-	uv.spawn("git", {
-		args = commit_args,
-		stdio = { nil, stdout, stderr },
-	}, function(exit_code)
-		if exit_code == 0 then
-			notify("Pushing", vim.log.levels.INFO)
-			local handle, pid = uv.spawn("git", {
-				args = push_args,
-				stdio = { nil, stdout, stderr },
-			}, function(exit)
-				notify("Pushed", vim.log.levels.INFO)
-				notify(tostring(exit), vim.log.levels.INFO)
-				stderr:read_stop()
-				stdout:read_stop()
-			end)
-			notify("pid", vim.log.levels.INFO)
-			notify(tostring(pid), vim.log.levels.INFO)
-		end
-	end)
+		vim.fn.jobstart("git push", {
+			on_stdout = function(_, data)
+				if data then
+					output.append(data)
+				end
+			end,
+			on_stderr = function(_, data)
+				if data then
+					output.append_error(data)
+				end
+			end,
+			on_exit = function(_, exit_code)
+				if exit_code == 0 then
+					output:append_success("Push completed successfully")
+					output:finish(true)
+				else
+					output:append_error("Push failed with exit code: " .. exit_code)
+					output:finish(false)
+				end
+			end,
+		})
+	end
 
-	uv.read_start(stdout, function(_, data)
-		notify("stdout", vim.log.levels.INFO)
-		notify(data, vim.log.levels.INFO)
-		notify("stdout done", vim.log.levels.INFO)
-	end)
-
-	uv.read_start(stderr, function(_, data)
-		notify("stderr", vim.log.levels.INFO)
-		notify(data, vim.log.levels.ERROR)
-		notify("stderr done", vim.log.levels.INFO)
-	end)
+	-- Start with commit operation
+	output:append_command("Running: git commit -m '" .. message .. "'")
+	vim.fn.jobstart("git commit -m '" .. message:gsub("'", "'\\''") .. "'", {
+		on_stdout = function(_, data)
+			if data then
+				output:append(data)
+			end
+		end,
+		on_stderr = function(_, data)
+			if data then
+				output:append_error(data)
+			end
+		end,
+		on_exit = function(_, exit_code)
+			if exit_code == 0 then
+				handle_push()
+			else
+				output:append_error("Commit failed with exit code: " .. exit_code)
+				output:finish(false)
+			end
+		end,
+	})
 end, { desc = "Commit and push" })
