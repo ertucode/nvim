@@ -121,6 +121,13 @@ end, { desc = "Git stage current file" })
 set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last commit" })
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
 
+local function notify(message, level)
+	-- vim.schedule(function()
+	-- 	vim.notify(message, level)
+	-- end)
+	print(message)
+end
+
 set("n", "<leader>gp", function()
 	local message = vim.fn.input("Commit message: ")
 	if message == nil or message == "" then
@@ -149,15 +156,11 @@ set("n", "<leader>gp", function()
 
 	uv.read_start(stdout, function(err, data)
 		-- assert(not err, err)
-		vim.schedule(function()
-			vim.notify(vim.inspect(data), vim.log.levels.INFO)
-		end)
+		notify(vim.inspect(data), vim.log.levels.INFO)
 	end)
 
 	uv.read_start(stderr, function(err, data)
 		-- assert(not err, err)
-		vim.schedule(function()
-			vim.notify(vim.inspect(data), vim.log.levels.ERROR)
-		end)
+		notify(vim.inspect(data), vim.log.levels.ERROR)
 	end)
 end, { desc = "Commit and push" })
