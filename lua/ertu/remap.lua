@@ -158,13 +158,11 @@ set("n", "<leader>gp", function()
 		end
 	end)
 
-	uv.read_start(stdout, function(err, data)
-		-- assert(not err, err)
-		notify(vim.inspect(data), vim.log.levels.INFO)
+	uv.read_start(stdout, function(_, data)
+		notify(data, vim.log.levels.INFO)
 	end)
 
-	uv.read_start(stderr, function(err, data)
-		-- assert(not err, err)
-		notify(vim.inspect(data), vim.log.levels.ERROR)
+	uv.read_start(stderr, function(_, data)
+		notify(data, vim.log.levels.ERROR)
 	end)
 end, { desc = "Commit and push" })
