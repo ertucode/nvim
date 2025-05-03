@@ -146,7 +146,6 @@ set("n", "<leader>gp", function()
 		args = commit_args,
 		stdio = { nil, stdout, stderr },
 	}, function(exit_code)
-		notify(vim.inspect(exit_code), vim.log.levels.INFO)
 		if exit_code == 0 then
 			uv.spawn("git", {
 				args = push_args,
