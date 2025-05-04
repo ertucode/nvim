@@ -30,6 +30,10 @@ export function logWithHeader(
   );
 }
 
+export function logInfo(message: string) {
+  logWithHeader("INFO", message, rgb(255, 255, 0), rgb(0, 180, 255));
+}
+
 export function rgb(r: number, g: number, b: number): Color {
   return `\x1b[38;2;${r};${g};${b}m` as Color;
 }
