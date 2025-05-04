@@ -13,7 +13,3 @@ export function configureGit() {
     runCommand(line);
   }
 }
-
-export function cloneRepo({ repo, path }: { repo: string; path: string }) {
-  runCommand(`git clone ${repo} ${path}`);
-}
