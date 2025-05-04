@@ -2,6 +2,7 @@
 ---@field buf number
 ---@field win number
 ---@field ns_id number
+---@field stdout string[][]
 OutputBuffer = {}
 OutputBuffer.__index = OutputBuffer
 
@@ -56,6 +57,7 @@ function OutputBuffer:new(buf_name)
 	instance.buf = buf
 	instance.win = win
 	instance.ns_id = ns_id
+	instance.stdout = {}
 	return instance
 end
 
@@ -68,6 +70,8 @@ function OutputBuffer:append(lines, highlight_group)
 	if type(lines) == "string" then
 		lines = { lines }
 	end
+
+	table.insert(self.stdout, lines)
 
 	-- Filter out empty lines that come from jobstart
 	local filtered = {}
@@ -183,6 +187,18 @@ function OutputBuffer:finish(success)
 			vim.api.nvim_buf_set_option(self.buf, "modified", false)
 		end
 	end)
+end
+
+function OutputBuffer:line_exists(check_line)
+	for _, lines in ipairs(self.stdout) do
+		for _, line in ipairs(lines) do
+			if line == check_line then
+				return true
+			end
+		end
+	end
+
+	return false
 end
 
 return OutputBuffer

@@ -144,9 +144,6 @@ set("n", "<leader>gp", function()
 	output:append_header("----------------------------")
 
 	local function handle_push()
-		output:append_info("")
-		output:append_success("Commit successful, starting push...")
-
 		vim.fn.jobstart("git push", {
 			on_stdout = output:stdout_handler(),
 			on_stderr = output:stderr_handler(),
@@ -169,6 +166,12 @@ set("n", "<leader>gp", function()
 		on_stderr = output:stderr_handler(),
 		on_exit = function(_, exit_code)
 			if exit_code == 0 then
+				output:append_info("")
+				output:append_success("Commit successful, starting push...")
+				handle_push()
+			elseif output:line_exists("nothing to commit, working tree clean") then
+				output:append_info("")
+				output:append_success("Commit not needed, starting push...")
 				handle_push()
 			else
 				output:append_error("Commit failed with exit code: " .. exit_code)
