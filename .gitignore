@@ -1,4 +1,5 @@
 plugin/packer_compiled.lua
 node_modules
 karabiner/automatic_backups
-karabiner/assets
+karabiner/assets/complex_modifications/*
+!karabiner/assets/complex_modifications/.gitkeep
