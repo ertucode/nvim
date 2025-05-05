@@ -97,7 +97,6 @@
               {
                 "from": {
                   "key_code": "f3",
-
                   "modifiers": { "mandatory": ["option"] }
                 },
                 "to": [{ "shell_command": "open -a 'Lens'" }],
@@ -117,6 +116,14 @@
                   "modifiers": { "mandatory": ["option"] }
                 },
                 "to": [{ "shell_command": "open -a 'Karabiner-Elements'" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "d",
+                  "modifiers": { "mandatory": ["option"] }
+                },
+                "to": [{ "shell_command": "open -a 'Docker Desktop'" }],
                 "type": "basic"
               }
             ]
@@ -172,3 +179,4 @@
     }
   ]
 }
+
