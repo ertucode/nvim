@@ -80,14 +80,6 @@
               },
               {
                 "from": {
-                  "key_code": "0",
-                  "modifiers": { "mandatory": ["option"] }
-                },
-                "to": [{ "shell_command": "~/dev/scripts/open-mobile.sh" }],
-                "type": "basic"
-              },
-              {
-                "from": {
                   "key_code": "e",
                   "modifiers": { "mandatory": ["option"] }
                 },
@@ -132,6 +124,14 @@
                   "modifiers": { "mandatory": ["option"] }
                 },
                 "to": [{ "shell_command": "open -a 'Slack'" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "0",
+                  "modifiers": { "mandatory": ["option"] }
+                },
+                "to": [{ "shell_command": "open -a 'OBS'" }],
                 "type": "basic"
               }
             ]
