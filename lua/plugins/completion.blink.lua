@@ -35,16 +35,19 @@ return {
 			},
 			["<Tab>"] = {
 				function(cmp)
-					if cmp.snippet_active() then
+					if cmp.snippet_active({ direction = 1 }) then
 						return cmp.accept()
 					else
 						return cmp.select_and_accept()
 					end
 				end,
-				"snippet_forward",
+				-- "snippet_forward",
 				"fallback",
 			},
-			["<S-Tab>"] = { "snippet_backward", "fallback" },
+			["<S-Tab>"] = {
+				-- "snippet_backward",
+				"fallback",
+			},
 		},
 
 		appearance = {
@@ -62,6 +65,14 @@ return {
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
+			-- per_filetype = {
+			-- 	markdown = { "path" },
+			-- },
+			providers = {
+				buffer = {
+					min_keyword_length = 2,
+				},
+			},
 		},
 
 		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
