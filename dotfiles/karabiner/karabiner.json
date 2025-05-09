@@ -141,6 +141,18 @@
                 },
                 "to": [{ "shell_command": "open -a 'FortiClient'" }],
                 "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "t",
+                  "modifiers": { "mandatory": ["option", "left_control"] }
+                },
+                "to": [
+                  {
+                    "shell_command": "~/.config/nvim/dotfiles/mac/focus_teams_meeting.sh"
+                  }
+                ],
+                "type": "basic"
               }
             ]
           },
