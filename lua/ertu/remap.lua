@@ -121,7 +121,32 @@ end, { desc = "Git stage current file" })
 set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last commit" })
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })
 
+---@param output OutputBuffer
+local function handle_push(output)
+	vim.fn.jobstart("git push", {
+		on_stdout = output:stdout_handler(),
+		on_stderr = output:stderr_handler(),
+		on_exit = function(_, exit_code)
+			if exit_code == 0 then
+				output:append_success("Push completed successfully")
+				output:finish(true)
+			else
+				output:append_error("Push failed with exit code: " .. exit_code)
+				output:finish(false)
+			end
+		end,
+	})
+end
+
 set("n", "<leader>gp", function()
+	local status = vim.fn.system("git status --porcelain")
+	if status == "" then
+		local output = OutputBuffer:new("git")
+		output:append_header("No changes to commit")
+		output:append_separator()
+		handle_push(output)
+		return
+	end
 	local message = vim.fn.input("Commit message: ")
 	if message == nil or message == "" then
 		vim.notify("No commit message provided", vim.log.levels.WARN)
@@ -139,25 +164,8 @@ set("n", "<leader>gp", function()
 	end
 
 	local output = OutputBuffer:new("git")
-	output:append_header("Git commit and push operation")
 	output:append_header("Commit message: " .. message)
-	output:append_header("----------------------------")
-
-	local function handle_push()
-		vim.fn.jobstart("git push", {
-			on_stdout = output:stdout_handler(),
-			on_stderr = output:stderr_handler(),
-			on_exit = function(_, exit_code)
-				if exit_code == 0 then
-					output:append_success("Push completed successfully")
-					output:finish(true)
-				else
-					output:append_error("Push failed with exit code: " .. exit_code)
-					output:finish(false)
-				end
-			end,
-		})
-	end
+	output:append_separator()
 
 	-- Start with commit operation
 	output:append_command("Running: git commit -m '" .. message .. "'")
@@ -168,11 +176,11 @@ set("n", "<leader>gp", function()
 			if exit_code == 0 then
 				output:append_info("")
 				output:append_success("Commit successful, starting push...")
-				handle_push()
+				handle_push(output)
 			elseif output:line_exists("nothing to commit, working tree clean") then
 				output:append_info("")
 				output:append_success("Commit not needed, starting push...")
-				handle_push()
+				handle_push(output)
 			else
 				output:append_error("Commit failed with exit code: " .. exit_code)
 				output:finish(false)

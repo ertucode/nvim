@@ -132,6 +132,10 @@ function OutputBuffer:append_header(lines)
 	self:append(lines, "GitOutputHeader")
 end
 
+function OutputBuffer:append_separator()
+	self:append_header("----------------------------")
+end
+
 function OutputBuffer:append_command(lines)
 	self:append(lines, "GitOutputCommand")
 end
