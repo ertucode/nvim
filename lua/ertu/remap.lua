@@ -148,6 +148,7 @@ local function close_if_fugitive()
 end
 
 set("n", "<leader>gp", function()
+	local OutputBuffer = require("ertu.utils.output_buffer")
 	local status = vim.fn.system("git status --porcelain")
 	if status == "" then
 		close_if_fugitive()
@@ -166,7 +167,6 @@ set("n", "<leader>gp", function()
 
 	close_if_fugitive()
 
-	local OutputBuffer = require("ertu.utils.output_buffer")
 	local output = OutputBuffer:new("git")
 	output:append_header("Commit message: " .. message)
 	output:append_separator()
