@@ -52,4 +52,11 @@ M.get_next_char_that_is_one_of = function(chrs)
 	return { row_start + row_offset - 1, col }
 end
 
+---@param text string
+---@param search string
+---@return boolean
+M.includes = function(text, search)
+	return text:find(search, 1, true) ~= nil
+end
+
 return M

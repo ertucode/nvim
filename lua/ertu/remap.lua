@@ -149,8 +149,9 @@ end
 
 set("n", "<leader>gp", function()
 	local OutputBuffer = require("ertu.utils.output_buffer")
-	local status = vim.fn.system("git status --porcelain")
-	if status == "" then
+	local status = vim.fn.system("git status")
+	local includes = require("ertu.utils.string").includes
+	if includes(status, "nothing to commit") or includes(status, "no changes added to commit") then
 		close_if_fugitive()
 		local output = OutputBuffer:new("git")
 		output:append_header("No changes to commit")
