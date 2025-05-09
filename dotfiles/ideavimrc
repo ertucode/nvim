@@ -29,6 +29,12 @@ map <leader>lrn :action RenameElement<CR>
 map ]d :action GotoNextError<CR>
 map [d :action GotoPreviousError<CR>
 map <leader>flr :action FindUsages<CR>
+map <leader>zn :action HideAllWindows<CR>
+
+map <C-j> :action GotoBookmark1<CR>
+map <C-k> :action GotoBookmark2<CR>
+map <C-l> :action GotoBookmark3<CR>
+map <C-h> :action GotoBookmark4<CR>
 
 map <leader>ce :action copilot.enableCopilot<CR>
 map <leader>cd :action copilot.disableCopilot<CR>
