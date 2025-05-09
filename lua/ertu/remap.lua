@@ -138,37 +138,39 @@ local function handle_push(output)
 	})
 end
 
+local function close_if_fugitive()
+	if vim.bo.filetype == "fugitive" then
+		local window_count = #vim.api.nvim_list_wins()
+		if window_count > 1 then
+			vim.cmd("quit")
+		end
+	end
+end
+
 set("n", "<leader>gp", function()
 	local status = vim.fn.system("git status --porcelain")
 	if status == "" then
+		close_if_fugitive()
 		local output = OutputBuffer:new("git")
 		output:append_header("No changes to commit")
 		output:append_separator()
 		handle_push(output)
 		return
 	end
+
 	local message = vim.fn.input("Commit message: ")
 	if message == nil or message == "" then
 		vim.notify("No commit message provided", vim.log.levels.WARN)
 		return
 	end
 
+	close_if_fugitive()
+
 	local OutputBuffer = require("ertu.utils.output_buffer")
-
-	local current_filetype = vim.bo.filetype
-	if current_filetype == "fugitive" then
-		local window_count = #vim.api.nvim_list_wins()
-		if window_count > 1 then
-			vim.cmd("quit")
-		end
-	end
-
 	local output = OutputBuffer:new("git")
 	output:append_header("Commit message: " .. message)
 	output:append_separator()
 
-	-- Start with commit operation
-	output:append_command("Running: git commit -m '" .. message .. "'")
 	vim.fn.jobstart("git commit -m '" .. message:gsub("'", "'\\''") .. "'", {
 		on_stdout = output:stdout_handler(),
 		on_stderr = output:stderr_handler(),
