@@ -30,6 +30,8 @@ map ]d :action GotoNextError<CR>
 map [d :action GotoPreviousError<CR>
 map <leader>flr :action FindUsages<CR>
 map <leader>zn :action HideAllWindows<CR>
+xnoremap gc :action CommentByLineComment<CR>
+nnoremap gcc :action CommentByLineComment<CR>
 
 map <C-j> :action GotoBookmark1<CR>
 map <C-k> :action GotoBookmark2<CR>
