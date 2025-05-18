@@ -116,7 +116,10 @@ set("n", "N", ":keepjumps normal! N<cr>", { desc = "N but don't change jump list
 set("n", "<leader>gc", "<cmd>tabc<CR>", { desc = "Close current tab" })
 set("n", "<leader>gs", function()
 	vim.cmd("Gwrite")
-	vim.cmd("tabc")
+	local count = #vim.api.nvim_list_tabpages()
+	if count > 1 then
+		vim.cmd("tabc")
+	end
 end, { desc = "Git stage current file" })
 set("n", "<leader>gu", ":Git reset --soft HEAD~<CR>", { desc = "Git undo last commit" })
 set("n", "<leader>gr", ":Git pull --rebase<CR>", { desc = "Git pull with rebase" })

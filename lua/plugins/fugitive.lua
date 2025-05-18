@@ -1,6 +1,6 @@
 return {
 	"tpope/vim-fugitive",
-	cmd = { "Git", "G" },
+	cmd = { "Git", "G", "Gwrite" },
 	keys = {
 		{ "<leader>gt", "<cmd>Git difftool -y HEAD<CR>", desc = "Fugitive. Put all diffs to tabs" },
 		{ "<leader>gl", "<cmd>Git log --oneline<CR>", desc = "Fugitive. Git log --oneline" },
