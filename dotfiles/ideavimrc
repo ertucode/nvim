@@ -32,6 +32,8 @@ map <leader>flr :action FindUsages<CR>
 map <leader>zn :action HideAllWindows<CR>
 xnoremap gc :action CommentByLineComment<CR>
 nnoremap gcc :action CommentByLineComment<CR>
+noremap <leader>lru :action OptimizeImports<CR>
+" ctrl+shift+<number> toggle bookmark
 
 map <C-j> :action GotoBookmark1<CR>
 map <C-k> :action GotoBookmark2<CR>
@@ -53,6 +55,8 @@ nnoremap <M-p> p'[v']=
 nnoremap <leader>sp \"*p'[v']=
 nnoremap gp '[V']
 nnoremap gP '[v']
+nnoremap <C-o> <C-o>zz
+nnoremap <C-i> <C-i>zz
 
 " https://github.com/citizenmatt/dotfiles/blob/master/ideavimrc
 " https://centic9.github.io/IntelliJ-Action-IDs/
