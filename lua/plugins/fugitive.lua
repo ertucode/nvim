@@ -26,17 +26,9 @@ return {
 			pattern = "gitcommit",
 			callback = function()
 				local git_utils = require("ertu.utils.git")
-				local ls = require("luasnip")
-				local s = ls.snippet
-				local i = ls.insert_node
-				local fmt = require("luasnip.extras.fmt").fmt
+				local snippet = require("ertu.utils.snippet")
 
-				ls.snip_expand(s(
-					"autocommit",
-					fmt("{}", {
-						i(1, git_utils.get_branch(), nil),
-					})
-				))
+				snippet.put_replacable_text(git_utils.get_branch())
 				vim.keymap.set({ "i", "n", "s" }, "<C-k>", "<ESC>:wq<CR>", { buffer = true, silent = true })
 			end,
 		})

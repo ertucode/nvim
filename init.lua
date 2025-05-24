@@ -16,6 +16,10 @@ require("ertu")
 require("winbar")
 require("dot_repeat")
 
+if vim.g.neovide then
+	require("neovide")
+end
+
 -- Global
 P = function(v)
 	print(vim.inspect(v))
