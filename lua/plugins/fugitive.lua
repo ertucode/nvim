@@ -60,6 +60,7 @@ return {
 		{ "<leader>gt", "<cmd>Git difftool -y HEAD<CR>", desc = "Fugitive. Put all diffs to tabs" },
 		{ "<leader>gl", "<cmd>Git log --oneline<CR>", desc = "Fugitive. Git log --oneline" },
 		{ "<leader>gg", "<cmd>Git<CR>", desc = "Open fugitive" },
+		{ "ɷ", "<cmd>Git<CR>", desc = "Open fugitive" },
 	},
 	config = function()
 		local augroup = vim.api.nvim_create_augroup("Fugitive", { clear = true })

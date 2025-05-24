@@ -16,6 +16,7 @@ bindings = [
     { key = ";", mods = "Control", chars = "\u001b" },
     { key = "j", mods = "Control|Super", chars = "\u2666" }, # ♦
     { key = "k", mods = "Control|Super", chars = "\u2663" }, # ♣
+    { key = "g", mods = "Super", chars = "\u0277"}, # ɷ
     { key = "Right", mods = "Alt", chars = "\u001BF" },
     { key = "Left",  mods = "Alt", chars = "\u001BB" },
     { key = "F10", action = "ToggleFullscreen" },
