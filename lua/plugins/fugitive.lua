@@ -74,6 +74,8 @@ return {
 					vim.cmd("quit")
 				end, { buffer = true, silent = true })
 
+				vim.keymap.set("n", "q", ":q<CR>", { buffer = true, silent = true })
+
 				vim.api.nvim_command("normal! 5G")
 			end,
 		})
