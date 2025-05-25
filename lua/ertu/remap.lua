@@ -150,7 +150,7 @@ local function close_if_fugitive()
 	end
 end
 
-set("n", "<leader>gp", function()
+local function gp()
 	local OutputBuffer = require("ertu.utils.output_buffer")
 	local status = vim.fn.system("git status")
 	local includes = require("ertu.utils.string").includes
@@ -193,4 +193,10 @@ set("n", "<leader>gp", function()
 			end
 		end,
 	})
-end, { desc = "Commit and push" })
+end
+
+set("n", "<leader>gp", gp, { desc = "Commit and push" })
+set("n", "<leader>gP", function()
+	vim.fn.system("git add .")
+	gp()
+end, { desc = "Git add ., commit and push" })
