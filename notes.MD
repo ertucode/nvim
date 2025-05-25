@@ -19,3 +19,6 @@ https://www.youtube.com/watch?v=BMTXuY640dA
 
 ### macos
 -  if <C-Space> does not work, remove keyboard language shortcut from Settings
+
+### karabiner
+- https://www.youtube.com/watch?v=j4b_uQX3Vu0
