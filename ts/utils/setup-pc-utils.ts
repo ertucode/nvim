@@ -7,6 +7,7 @@ import * as os from "os";
 import { logWithHeader, rgb } from "./log";
 import type { SpawnOptions } from "bun";
 import { normalizePath } from "./file-system";
+import { spawn } from "bun";
 
 export function link(source: string, destination: string) {
   const toParts = destination.split("/");
@@ -15,7 +16,7 @@ export function link(source: string, destination: string) {
     runCommand(`mkdir -p ${directory}`);
   }
 
-  runCommand(`ln -sf ${source} ${destination}`);
+  runCommand(`ln -sfh ${source} ${destination}`);
 }
 
 export function runCommand(
@@ -27,6 +28,41 @@ export function runCommand(
     options.cwd = normalizePath(options.cwd!);
   }
   execSync(command, { stdio: "inherit", ...options });
+}
+
+export async function getCommand(command: string[]) {
+  logWithHeader(
+    "GCOMMAND",
+    command.join(" "),
+    rgb(255, 255, 0),
+    rgb(0, 180, 255),
+  );
+  const proc = spawn({
+    cmd: command,
+    stdout: "pipe",
+    stderr: "pipe",
+    // This option prevents Bun from throwing on non-zero exit codes
+    onExit: (proc, exitCode, signal) => {
+      // You could log or handle the exit code here if needed
+    },
+  });
+
+  const stdout = await new Response(proc.stdout).text();
+  const stderr = await new Response(proc.stderr).text();
+  const exitCode = await proc.exitCode;
+
+  return { stdout, stderr, exitCode: exitCode ?? -1, success: exitCode === 0 };
+}
+
+export function runCommandWithOutput(
+  command: string,
+  options?: Omit<ExecSyncOptionsWithBufferEncoding, "stdio"> & { cwd?: string },
+) {
+  logWithHeader("COMMAND", command, rgb(255, 255, 0), rgb(0, 180, 255));
+  if (options?.cwd) {
+    options.cwd = normalizePath(options.cwd!);
+  }
+  return execSync(command, { stdio: "inherit", ...options }).toString();
 }
 
 export async function runCommandWithStreaming(

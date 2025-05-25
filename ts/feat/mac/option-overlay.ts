@@ -1,6 +1,6 @@
-import { cloneOrPullRepo } from "../utils/git";
-import { logInfo } from "../utils/log";
-import { runCommand } from "../utils/setup-pc-utils";
+import { cloneOrPullRepo } from "../../utils/git";
+import { logInfo } from "../../utils/log";
+import { runCommand } from "../../utils/setup-pc-utils";
 
 export async function setupOptionOverlay() {
   const res = await cloneOrPullRepo({

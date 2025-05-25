@@ -1,5 +1,5 @@
 import { configureGit } from "./feat/git";
-import { setupMac } from "./feat/mac";
+import { setupMac } from "./feat/mac/index";
 import { getPlatformType } from "./utils/platform";
 import { link, ensureLinesInFile } from "./utils/setup-pc-utils";
 
@@ -10,6 +10,7 @@ link(
 );
 link("~/.config/nvim/dotfiles/ideavimrc", "~/.ideavimrc");
 link("~/.config/nvim/dotfiles/karabiner", "~/.config/karabiner");
+link("~/.config/nvim/dotfiles/neovide", "~/.config/neovide");
 
 ensureLinesInFile({
   lines: ["source ~/.config/nvim/dotfiles/helpers.zshrc"],
