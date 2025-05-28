@@ -7,5 +7,4 @@ if [ "$language" = "ABC" ]; then
 else
   echo "TR"
 fi
-
-
+sleep 1

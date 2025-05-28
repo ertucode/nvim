@@ -7,3 +7,4 @@ if [ "$output" = "1" ]; then
 else
   echo "□"
 fi
+sleep 1
