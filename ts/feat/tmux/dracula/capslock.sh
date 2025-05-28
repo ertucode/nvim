@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-output=$("./CheckModKeys" capslock)
+output=$("$HOME/.config/nvim/ts/feat/tmux/dracula/CheckModKeys" capslock)
 
 if [ "$output" = "1" ]; then
   echo "■"
