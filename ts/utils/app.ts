@@ -10,7 +10,9 @@ export async function appExists(appName: string) {
 }
 
 async function appExistsMac(appName: string) {
-  return await getCommand(["osascript", "-e", `id of app "${appName}"`]).then(
-    (r) => r.success,
-  );
+  return await getCommand([
+    "sh",
+    "-c",
+    `[ -e /Applications/${appName}.app ]`,
+  ]).then((r) => r.success);
 }

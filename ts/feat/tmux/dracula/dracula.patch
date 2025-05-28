@@ -1,0 +1,33 @@
+diff --git a/scripts/dracula.sh b/scripts/dracula.sh
+index c0939aa..75df887 100755
+--- a/scripts/dracula.sh
++++ b/scripts/dracula.sh
+@@ -169,9 +169,19 @@ main()
+       else
+         colors[0]="red"
+         colors[1]="dark_gray"
+-        script="${script} not found!"
++        script="${current_dir} ${script} not found!"
+       fi
+ 
++    elif [ $plugin = "capslock" ]; then
++      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-capslock-colors" "dark_purple white")
++      tmux set-option -g status-right-length 50
++      script="#($HOME/.config/nvim/ts/feat/tmux/dracula/capslock.sh)"
++
++    elif [ $plugin = "language" ]; then
++      IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-language-colors" "cyan dark_gray")
++      tmux set-option -g status-right-length 50
++      script="#($HOME/.config/nvim/ts/feat/tmux/dracula/language.sh)"
++
+     elif [ $plugin = "cwd" ]; then
+       IFS=' ' read -r -a colors  <<< $(get_tmux_option "@dracula-cwd-colors" "dark_gray white")
+       tmux set-option -g status-right-length 250
+@@ -321,6 +331,7 @@ main()
+       fi
+       powerbg=${!colors[0]}
+     else
++
+       if $show_empty_plugins; then
+         tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
+       else

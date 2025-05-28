@@ -49,9 +49,27 @@ export async function getCommand(command: string[]) {
 
   const stdout = await new Response(proc.stdout).text();
   const stderr = await new Response(proc.stderr).text();
-  const exitCode = await proc.exitCode;
+  const exitCode = await proc.exited;
 
   return { stdout, stderr, exitCode: exitCode ?? -1, success: exitCode === 0 };
+}
+
+export function fireAndForget(command: string[]) {
+  logWithHeader(
+    "FCOMMAND",
+    command.join(" "),
+    rgb(255, 255, 0),
+    rgb(0, 180, 255),
+  );
+  spawn({
+    cmd: command,
+    stdout: "pipe",
+    stderr: "pipe",
+    // This option prevents Bun from throwing on non-zero exit codes
+    onExit: (proc, exitCode, signal) => {
+      // You could log or handle the exit code here if needed
+    },
+  });
 }
 
 export function runCommandWithOutput(

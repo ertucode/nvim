@@ -1,5 +1,6 @@
 import { configureGit } from "./feat/git";
 import { setupMac } from "./feat/mac/index";
+import { setupTmux } from "./feat/tmux";
 import { getPlatformType } from "./utils/platform";
 import { link, ensureLinesInFile } from "./utils/setup-pc-utils";
 
@@ -18,6 +19,8 @@ ensureLinesInFile({
 });
 
 configureGit();
+
+setupTmux();
 
 const platform = getPlatformType();
 
