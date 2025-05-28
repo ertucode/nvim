@@ -1,3 +1,4 @@
+import { normalizePath } from "../../utils/file-system";
 import { fireAndForget, runCommand } from "../../utils/setup-pc-utils";
 
 export function setupTmux() {
@@ -12,5 +13,6 @@ export function setupTmux() {
     },
   );
 
-  fireAndForget(["tmux", "source", "~/.config/tmux/tmux.conf"]);
+  const path = normalizePath("~/.config/tmux/tmux.conf");
+  fireAndForget(["tmux", "source", path]);
 }
