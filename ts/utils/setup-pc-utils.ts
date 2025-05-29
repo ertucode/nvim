@@ -75,12 +75,12 @@ export function fireAndForget(command: string[]) {
 export function runCommandWithOutput(
   command: string,
   options?: Omit<ExecSyncOptionsWithBufferEncoding, "stdio"> & { cwd?: string },
-) {
+): string {
   logWithHeader("COMMAND", command, rgb(255, 255, 0), rgb(0, 180, 255));
   if (options?.cwd) {
     options.cwd = normalizePath(options.cwd!);
   }
-  return execSync(command, { stdio: "inherit", ...options }).toString();
+  return execSync(command, { encoding: "utf8" });
 }
 
 export async function runCommandWithStreaming(

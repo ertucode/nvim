@@ -1,7 +1,6 @@
-#!/bin/bash
+import { runCommand, runCommandWithOutput } from "../../utils/setup-pc-utils";
 
-# Get all visible window titles and app names
-window_list=$(osascript <<EOF
+const windowList = runCommandWithOutput(`osascript <<EOF
 set output to ""
 tell application "System Events"
     set appList to (every process whose visible is true)
@@ -13,27 +12,22 @@ tell application "System Events"
     end repeat
 end tell
 return output
-EOF
-)
+EOF`);
 
-# Find the first Microsoft Teams window that doesn't match excluded prefixes
-target_window_title=$(echo "$window_list" | awk -F' — ' '
-$2 == "Microsoft Teams" &&
-$1 !~ /^Chat \|/ &&
-$1 !~ /^Calendar \|/ &&
-$1 !~ /^Activity \|/ {
-    print $1
-    exit
-}')
+const teamsWindow = windowList.split("\n").find((line) => {
+  const [title, appName] = line.split(" — ");
+  if (appName !== "MSTeams") return false;
+  const knownWindows = ["Chat", "Calendar", "Activity"];
+  if (knownWindows.some((prefix) => title.startsWith(prefix))) return false;
+  return true;
+});
 
-# If a matching window was found, use AppleScript to bring it to the front
-if [ -n "$target_window_title" ]; then
-    osascript <<EOF
+runCommand(`osascript <<EOF
 tell application "System Events"
     tell application process "Microsoft Teams"
         set frontmost to true
         repeat with w in (windows)
-            if name of w is "$target_window_title" then
+            if name of w is "${teamsWindow}" then
                 perform action "AXRaise" of w
                 exit repeat
             end if
@@ -41,7 +35,4 @@ tell application "System Events"
     end tell
 end tell
 EOF
-else
-    echo "No matching Teams meeting window found."
-fi
-
+`);
