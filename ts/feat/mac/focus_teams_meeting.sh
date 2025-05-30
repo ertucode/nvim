@@ -1,6 +1,7 @@
-import { runCommand, runCommandWithOutput } from "../../utils/setup-pc-utils";
+#!/bin/bash
 
-const windowList = runCommandWithOutput(`osascript <<EOF
+# Get the list of all visible windows and their application names
+windowList=$(osascript <<EOF
 set output to ""
 tell application "System Events"
     set appList to (every process whose visible is true)
@@ -12,17 +13,32 @@ tell application "System Events"
     end repeat
 end tell
 return output
-EOF`);
+EOF
+)
 
-const teamsWindow = windowList.split("\n").find((line) => {
-  const [title, appName] = line.split(" — ");
-  if (appName !== "MSTeams") return false;
-  const knownWindows = ["Chat", "Calendar", "Activity"];
-  if (knownWindows.some((prefix) => title.startsWith(prefix))) return false;
-  return true;
-});
+# Find the desired Teams window
+teamsWindow=""
+while IFS= read -r line; do
+  title="${line%% — *}"
+  appName="${line##* — }"
 
-runCommand(`osascript <<EOF
+  if [[ "$appName" != "MSTeams" ]]; then
+    continue
+  fi
+
+  case "$title" in
+    Chat*|Calendar*|Activity*)
+      continue
+      ;;
+  esac
+
+  teamsWindow="$title"
+  break
+done <<< "$windowList"
+
+# If a valid Teams window was found, bring it to the front and raise it
+if [[ -n "$teamsWindow" ]]; then
+  osascript <<EOF
 tell application "System Events"
     tell application process "Microsoft Teams"
         set frontmost to true
@@ -35,4 +51,5 @@ tell application "System Events"
     end tell
 end tell
 EOF
-`);
+fi
+

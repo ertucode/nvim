@@ -149,7 +149,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "/opt/homebrew/bin/bun run ~/.config/nvim/ts/feat/mac/focus_teams_meeting.ts"
+                    "shell_command": "~/.config/nvim/ts/feat/mac/focus_teams_meeting.sh"
                   }
                 ],
                 "type": "basic"
