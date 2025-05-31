@@ -9,16 +9,6 @@ import type { SpawnOptions } from "bun";
 import { normalizePath } from "./file-system";
 import { spawn } from "bun";
 
-export function link(source: string, destination: string) {
-  const toParts = destination.split("/");
-  if (toParts.length > 2) {
-    const directory = toParts.slice(0, toParts.length - 1).join("/");
-    runCommand(`mkdir -p ${directory}`);
-  }
-
-  runCommand(`ln -sfh ${source} ${destination}`);
-}
-
 export function runCommand(
   command: string,
   options?: Omit<ExecSyncOptionsWithBufferEncoding, "stdio"> & { cwd?: string },

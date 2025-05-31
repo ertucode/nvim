@@ -1,6 +1,6 @@
-import { normalizePath } from "../../utils/file-system";
+import { link, normalizePath } from "../../utils/file-system";
 import { cloneOrPullRepo } from "../../utils/git";
-import { fireAndForget, link, runCommand } from "../../utils/setup-pc-utils";
+import { fireAndForget, runCommand } from "../../utils/setup-pc-utils";
 
 export async function setupTmux() {
   const tmuxDir = normalizePath("~/.config/tmux");

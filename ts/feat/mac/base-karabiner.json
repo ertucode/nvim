@@ -1,0 +1,60 @@
+{
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "Open apps with Option",
+            "manipulators": []
+          },
+          {
+            "description": "Ctrl+Right Shift - change input source",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [{ "language": "tr" }],
+                    "type": "input_source_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "right_shift",
+                  "modifiers": { "mandatory": ["left_control"] }
+                },
+                "to": [{ "select_input_source": { "language": "en" } }],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "input_sources": [{ "language": "en" }],
+                    "type": "input_source_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "right_shift",
+                  "modifiers": { "mandatory": ["left_control"] }
+                },
+                "to": [{ "select_input_source": { "language": "tr" } }],
+                "type": "basic"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Default profile",
+      "selected": true,
+      "simple_modifications": [
+        {
+          "from": { "key_code": "caps_lock" },
+          "to": [{ "key_code": "left_control" }]
+        },
+        {
+          "from": { "key_code": "left_control" },
+          "to": [{ "key_code": "caps_lock" }]
+        }
+      ],
+      "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+    }
+  ]
+}
