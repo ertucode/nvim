@@ -18,6 +18,7 @@ const manipulators = [
     c("n", ["option"                ], "open -a 'Obsidian'"),
     c("g", ["option"                ], "open -a 'DataGrip'"),
     c("c", ["option"                ], "open -a 'Cursor'"),
+    c("r", ["option"                ], "open -a 'Rider'"),
     c("d", ["option"                ], "open ~/Downloads"),
     c("p", ["option", "left_control"], "open 'raycast://extensions/raycast/clipboard-history/clipboard-history'",),
     c("l", ["option", "left_control"], "open -a 'Lens'"),
