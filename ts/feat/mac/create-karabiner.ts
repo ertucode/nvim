@@ -28,6 +28,7 @@ const manipulators = [
     c("v", ["option", "left_control"], "open -a 'FortiClient'"),
     c("q", ["option", "left_control"], "open -a 'qBittorrent'"),
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/focus_teams_meeting.sh",),
+    c("w", ["option", "left_control"], "osascript ~/.config/nvim/scripts/restart_wifi_runner.scpt",),
   ];
 
 function c(key: string, mandatory: string[], command: string) {
