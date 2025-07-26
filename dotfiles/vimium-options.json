@@ -1,0 +1,5 @@
+{
+  "keyMappings": "# Insert your preferred key mappings here.\n\nunmap /\nunmap f\nunmap m\n\nmap v LinkHints.activateMode\n\nunmap ^\nmap <c-o> visitPreviousTab\n\nmap <c-p> Vomnibar.activateTabSelection\nmap <c-s> Vomnibar.activateBookmarks",
+  "scrollStepSize": 400,
+  "settingsVersion": "2.3"
+}

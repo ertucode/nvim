@@ -4,7 +4,7 @@ import baseKarabiner from "./base-karabiner.json";
 // prettier-ignore
 const manipulators = [
     c("a", ["option"                ], "open -a 'Alacritty'"),
-    c("w", ["option"                ], "open -a 'Firefox'"),
+    c("w", ["option"                ], "open -a 'Zen'"),
     c("f", ["option"                ], "open -a 'Finder'"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),
     c("o", ["option"                ], "open -a 'Microsoft Outlook'"),
@@ -17,7 +17,7 @@ const manipulators = [
     c("k", ["option"                ], "open -a 'Karabiner-Elements'"),
     c("n", ["option"                ], "open -a 'Obsidian'"),
     c("g", ["option"                ], "open -a 'DataGrip'"),
-    c("c", ["option"                ], "open -a 'Cursor'"),
+    c("c", ["option"                ], "open -a 'Whatsapp'"),
     c("r", ["option"                ], "open -a 'Rider'"),
     c("d", ["option"                ], "open ~/Downloads"),
     c("p", ["option", "left_control"], "open 'raycast://extensions/raycast/clipboard-history/clipboard-history'",),
