@@ -40,7 +40,7 @@ return {
 				"lua_ls",
 				-- "graphql",
 				-- "emmet_ls",
-				"angularls",
+				-- "angularls",
 				"jsonls",
 			},
 			handlers = {
@@ -54,7 +54,7 @@ return {
 				["omnisharp"] = require("plugins.lsp.lsps.omnisharp")(capabilities),
 				["volar"] = require("plugins.lsp.lsps.volar")(capabilities),
 				["lua_ls"] = require("plugins.lsp.lsps.lua_ls")(capabilities),
-				["angularls"] = require("plugins.lsp.lsps.angularls")(capabilities),
+				-- ["angularls"] = require("plugins.lsp.lsps.angularls")(capabilities),
 				["jsonls"] = require("plugins.lsp.lsps.jsonls")(capabilities),
 			},
 		})
