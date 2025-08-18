@@ -8,3 +8,4 @@ alias dwnmp4='aria2c -x 16 -s 16 -d ~/Downloads'
 alias setup_python='python3 -m venv venv && source ./venv/bin/activate'
 export PATH="$PATH:/Users/cavitertugrulsirt/.yarn/bin" # onceden yarn global bin'de ama corepack hatası veriyordu
 alias push_folder='git add . && git commit -m "pushing" && git push'
+export editor="nvim"
