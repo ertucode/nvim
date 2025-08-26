@@ -4,7 +4,7 @@ import baseKarabiner from "./base-karabiner.json";
 // prettier-ignore
 const manipulators = [
     c("a", ["option"                ], "open -a 'Alacritty'"),
-    c("w", ["option"                ], "open -a 'Zen'"),
+    c("w", ["option"                ], "open -a 'Zen' || open -a 'Firefox'"),
     c("f", ["option"                ], "open -a 'Finder'"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),
     c("o", ["option"                ], "open -a 'Microsoft Outlook'"),
