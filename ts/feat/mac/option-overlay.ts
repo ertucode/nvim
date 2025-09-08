@@ -1,6 +1,8 @@
+import z from "zod";
 import { checkIfFolderExists } from "../../utils/file-system";
 import { cloneOrPullRepo } from "../../utils/git";
 import { logInfo } from "../../utils/log";
+import { getProcessArgs } from "../../utils/process-args";
 import { runCommand } from "../../utils/setup-pc-utils";
 
 export async function setupOptionOverlay() {
@@ -27,13 +29,17 @@ async function removeOptionOverlay() {
 }
 
 if (import.meta.main) {
-  const args = process.argv.slice(2);
+  const args = getProcessArgs(
+    z
+      .object({
+        remove: z.boolean(),
+      })
+      .or(z.object({ install: z.boolean() })),
+  );
 
-  if (args.includes("--remove")) {
+  if ("remove" in args) {
     removeOptionOverlay();
-  } else if (args.includes("--install")) {
+  } else if (args.install) {
     setupOptionOverlay();
-  } else {
-    console.error("Provide --remove or --install");
   }
 }
