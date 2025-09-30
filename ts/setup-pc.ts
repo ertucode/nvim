@@ -12,6 +12,7 @@ link(
 );
 link("~/.config/nvim/dotfiles/ideavimrc", "~/.ideavimrc");
 link("~/.config/nvim/dotfiles/neovide", "~/.config/neovide");
+link("~/.config/nvim/dotfiles/opencode", "~/.config/opencode");
 
 ensureLinesInFile({
   lines: ["source ~/.config/nvim/dotfiles/helpers.zshrc"],

@@ -3,6 +3,10 @@ local M = {}
 local filter = require("ertu.utils.array").filter
 local internal_definition = require("ertu.utils.lsp_internal").definition
 
+local function lsp_references(opts)
+	return require("telescope.builtin").lsp_references(opts)
+end
+
 local function is_typescript_client(client)
 	return client.name == "tsserver" or client.name == "vtsls" or client.name == "ts_ls"
 end
@@ -52,7 +56,7 @@ end
 
 local function on_response_or_find_references(error, result_item, client, on_response)
 	if origin_and_target_same(result_item) then
-		return require("telescope.builtin").lsp_references()
+		return lsp_references()
 	end
 
 	on_response(error, result_item, client)
@@ -67,7 +71,7 @@ local function custom_on_response(error, result, client, on_response)
 	result = filter_non_moving(result)
 
 	if #result == 0 then
-		return require("telescope.builtin").lsp_references()
+		return lsp_references()
 	end
 
 	if #result == 1 then

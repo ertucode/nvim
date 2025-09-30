@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "agent": {
+    "plan": {
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "git status": "allow",
+          "git status *": "allow",
+          "git log *": "allow",
+          "git diff": "allow",
+          "git diff *": "allow",
+          "ls la *": "allow"
+        }
+      },
+      "tools": {
+        "grep": true,
+        "glob": true
+      }
+    }
+  }
+}
