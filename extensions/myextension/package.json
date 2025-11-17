@@ -1,0 +1,20 @@
+{
+  "name": "myextension",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun build src/background.ts src/content.ts --outdir dist && cp src/manifest.json dist/",
+    "watch": "bun build src/background.ts src/content.ts --outdir dist --watch",
+    "watch:manifest": "chokidar 'src/manifest.json' -c 'cp src/manifest.json dist/'",
+    "dev": "bun run watch & bun run watch:manifest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/chrome": "^0.1.29",
+    "chokidar-cli": "^3.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

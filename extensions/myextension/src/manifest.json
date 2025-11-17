@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Shortcuts",
+  "version": "1.0",
+  "description": "Tab switching shortcuts",
+  "permissions": ["tabs"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "commands": {
+    "last_tab": {
+      "suggested_key": { "mac": "Ctrl+O" },
+      "description": "Go to last opened tab"
+    },
+    "forward_tab": {
+      "suggested_key": { "mac": "Ctrl+I" },
+      "description": "Go to reverse last opened tab"
+    },
+    "open_youtube": {
+      "description": "1 - Open or switch to youtube"
+    },
+    "open_gpt": {
+      "description": "2- Open or switch to chatgpt"
+    },
+    "open_reddit": {
+      "description": "3 - Open or switch to reddit"
+    },
+    "open_twitter": {
+      "description": "4 - Open or switch to twitter"
+    },
+    "open_backoffice": {
+      "description": "5- Open or switch to backoffice"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
