@@ -17,21 +17,16 @@
       "suggested_key": { "mac": "Ctrl+I" },
       "description": "Go to reverse last opened tab"
     },
-    "open_youtube": {
-      "description": "1 - Open or switch to youtube"
-    },
-    "open_gpt": {
-      "description": "2- Open or switch to chatgpt"
-    },
-    "open_reddit": {
-      "description": "3 - Open or switch to reddit"
-    },
-    "open_twitter": {
-      "description": "4 - Open or switch to twitter"
-    },
-    "open_backoffice": {
-      "description": "5- Open or switch to backoffice"
-    }
+    "open_1": { "description": "1 - Open 1" },
+    "open_2": { "description": "2 - Open 2" },
+    "open_3": { "description": "3 - Open 3" },
+    "open_4": { "description": "4 - Open 4" },
+    "open_5": { "description": "5 - Open 5" },
+    "open_6": { "description": "6 - Open 6" },
+    "open_7": { "description": "7 - Open 7" },
+    "open_8": { "description": "8 - Open 8" },
+    "open_9": { "description": "9 - Open 9" },
+    "open_10": { "description": "10 - Open 10" }
   },
   "content_scripts": [
     {

@@ -114,20 +114,23 @@ chrome.commands.onCommand.addListener(async (command) => {
 });
 
 function getSiteToOpen(command: string) {
-  if (command === "open_gpt") {
+  if (command === "open_2") {
     return "https://chatgpt.com";
   }
-  if (command === "open_youtube") {
+  if (command === "open_1") {
     return "https://www.youtube.com";
   }
-  if (command === "open_reddit") {
+  if (command === "open_3") {
     return "https://www.reddit.com";
   }
-  if (command === "open_twitter") {
+  if (command === "open_4") {
     return "https://x.com";
   }
-  if (command === "open_backoffice") {
+  if (command === "open_5") {
     return "https://admin.blupaymenkul.com/backoffice/f";
+  }
+  if (command === "open_6") {
+    return "https://admin-pre-prod.blupaymenkul.com/backoffice/f";
   }
   showErrorOnTab(tabHistory[0], "Unknown command");
   throw new Error("Unknown command");

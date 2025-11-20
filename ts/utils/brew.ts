@@ -1,7 +1,9 @@
 import { getCommand, runCommand } from "./setup-pc-utils";
 
+// Cleanupta permission hatası alırsan. sudo chown -R $(whoami) /opt/homebrew
 export type BrewInstallOptions = {
   cli?: boolean;
+  cask?: boolean;
 };
 export async function brewInstallIfNotInstalled(
   pkg: string,
@@ -9,7 +11,10 @@ export async function brewInstallIfNotInstalled(
 ) {
   const res = await checkInstalled(pkg, opts);
   if (res.exitCode !== 0) {
-    runCommand(`brew install ${pkg}`);
+    let command = "brew install";
+    if (opts?.cask) command += " --cask";
+    command += ` ${pkg}`;
+    runCommand(command);
   }
 }
 

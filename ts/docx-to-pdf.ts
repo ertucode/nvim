@@ -1,0 +1,86 @@
+#!/usr/bin/env bun
+
+import { exec } from "child_process";
+import path from "path";
+import fs from "fs";
+import os from "os";
+
+/**
+ * Create a temporary directory for libreoffice to write into.
+ */
+function makeTempDir() {
+  return fs.mkdtempSync(path.join(os.tmpdir(), "docx-to-pdf-"));
+}
+
+/**
+ * Ensure file path doesn't overwrite existing files.
+ */
+function getUniqueFilePath(filePath: string): string {
+  if (!fs.existsSync(filePath)) return filePath;
+
+  const dir = path.dirname(filePath);
+  const ext = path.extname(filePath);
+  const baseName = path.basename(filePath, ext);
+
+  let counter = 1;
+  let newPath: string;
+
+  do {
+    const suffix = counter.toString().padStart(2, "0");
+    newPath = path.join(dir, `${baseName} (${suffix})${ext}`);
+    counter++;
+  } while (fs.existsSync(newPath));
+
+  return newPath;
+}
+
+/**
+ * Convert a DOCX to PDF safely using a temporary directory.
+ */
+async function convertDocxToPdf(inputFile: string, outputFile?: string) {
+  return new Promise<string>((resolve, reject) => {
+    const absInput = path.resolve(inputFile);
+    const tempDir = makeTempDir(); // ← SAFE PLACE
+
+    const basePDFName = path.basename(absInput).replace(/\.docx$/i, ".pdf");
+
+    const finalOutput = outputFile
+      ? path.resolve(outputFile)
+      : path.join(path.dirname(absInput), basePDFName);
+
+    const safeFinalOutput = getUniqueFilePath(finalOutput);
+
+    console.log(`Resolved output path: ${safeFinalOutput}`);
+
+    const cmd = `soffice --headless --convert-to pdf --outdir "${tempDir}" "${absInput}"`;
+
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) return reject(err);
+
+      const generated = path.join(tempDir, basePDFName);
+
+      if (!fs.existsSync(generated)) {
+        return reject(new Error("LibreOffice did not generate a PDF."));
+      }
+
+      fs.renameSync(generated, safeFinalOutput);
+      fs.rmSync(tempDir, { recursive: true, force: true });
+
+      resolve(safeFinalOutput);
+    });
+  });
+}
+
+// --- CLI ---
+const inputPath = process.argv[2];
+const outputPath = process.argv[3];
+
+if (!inputPath) {
+  console.error("Usage: bun run docx-to-pdf.ts <input.docx> [output.pdf]");
+  process.exit(1);
+}
+console.log({ inputPath, outputPath });
+
+convertDocxToPdf(inputPath, outputPath)
+  .then((pdfPath) => console.log("PDF created at:", pdfPath))
+  .catch((err) => console.error("Conversion failed:", err));

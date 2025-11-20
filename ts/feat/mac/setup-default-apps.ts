@@ -2,7 +2,15 @@ import { appExists } from "../../utils/app";
 import { brewInstallIfNotInstalled } from "../../utils/brew";
 import { runCommand } from "../../utils/setup-pc-utils";
 
-export async function setupDefaultApps() {
+export function setupDefaultApps() {
+  return Promise.all([setupNeovide(), setupLibreOffice()]);
+}
+
+function setupLibreOffice() {
+  return brewInstallIfNotInstalled("libreoffice", { cask: true });
+}
+
+async function setupNeovide() {
   if (!(await appExists("Neovide")))
     throw new Error("Neovide is not installed");
 
