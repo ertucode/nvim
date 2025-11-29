@@ -4,7 +4,7 @@ return {
 		{
 			"<leader>lrn",
 			function()
-				require("live-rename").rename({ insert = true })
+				require("live-rename").rename({ insert = true, cursorpos = -1 })
 			end,
 			"LSP rename",
 		},
