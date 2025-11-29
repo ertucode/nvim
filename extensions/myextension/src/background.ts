@@ -79,34 +79,27 @@ chrome.commands.onCommand.addListener(async (command) => {
   } else if (command.startsWith("open_")) {
     try {
       const targetUrl = getSiteToOpen(command);
-      // Get the current active tab in the current window
-      const [currentTab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
+      const tabs = await chrome.tabs.query({});
+      const existingTab = tabs.find((tab) => tab.url?.startsWith(targetUrl));
 
-      // Check if the current tab is "empty"
+      if (existingTab && existingTab.id) {
+        await chrome.tabs.update(existingTab.id, { active: true });
+        await chrome.windows.update(existingTab.windowId, { focused: true });
+        return;
+      }
+
+      const currentTab = tabs.find((tab) => tab.active);
       const isEmptyTab =
         currentTab?.url === "chrome://newtab/" ||
         currentTab?.url === "about:blank";
 
       if (isEmptyTab && currentTab?.id) {
-        // Reuse current tab
-        await chrome.tabs.update(currentTab.id, { url: targetUrl });
+        await chrome.tabs.remove(currentTab.id);
+        await chrome.tabs.create({ url: targetUrl });
         return;
       }
-      // Check if the site is already open in any tab
-      const tabs = await chrome.tabs.query({});
-      const existingTab = tabs.find((tab) => tab.url?.startsWith(targetUrl));
 
-      if (existingTab && existingTab.id) {
-        // Focus the existing tab
-        await chrome.tabs.update(existingTab.id, { active: true });
-        await chrome.windows.update(existingTab.windowId, { focused: true });
-      } else {
-        // Open a new tab
-        await chrome.tabs.create({ url: targetUrl });
-      }
+      await chrome.tabs.create({ url: targetUrl });
     } catch (e) {
       console.error("Failed to open site:", e);
     }
