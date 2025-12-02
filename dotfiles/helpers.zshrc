@@ -10,3 +10,5 @@ export PATH="$PATH:/Users/cavitertugrulsirt/.yarn/bin" # onceden yarn global bin
 alias push_folder='git add . && git commit -m "pushing" && git push'
 alias gitstash='git add . && git stash -m "being safe $(date +%Y-%m-%d\ %H:%M:%S)"'
 export editor="nvim"
+alias -s ts='bun'
+export HOMEBREW_NO_AUTO_UPDATE=1

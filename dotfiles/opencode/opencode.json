@@ -13,7 +13,8 @@
           "git log *": "allow",
           "git diff": "allow",
           "git diff *": "allow",
-          "ls la *": "allow"
+          "ls la *": "allow",
+          "find *": "allow"
         }
       },
       "tools": {
