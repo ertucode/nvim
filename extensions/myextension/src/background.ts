@@ -92,8 +92,10 @@ chrome.commands.onCommand.addListener(async (command) => {
       const isEmptyTab =
         currentTab?.url === "chrome://newtab/" ||
         currentTab?.url === "about:blank";
+      const tabCount = tabs.length;
 
-      if (isEmptyTab && currentTab?.id) {
+      if (isEmptyTab && currentTab?.id && tabCount > 1) {
+        // url bar'dan focusu almak icin
         await chrome.tabs.remove(currentTab.id);
         await chrome.tabs.create({ url: targetUrl });
         return;
