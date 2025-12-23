@@ -12,4 +12,4 @@ alias gitstash='git add . && git stash -m "being safe $(date +%Y-%m-%d\ %H:%M:%S
 export editor="nvim"
 alias -s ts='bun'
 export HOMEBREW_NO_AUTO_UPDATE=1
-alias mygui='function _mygui() { open -a mygui --args --initial-path="$(cd "$1" 2>/dev/null && pwd || echo "$1")"; }; _mygui'
+alias koda='function _koda() { open -a koda --args --initial-path="$(cd "$1" 2>/dev/null && pwd || echo "$1")"; }; _koda'
