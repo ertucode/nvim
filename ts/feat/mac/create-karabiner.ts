@@ -5,7 +5,7 @@ import baseKarabiner from "./base-karabiner.json";
 const manipulators = [
     c("a", ["option"                ], "open -a 'Alacritty'"),
     c("w", ["option"                ], "open -a 'Google Chrome' || open -a 'Zen' || open -a 'Firefox'"),
-    c("f", ["option"                ], "open -a 'koda'"),
+    c("f", ["option"                ], "~/.config/nvim/scripts/open_koda.sh"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),
     c("o", ["option"                ], "open -a 'Microsoft Outlook'"),
     c("p", ["option"                ], "open -a 'Postman'"),
@@ -19,7 +19,7 @@ const manipulators = [
     c("c", ["option"                ], "open -a 'Whatsapp'"),
     c("r", ["option"                ], "open -a 'Rider'"),
     c("e", ["option"                ], "open -a 'Electron'"),
-    c("d", ["option"                ], "open -a koda --args --initial-path=~/Downloads"),
+    c("d", ["option"                ], "~/.config/nvim/scripts/open_koda.sh ~/Downloads"),
     c("p", ["option", "left_control"], "open 'raycast://extensions/raycast/clipboard-history/clipboard-history'",),
     c("l", ["option", "left_control"], "open -a 'Lens'"),
     c("d", ["option", "left_control"], "open -a 'Docker Desktop'"),
@@ -29,7 +29,6 @@ const manipulators = [
     c("q", ["option", "left_control"], "open -a 'qBittorrent'"),
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/focus_teams_meeting.sh",),
     c("w", ["option", "left_control"], "osascript ~/.config/nvim/scripts/restart_wifi_runner.scpt",),
-    c("g", ["option", "left_control"], "open -a 'koda'"),
   ];
 
 function c(key: string, mandatory: string[], command: string) {

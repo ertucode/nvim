@@ -14,7 +14,11 @@
           "git diff": "allow",
           "git diff *": "allow",
           "ls -la *": "allow",
-          "find *": "allow"
+          "find *": "allow",
+          "npx nx show *": "allow",
+          "npx tsc *": "allow",
+          "yarn list *": "allow",
+          "rg *": "allow"
         }
       },
       "tools": {

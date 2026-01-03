@@ -82,5 +82,18 @@ if (!inputPath) {
 console.log({ inputPath, outputPath });
 
 convertDocxToPdf(inputPath, outputPath)
-  .then((pdfPath) => console.log("PDF created at:", pdfPath))
-  .catch((err) => console.error("Conversion failed:", err));
+  .then((pdfPath) => {
+    console.log("PDF created at:", pdfPath);
+    const directory = path.dirname(pdfPath);
+    const fileName = path.basename(pdfPath);
+    const report = {
+      type: "reload-path",
+      path: directory,
+      fileToSelect: fileName,
+    };
+    console.log("[koda]: ", JSON.stringify(report));
+  })
+  .catch((err) => {
+    console.error("Conversion failed:", err);
+    throw err;
+  });
