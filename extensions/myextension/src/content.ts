@@ -11,6 +11,7 @@ function showErrorModal(text: string) {
 
   // Create overlay
   const overlay = document.createElement("div");
+
   overlay.id = "extension-error-modal";
   overlay.style.position = "fixed";
   overlay.style.bottom = "20px";

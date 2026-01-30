@@ -37,48 +37,103 @@ local function is_in_split_view(direction)
 	return diff_wins >= 2 and has_fugitive_diff
 end
 
----Get the file to open diff for, considering split view state
----@param direction "next"|"prev" Direction to navigate for next file
----@return FileToDiff|nil FileToDiff table with filename and in_split flag, or nil if not found
-local function find_file_open_diff_for(direction)
-	local in_split = is_in_split_view(direction)
-	local git = require("ertu.utils.git")
+---Detect if current window is a fugitive buffer
+---@return boolean
+local function is_in_fugitive_window()
+	local current_win = vim.api.nvim_get_current_win()
+	local current_buf = vim.api.nvim_win_get_buf(current_win)
+	local current_ft = vim.bo[current_buf].filetype
+	return current_ft == "fugitive"
+end
 
+-- finds buffer name that doesn't have fugitive:// or oil:// etc
+---@return string|nil Buffer name without custom protocol, or nil if not found
+local function find_buffer_name_without_custom_protocol()
+	local bufs = vim.api.nvim_list_bufs()
+	for _, buf in ipairs(bufs) do
+		if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
+			local bufname = vim.api.nvim_buf_get_name(buf)
+			-- Skip buffers with custom protocols like fugitive://, oil://, etc.
+			if bufname ~= "" and not bufname:match("^%a+://") then
+				return bufname
+			end
+		end
+	end
+	return nil
+end
+
+local function find_anchor_file_name_for_navigation()
+	if is_in_fugitive_window() then
+		return find_buffer_name_without_custom_protocol()
+	end
 	-- Get filename from current buffer (not cursor)
 	local current_buf = vim.api.nvim_get_current_buf()
 	local bufname = vim.api.nvim_buf_get_name(current_buf)
 	-- Extract filename from fugitive://path/.git//0/path/to/file -> path/to/file
 	local current_filename = bufname:match("^fugitive://.+/.git//%d+/(.+)$") or bufname
 
-	-- Get list of changed files
-	local changed_files = git.get_changed_files()
-	if #changed_files == 0 then
-		return nil
+	return current_filename
+end
+
+local function get_anchor_idx_for_navigation(current_filename, changed_files)
+	if not current_filename then
+		return 1
 	end
 
-	-- Find current file index in changed_files list
 	local current_idx = nil
 	for i, file in ipairs(changed_files) do
-		if file.name == current_filename then
+		local file_path = vim.fn.fnamemodify(file.name, ":p")
+		if file_path == current_filename then
 			current_idx = i
 			break
 		end
 	end
 
-	-- If current file not in changed files, return nil
-	if not current_idx then
-		current_idx = 1
-	end
+	return current_idx
+end
 
+local function get_target_idx(changed_files, current_idx, direction)
+	if not current_idx then
+		return 1
+	end
 	local target_idx
 	if direction == "next" then
-		target_idx = (current_idx % #changed_files) + 1
+		return (current_idx % #changed_files) + 1
 	else
 		target_idx = current_idx - 1
 		if target_idx < 1 then
 			target_idx = #changed_files
 		end
 	end
+
+	return target_idx
+end
+
+---Get the file to open diff for, considering split view state
+---@param direction "next"|"prev" Direction to navigate for next file
+---@return FileToDiff|nil FileToDiff table with filename and in_split flag, or nil if not found
+local function find_file_open_diff_for(direction)
+	-- Get list of changed files
+	local git = require("ertu.utils.git")
+	local changed_files = git.get_changed_files()
+	if #changed_files == 0 then
+		return nil
+	end
+
+	local in_split = is_in_split_view(direction)
+
+	local current_filename = find_anchor_file_name_for_navigation()
+
+	local current_idx = get_anchor_idx_for_navigation(current_filename, changed_files)
+
+	local target_idx = get_target_idx(changed_files, current_idx, direction)
+
+	-- print(vim.inspect({
+	-- 	current_idx = current_idx,
+	-- 	target_idx = target_idx,
+	-- 	filename = changed_files[target_idx].name,
+	-- 	in_split = in_split,
+	-- }))
 
 	return { filename = changed_files[target_idx].name, in_split = in_split }
 end
@@ -107,7 +162,8 @@ local function navigate_to_new_change_file(direction)
 	-- Navigate to the file
 	vim.cmd("edit " .. result.filename)
 	-- Run Gdiffsplit on it
-	vim.cmd("Ghdiffsplit")
+	vim.cmd("Ghdiffsplit HEAD")
+	require("ertu.utils.window").swap_vertical()
 end
 
 local function make_buffer_floating(target_buf_id)
@@ -197,14 +253,14 @@ return {
 		{ "<leader>gg", "<cmd>Git<CR>", desc = "Open fugitive" },
 		{ "ɷ", "<cmd>Git<CR>", desc = "Open fugitive" },
 		{
-			"[f",
+			"[[",
 			function()
 				navigate_to_new_change_file("prev")
 			end,
 			desc = "Navigate to previous changed file",
 		},
 		{
-			"]f",
+			"]]",
 			function()
 				navigate_to_new_change_file("next")
 			end,
