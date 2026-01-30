@@ -58,7 +58,7 @@ return {
 					enable = true,
 					set_jumps = false,
 					goto_next_start = {
-						["]f"] = "@function.outer",
+						-- ["]f"] = "@function.outer",
 						["]a"] = "@attribute.outer",
 						["]o"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
 						["]j"] = "@parameter.inner",
