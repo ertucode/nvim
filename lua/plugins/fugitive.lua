@@ -93,10 +93,21 @@ local function navigate_to_new_change_file(direction)
 		return
 	end
 
+	-- Close all other windows except current and fugitive
+	local current_win = vim.api.nvim_get_current_win()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if win ~= current_win then
+			local buf = vim.api.nvim_win_get_buf(win)
+			if vim.bo[buf].filetype ~= "fugitive" then
+				vim.api.nvim_win_close(win, false)
+			end
+		end
+	end
+
 	-- Navigate to the file
 	vim.cmd("edit " .. result.filename)
 	-- Run Gdiffsplit on it
-	vim.cmd("Gdiffsplit")
+	vim.cmd("Ghdiffsplit")
 end
 
 local function make_buffer_floating(target_buf_id)

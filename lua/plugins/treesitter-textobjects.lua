@@ -78,7 +78,7 @@ return {
 						["]J"] = "@parameter.inner",
 					},
 					goto_previous_start = {
-						["[f"] = "@function.outer",
+						-- ["[f"] = "@function.outer",
 						["[a"] = "@attribute.outer",
 						["[o"] = { query = "@fold", query_group = "folds", desc = "Previous fold" },
 						["[j"] = "@parameter.inner",
