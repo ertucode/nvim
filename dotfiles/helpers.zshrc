@@ -13,3 +13,4 @@ export editor="nvim"
 alias -s ts='bun'
 export HOMEBREW_NO_AUTO_UPDATE=1
 alias koda='function _koda() { open -a koda --args --initial-path="$(cd "$1" 2>/dev/null && pwd || echo "$1")"; }; _koda'
+export EDITOR=nvim

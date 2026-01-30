@@ -53,12 +53,35 @@ local function autorefresh_fugitive()
 	})
 end
 
+local function only_except_fugitive()
+	local current = vim.api.nvim_get_current_win()
+
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if win ~= current then
+			local buf = vim.api.nvim_win_get_buf(win)
+			if vim.bo[buf].filetype ~= "fugitive" then
+				vim.api.nvim_win_close(win, false)
+			end
+		end
+	end
+end
+
+-- vim.fn.getqflist({ context = 1, idx = 1 }).context.items[1].diff[1]
+-- {
+--   filename = "fugitive:///Users/cavitertugrulsirt/.config/nvim/.git//0/dotfiles/helpers.zshrc",
+--   lnum = "15",
+--   module = ":0:dotfiles/helpers.zshrc",
+--   text = "alias koda='function _koda() { open -a koda --args --initial-path=\"$(cd \"$1\" 2>/",
+--   valid = 1
+-- }
+
 return {
 	"tpope/vim-fugitive",
 	cmd = { "Git", "G", "Gwrite" },
 	keys = {
 		{ "<leader>gt", "<cmd>Git difftool -y HEAD<CR>", desc = "Fugitive. Put all diffs to tabs" },
 		{ "<leader>gl", "<cmd>Git log --oneline<CR>", desc = "Fugitive. Git log --oneline" },
+		{ "<leader>go", only_except_fugitive, desc = "Only window except Fugitive" },
 		{ "<leader>gg", "<cmd>Git<CR>", desc = "Open fugitive" },
 		{ "ɷ", "<cmd>Git<CR>", desc = "Open fugitive" },
 	},

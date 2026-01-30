@@ -15,6 +15,7 @@ let g:highlightedyank_highlight_duration = "200"
 " IdeaVim: Track Action Ids
 
 nnoremap K :action ShowHoverInfo<CR>
+nnoremap gD :action GotoSuperMethod<CR>
 " Main menu => Navigate => Goto By Name Actions => Goto File
 nnoremap <C-p> :action GotoFile<CR>
 nnoremap <C-a>s :action $LRU<CR>
