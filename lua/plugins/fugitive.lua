@@ -164,6 +164,7 @@ local function navigate_to_new_change_file(direction)
 	-- Run Gdiffsplit on it
 	vim.cmd("Ghdiffsplit HEAD")
 	require("ertu.utils.window").swap_vertical()
+	vim.cmd("normal! gg")
 end
 
 local function make_buffer_floating(target_buf_id)
