@@ -83,4 +83,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = set_diff_highlights,
 })
 
+vim.api.nvim_create_user_command("W", "noautocmd write", {})
+
 require("ertu.utils.inter-session-yanking").setup()

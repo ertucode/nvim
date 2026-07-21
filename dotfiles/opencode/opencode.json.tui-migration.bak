@@ -1,5 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "keybinds": {
+    "messages_first": "<leader>u"
+  },
   "agent": {
     "plan": {
       "permission": {
@@ -11,18 +14,13 @@
           "git diff": "allow",
           "git diff *": "allow",
           "git show *": "allow",
-          "git ls-files *": "allow",
-          "git blame *": "allow",
           "echo *": "allow",
           "ls -la *": "allow",
-          "ls *": "allow",
           "find *": "allow",
           "npx nx show *": "allow",
           "npx tsc *": "allow",
           "yarn list *": "allow",
-          "rg *": "allow",
-          "yarn nx show *": "allow",
-          "yarn why *": "allow"
+          "rg *": "allow"
         }
       },
       "tools": {

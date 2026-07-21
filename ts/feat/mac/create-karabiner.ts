@@ -8,7 +8,7 @@ const manipulators = [
     c("f", ["option"                ], "~/.config/nvim/scripts/open_koda.sh"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),
     c("o", ["option"                ], "open -a 'Microsoft Outlook'"),
-    c("p", ["option"                ], "open -a 'Postman'"),
+    c("p", ["option"                ], "~/.config/nvim/scripts/open_kova.sh"),
     c("v", ["option"                ], "open -a 'Visual Studio Code'"),
     c("s", ["option"                ], "open -a 'Simulator'"),
     c("b", ["option"                ], "open -a 'IntelliJ IDEA'"),
@@ -18,7 +18,7 @@ const manipulators = [
     c("g", ["option"                ], "open -a 'DataGrip'"),
     c("c", ["option"                ], "open -a 'Whatsapp'"),
     c("r", ["option"                ], "open -a 'Rider'"),
-    c("e", ["option"                ], "open -a 'Electron'"),
+    c("e", ["option"                ], "~/.config/nvim/scripts/open_electron.sh"),
     c("d", ["option"                ], "~/.config/nvim/scripts/open_koda.sh ~/Downloads"),
     c("p", ["option", "left_control"], "open 'raycast://extensions/raycast/clipboard-history/clipboard-history'",),
     c("l", ["option", "left_control"], "open -a 'Lens'"),
@@ -29,6 +29,7 @@ const manipulators = [
     c("q", ["option", "left_control"], "open -a 'qBittorrent'"),
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/focus_teams_meeting.sh",),
     c("w", ["option", "left_control"], "osascript ~/.config/nvim/scripts/restart_wifi_runner.scpt",),
+    c("i", ["option", "left_control"], "~/.config/nvim/scripts/open_kopa.sh"),
   ];
 
 function c(key: string, mandatory: string[], command: string) {
