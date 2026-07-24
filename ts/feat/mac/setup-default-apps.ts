@@ -16,7 +16,7 @@ async function setupNeovide() {
 
   await brewInstallIfNotInstalled("duti", { cli: true });
 
-  const types = ["txt", "json", "csv", "geojson", "har"];
+  const types = ["txt", "json", "csv", "geojson"];
 
   for (const type of types) {
     runCommand(`duti -s com.neovide.neovide ${type} all`);

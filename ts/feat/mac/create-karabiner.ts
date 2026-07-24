@@ -30,6 +30,7 @@ const manipulators = [
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/focus_teams_meeting.sh",),
     c("w", ["option", "left_control"], "osascript ~/.config/nvim/scripts/restart_wifi_runner.scpt",),
     c("i", ["option", "left_control"], "~/.config/nvim/scripts/open_kopa.sh"),
+    c("c", ["option", "left_control"], "open -a 'Calendar'"),
   ];
 
 function c(key: string, mandatory: string[], command: string) {

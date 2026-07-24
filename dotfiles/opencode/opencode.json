@@ -13,6 +13,7 @@
           "git show *": "allow",
           "git ls-files *": "allow",
           "git blame *": "allow",
+          "git grep *": "allow",
           "echo *": "allow",
           "ls -la *": "allow",
           "ls *": "allow",

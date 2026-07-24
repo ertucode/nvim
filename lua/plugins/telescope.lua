@@ -37,11 +37,20 @@ return {
 			vim.keymap.set("n", mapping, fn, { desc = desc })
 		end
 
+		local mobile_dogan_ignore_pattern = "mobile%-dogan/"
+		local mobile_dogan_glob = "!**/mobile-dogan/**"
+
 		set("<leader>frp", builtin.resume, "[F]ind [R]e[P]eat")
 
 		set("<leader>ff", builtin.find_files, "[F]ind [F]iles")
 
-		set("<C-S>", builtin.live_grep, "[F]ind [S]tring")
+		set("<C-S>", function()
+			builtin.live_grep({
+				additional_args = function()
+					return { "--glob", mobile_dogan_glob }
+				end,
+			})
+		end, "[F]ind [S]tring")
 		set("<leader>fcs", function()
 			builtin.grep_string({ search = vim.fn.expand("<cword>") })
 		end, "[F]ind [C]urrent [S]tring")
@@ -83,6 +92,7 @@ return {
 		set("<C-p>", function()
 			local opts = {
 				entry_maker = entry_maker(),
+				file_ignore_patterns = { mobile_dogan_ignore_pattern },
 				sorting_strategy = "ascending",
 				layout_strategy = "center",
 				border = true,
