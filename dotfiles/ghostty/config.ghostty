@@ -1,0 +1,4 @@
+macos-option-as-alt = true
+auto-update-channel = tip
+# fullscreen = non-native-padded-notch
+fullscreen = non-native

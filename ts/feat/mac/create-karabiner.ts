@@ -3,7 +3,7 @@ import baseKarabiner from "./base-karabiner.json";
 // https://karabiner-elements.pqrs.org/docs/json/
 // prettier-ignore
 const manipulators = [
-    c("a", ["option"                ], "open -a 'Alacritty'"),
+    c("a", ["option"                ], "open -a 'Ghostty'"),
     c("w", ["option"                ], "open -a 'Google Chrome' || open -a 'Zen' || open -a 'Firefox'"),
     c("f", ["option"                ], "~/.config/nvim/scripts/open_koda.sh"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),

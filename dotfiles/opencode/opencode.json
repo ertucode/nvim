@@ -14,6 +14,8 @@
           "git ls-files *": "allow",
           "git blame *": "allow",
           "git grep *": "allow",
+          "git remote -v *": "allow",
+          "git ls-remote *": "allow",
           "echo *": "allow",
           "ls -la *": "allow",
           "ls *": "allow",
@@ -23,7 +25,9 @@
           "yarn list *": "allow",
           "rg *": "allow",
           "yarn nx show *": "allow",
-          "yarn why *": "allow"
+          "yarn why *": "allow",
+          "printf *": "allow",
+          "sed -n *": "allow"
         }
       },
       "tools": {

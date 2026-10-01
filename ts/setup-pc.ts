@@ -13,6 +13,8 @@ link(
 link("~/.config/nvim/dotfiles/ideavimrc", "~/.ideavimrc");
 link("~/.config/nvim/dotfiles/neovide", "~/.config/neovide");
 link("~/.config/nvim/dotfiles/opencode", "~/.config/opencode");
+link("~/.config/nvim/dotfiles/mpv", "~/.config/mpv");
+link("~/.config/nvim/dotfiles/ghostty", "~/.config/ghostty");
 
 ensureLinesInFile({
   lines: ["source ~/.config/nvim/dotfiles/helpers.zshrc"],

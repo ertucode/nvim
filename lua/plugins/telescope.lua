@@ -38,7 +38,9 @@ return {
 		end
 
 		local mobile_dogan_ignore_pattern = "mobile%-dogan/"
+		local mobile_wallet_ignore_pattern = "mobile%-wallet/"
 		local mobile_dogan_glob = "!**/mobile-dogan/**"
+		local mobile_wallet_glob = "!**/mobile-wallet/**"
 
 		set("<leader>frp", builtin.resume, "[F]ind [R]e[P]eat")
 
@@ -47,7 +49,7 @@ return {
 		set("<C-S>", function()
 			builtin.live_grep({
 				additional_args = function()
-					return { "--glob", mobile_dogan_glob }
+					return { "--glob", mobile_dogan_glob, "--glob", mobile_wallet_glob }
 				end,
 			})
 		end, "[F]ind [S]tring")
@@ -92,7 +94,7 @@ return {
 		set("<C-p>", function()
 			local opts = {
 				entry_maker = entry_maker(),
-				file_ignore_patterns = { mobile_dogan_ignore_pattern },
+				file_ignore_patterns = { mobile_dogan_ignore_pattern, mobile_wallet_ignore_pattern },
 				sorting_strategy = "ascending",
 				layout_strategy = "center",
 				border = true,
