@@ -1,4 +1,25 @@
+# Cmd + Shift + ,
 macos-option-as-alt = true
 auto-update-channel = tip
-# fullscreen = non-native-padded-notch
-fullscreen = non-native
+# Native fullscreen prevents the desktop from showing around the window edges.
+fullscreen = true
+font-family = "JetbrainsMono Nerd Font Mono"
+font-size = 13
+
+# Calm mountain silhouette by Elliott Engelmann (Unsplash).
+background-image = ~/.config/ghostty/calm-mountain.jpg
+background-image-fit = cover
+background-image-position = center
+background-image-opacity = 1
+
+keybind = ctrl+f11=text:♥
+keybind = ctrl+f12=text:♠
+keybind = ctrl+semicolon=text:\x1b
+
+keybind = ctrl+super+j=text:♦
+keybind = ctrl+super+k=text:♣
+keybind = super+g=text:ɷ
+
+keybind = alt+right=esc:F
+keybind = alt+left=esc:B
+keybind = f10=toggle_fullscreen
