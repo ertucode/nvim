@@ -27,10 +27,11 @@ const manipulators = [
     c("o", ["option", "left_control"], "open -a 'Obs'"),
     c("v", ["option", "left_control"], "open -a 'FortiClient'"),
     c("q", ["option", "left_control"], "open -a 'qBittorrent'"),
-    c("t", ["option", "left_control"], "~/.config/nvim/scripts/focus_teams_meeting.sh",),
     c("w", ["option", "left_control"], "osascript ~/.config/nvim/scripts/restart_wifi_runner.scpt",),
     c("i", ["option", "left_control"], "~/.config/nvim/scripts/open_kopa.sh"),
     c("c", ["option", "left_control"], "open -a 'Calendar'"),
+    c("k", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/kill-processes.ts'"),
+    c("t", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts -on'"),
   ];
 
 function c(key: string, mandatory: string[], command: string) {

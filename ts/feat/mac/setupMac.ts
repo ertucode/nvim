@@ -7,6 +7,7 @@ export async function setupMac() {
   // setupOptionOverlay();
   await setupDefaultApps();
   runCommand("chmod +x ~/.config/nvim/scripts/focus_teams_meeting.sh");
+  runCommand("chmod +x ~/.config/nvim/scripts/open_ghostty_command.sh");
 
   const karabiner = createKarabiner();
 
