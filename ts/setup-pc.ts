@@ -6,6 +6,7 @@ import { getPlatformType } from "./utils/platform";
 import { ensureLinesInFile } from "./utils/setup-pc-utils";
 
 link("~/.config/nvim/dotfiles/starsip.toml", "~/.config/starship.toml");
+link("~/.config/nvim/dotfiles/p10k.zsh", "~/.p10k.zsh");
 link(
   "~/.config/nvim/dotfiles/alacritty.toml",
   "~/.config/alacritty/alacritty.toml",
