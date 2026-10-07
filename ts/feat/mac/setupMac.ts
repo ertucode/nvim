@@ -10,6 +10,11 @@ export async function setupMac() {
 
   const karabiner = createKarabiner();
 
-  writeFile("~/.config/karabiner/karabiner.json", JSON.stringify(karabiner));
-  link("~/.config/nvim/dotfiles/karabiner", "~/.config/karabiner");
+  writeFile(
+    "~/.config/nvim/dotfiles/karabiner/karabiner.json",
+    JSON.stringify(karabiner),
+  );
+  link("~/.config/nvim/dotfiles/karabiner", "~/.config/karabiner", {
+    replaceDirectory: true,
+  });
 }

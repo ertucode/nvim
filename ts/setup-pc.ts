@@ -11,10 +11,18 @@ link(
   "~/.config/alacritty/alacritty.toml",
 );
 link("~/.config/nvim/dotfiles/ideavimrc", "~/.ideavimrc");
-link("~/.config/nvim/dotfiles/neovide", "~/.config/neovide");
-link("~/.config/nvim/dotfiles/opencode", "~/.config/opencode");
-link("~/.config/nvim/dotfiles/mpv", "~/.config/mpv");
-link("~/.config/nvim/dotfiles/ghostty", "~/.config/ghostty");
+link("~/.config/nvim/dotfiles/neovide", "~/.config/neovide", {
+  replaceDirectory: true,
+});
+link("~/.config/nvim/dotfiles/opencode", "~/.config/opencode", {
+  replaceDirectory: true,
+});
+link("~/.config/nvim/dotfiles/mpv", "~/.config/mpv", {
+  replaceDirectory: true,
+});
+link("~/.config/nvim/dotfiles/ghostty", "~/.config/ghostty", {
+  replaceDirectory: true,
+});
 
 ensureLinesInFile({
   lines: ["source ~/.config/nvim/dotfiles/helpers.zshrc"],

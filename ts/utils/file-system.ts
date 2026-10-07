@@ -32,8 +32,39 @@ export function ensureDirectoryForFile(destination: string) {
   }
 }
 
-export function link(source: string, destination: string) {
+export function link(
+  source: string,
+  destination: string,
+  options: { replaceDirectory?: boolean } = {},
+) {
+  const normalizedSource = normalizePath(source);
+  const normalizedDestination = normalizePath(destination);
+
+  if (!fs.existsSync(normalizedSource)) {
+    throw new Error(`Cannot link missing source: ${normalizedSource}`);
+  }
+
   ensureDirectoryForFile(destination);
 
-  runCommand(`ln -sfh ${source} ${destination}`);
+  try {
+    const destinationStats = fs.lstatSync(normalizedDestination);
+
+    if (destinationStats.isDirectory()) {
+      if (!options.replaceDirectory) {
+        throw new Error(
+          `Refusing to replace directory without replaceDirectory: ${normalizedDestination}`,
+        );
+      }
+
+      fs.rmSync(normalizedDestination, { recursive: true });
+    } else {
+      fs.unlinkSync(normalizedDestination);
+    }
+  } catch (error) {
+    if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) {
+      throw error;
+    }
+  }
+
+  fs.symlinkSync(normalizedSource, normalizedDestination);
 }
