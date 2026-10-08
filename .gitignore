@@ -1,5 +1,6 @@
 plugin/packer_compiled.lua
 node_modules
+dotfiles/opencode/service.json
 karabiner/automatic_backups
 karabiner/assets/complex_modifications/*
 !karabiner/assets/complex_modifications/.gitkeep
