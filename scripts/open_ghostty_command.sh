@@ -7,6 +7,8 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
 open -Fna "Ghostty" --args \
     --fullscreen=false \
     --window-save-state=never \

@@ -32,6 +32,7 @@ const manipulators = [
     c("c", ["option", "left_control"], "open -a 'Calendar'"),
     c("k", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/kill-processes.ts'"),
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts -on'"),
+    c("4", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts'"),
   ];
 
 function c(key: string, mandatory: string[], command: string) {
