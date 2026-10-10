@@ -1,4 +1,12 @@
 alias used_ports="sudo lsof -i -n -P | grep LISTEN"
+killatport() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: killatport <port>" >&2
+    return 1
+  fi
+
+  lsof -ti "tcp:$1" | xargs kill
+}
 export MANPAGER='nvim +Man!'
 export TERM=xterm-256color
 defaults write -g InitialKeyRepeat -int 10
