@@ -21,6 +21,19 @@ keybind = ctrl+super+k=text:♣
 keybind = super+g=text:ɷ
 keybind = super+n=text:nvim .\r
 
+# Send private escape sequences to tmux instead of using Ghostty tabs.
+keybind = super+w=esc:[9000~
+keybind = super+t=esc:[9001~
+keybind = super+digit_1=esc:[9002~
+keybind = super+digit_2=esc:[9003~
+keybind = super+digit_3=esc:[9004~
+keybind = super+digit_4=esc:[9005~
+keybind = super+digit_5=esc:[9006~
+keybind = super+digit_6=esc:[9007~
+keybind = super+digit_7=esc:[9008~
+keybind = super+digit_8=esc:[9009~
+keybind = super+digit_9=esc:[9010~
+
 keybind = alt+right=esc:F
 keybind = alt+left=esc:B
 keybind = f10=toggle_fullscreen
