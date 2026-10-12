@@ -19,6 +19,7 @@ keybind = ctrl+semicolon=text:\x1b
 keybind = ctrl+super+j=text:♦
 keybind = ctrl+super+k=text:♣
 keybind = super+g=text:ɷ
+keybind = super+n=text:nvim .\r
 
 keybind = alt+right=esc:F
 keybind = alt+left=esc:B
