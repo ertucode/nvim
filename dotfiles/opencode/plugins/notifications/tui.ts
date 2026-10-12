@@ -13,8 +13,33 @@ async function isGhosttyFocused() {
   return stdout.trim().toLowerCase() === "ghostty";
 }
 
+async function isOpenCodeFocused() {
+  if (!(await isGhosttyFocused())) return false;
+
+  if (!process.env.TMUX) return true;
+
+  const pane = process.env.TMUX_PANE;
+  if (!pane) return false;
+
+  try {
+    const { stdout } = await execFileAsync("tmux", [
+      "display-message",
+      "-p",
+      "-t",
+      pane,
+      "#{pane_active} #{window_active_clients}",
+    ]);
+
+    const [paneActive, activeClients] = stdout.trim().split(/\s+/);
+
+    return paneActive === "1" && Number(activeClients) > 0;
+  } catch {
+    return false;
+  }
+}
+
 async function notify(subtitle: string, message: string) {
-  if (await isGhosttyFocused()) return;
+  if (await isOpenCodeFocused()) return;
 
   await execFileAsync("/opt/homebrew/bin/terminal-notifier", [
     "-title",
