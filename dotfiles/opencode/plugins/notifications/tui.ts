@@ -159,6 +159,8 @@ export default Plugin.define({
   id: "notifications.tui",
 
   setup(ctx) {
+    const planSessions = new Set<string>();
+
     const stopForm = ctx.data.on("form.created", async (event) => {
       const question = event.data.form.fields
         .map((field) => field.description ?? field.title)
@@ -177,9 +179,29 @@ export default Plugin.define({
       await notify("İzin gerekli", message);
     });
 
+    const stopStepStarted = ctx.data.on("session.step.started", (event) => {
+      if (event.data.agent.toLowerCase() === "plan") {
+        planSessions.add(event.data.sessionID);
+      } else {
+        planSessions.delete(event.data.sessionID);
+      }
+    });
+
+    const stopIdle = ctx.data.on("session.idle", async (event) => {
+      if (!planSessions.delete(event.data.sessionID)) return;
+
+      const session = ctx.data.session.get(event.data.sessionID);
+      await notify(
+        "Plan tamamlandı",
+        session?.title || "Plan agentı yazmayı tamamladı",
+      );
+    });
+
     return () => {
       stopForm();
       stopPermission();
+      stopStepStarted();
+      stopIdle();
     };
   },
 });
