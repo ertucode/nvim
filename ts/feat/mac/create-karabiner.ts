@@ -14,7 +14,7 @@ const manipulators = [
     c("b", ["option"                ], "open -a 'IntelliJ IDEA'"),
     c("q", ["option"                ], "open -a 'IINA'"),
     c("k", ["option"                ], "open -a 'Karabiner-Elements'"),
-    c("n", ["option"                ], "open -a 'Obsidian'"),
+    c("n", ["option"                ], "~/.config/nvim/scripts/open_chrome_tab.sh 'https://notes.ertu.codes'"),
     c("g", ["option"                ], "open -a 'DataGrip'"),
     c("c", ["option"                ], "open -a 'Whatsapp'"),
     c("r", ["option"                ], "open -a 'Rider'"),

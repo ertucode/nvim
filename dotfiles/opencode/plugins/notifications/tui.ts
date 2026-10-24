@@ -141,7 +141,7 @@ async function isTmuxPaneVisible(): Promise<boolean> {
 async function notify(subtitle: string, message: string) {
   // Only stay silent when the user is looking right at OpenCode: Ghostty is
   // the frontmost app and our tmux pane is the one on screen.
-  if (await isGhosttyFocused() && (await isTmuxPaneVisible())) return;
+  if ((await isGhosttyFocused()) && (await isTmuxPaneVisible())) return;
 
   await execFileAsync("/opt/homebrew/bin/terminal-notifier", [
     "-title",
@@ -159,7 +159,7 @@ export default Plugin.define({
   id: "notifications.tui",
 
   setup(ctx) {
-    const planSessions = new Set<string>();
+    // const planSessions = new Set<string>();
 
     const stopForm = ctx.data.on("form.created", async (event) => {
       const question = event.data.form.fields
@@ -179,28 +179,28 @@ export default Plugin.define({
       await notify("İzin gerekli", message);
     });
 
-    const stopStepStarted = ctx.data.on("session.step.started", (event) => {
-      if (event.data.agent.toLowerCase() === "plan") {
-        planSessions.add(event.data.sessionID);
-      } else {
-        planSessions.delete(event.data.sessionID);
-      }
-    });
+    // const stopStepStarted = ctx.data.on("session.step.started", (event) => {
+    //   if (event.data.agent.toLowerCase() === "plan") {
+    //     planSessions.add(event.data.sessionID);
+    //   } else {
+    //     planSessions.delete(event.data.sessionID);
+    //   }
+    // });
 
     const stopIdle = ctx.data.on("session.idle", async (event) => {
-      if (!planSessions.delete(event.data.sessionID)) return;
+      // if (!planSessions.delete(event.data.sessionID)) return;
 
       const session = ctx.data.session.get(event.data.sessionID);
       await notify(
-        "Plan tamamlandı",
-        session?.title || "Plan agentı yazmayı tamamladı",
+        "Agent'ın çalışması bitti",
+        session?.title || "Agent yazmayı tamamladı",
       );
     });
 
     return () => {
       stopForm();
       stopPermission();
-      stopStepStarted();
+      // stopStepStarted();
       stopIdle();
     };
   },
