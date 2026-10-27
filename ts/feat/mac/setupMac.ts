@@ -2,11 +2,17 @@ import * as fs from "fs";
 import { link, writeFile } from "../../utils/file-system";
 import { runCommand } from "../../utils/setup-pc-utils";
 import { createKarabiner } from "./create-karabiner";
+import {
+  sharedClipboardImagePath,
+  sharedClipboardImageScript,
+  sharedClipboardImageScriptPath,
+  sharedClipboardPath,
+  sharedClipboardTypePath,
+} from "./shared-clipboard";
 import { setupDefaultApps } from "./setup-default-apps";
 
 const sharedKarabinerPath = "/Users/Shared/karabiner.json";
 const setupKarabinerScriptPath = "/Users/Shared/setup-karabiner.sh";
-const sharedClipboardPath = "/Users/Shared/shared-clipboard.txt";
 // Run once from another user's account; future updates can use Cmd+Shift+Ctrl+K:
 // /bin/sh /Users/Shared/setup-karabiner.sh
 
@@ -45,13 +51,17 @@ if [ "$needs_restart" = true ]; then
 fi
 `;
 
-function ensureSharedClipboardFile() {
-  const file = fs.openSync(sharedClipboardPath, "a", 0o666);
+function ensureSharedClipboardFile(path: string, initialContent = "") {
+  const file = fs.openSync(path, "a", 0o666);
   fs.closeSync(file);
 
-  const fileMode = fs.statSync(sharedClipboardPath).mode & 0o666;
+  if (initialContent && fs.statSync(path).size === 0) {
+    fs.writeFileSync(path, initialContent);
+  }
+
+  const fileMode = fs.statSync(path).mode & 0o666;
   if (fileMode !== 0o666) {
-    fs.chmodSync(sharedClipboardPath, 0o666);
+    fs.chmodSync(path, 0o666);
   }
 }
 
@@ -76,11 +86,15 @@ export async function setupMac() {
   const karabiner = createKarabiner();
   const karabinerJson = JSON.stringify(karabiner);
 
-  writeFile(
-    "~/.config/nvim/dotfiles/karabiner/karabiner.json",
-    karabinerJson,
+  writeFile("~/.config/nvim/dotfiles/karabiner/karabiner.json", karabinerJson);
+  ensureSharedClipboardFile(sharedClipboardPath);
+  ensureSharedClipboardFile(sharedClipboardImagePath);
+  ensureSharedClipboardFile(sharedClipboardTypePath, "text");
+  writeSharedFile(
+    sharedClipboardImageScriptPath,
+    sharedClipboardImageScript,
+    0o644,
   );
-  ensureSharedClipboardFile();
   writeSharedFile(sharedKarabinerPath, karabinerJson, 0o666);
   writeSharedFile(setupKarabinerScriptPath, setupKarabinerScript, 0o755);
   link("~/.config/nvim/dotfiles/karabiner", "~/.config/karabiner", {

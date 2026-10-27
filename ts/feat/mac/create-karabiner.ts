@@ -1,50 +1,8 @@
 import baseKarabiner from "./base-karabiner.json";
+import { sharedClipboardManipulators } from "./shared-clipboard";
 
 // https://karabiner-elements.pqrs.org/docs/json/
-const sharedClipboardPath = "/Users/Shared/shared-clipboard.txt";
 const setupKarabinerScriptPath = "/Users/Shared/setup-karabiner.sh";
-
-const sharedClipboardManipulators = [
-  {
-    from: {
-      key_code: "c",
-      modifiers: { mandatory: ["command", "shift", "control"] },
-    },
-    to: [
-      {
-        key_code: "c",
-        modifiers: ["left_command"],
-        hold_down_milliseconds: 200,
-      },
-      {
-        shell_command: `LANG=en_US.UTF-8 /usr/bin/pbpaste > ${sharedClipboardPath}`,
-      },
-    ],
-    type: "basic",
-  },
-  {
-    from: {
-      key_code: "v",
-      modifiers: { mandatory: ["command", "shift", "control"] },
-    },
-    to: [
-      {
-        shell_command: `LANG=en_US.UTF-8 /usr/bin/pbcopy < ${sharedClipboardPath}`,
-        hold_down_milliseconds: 200,
-      },
-      { key_code: "v", modifiers: ["left_command"] },
-    ],
-    type: "basic",
-  },
-  {
-    from: {
-      key_code: "k",
-      modifiers: { mandatory: ["command", "shift", "control"] },
-    },
-    to: [{ shell_command: `/bin/sh ${setupKarabinerScriptPath}` }],
-    type: "basic",
-  },
-] as const;
 
 // prettier-ignore
 const manipulators = [
@@ -79,6 +37,7 @@ const manipulators = [
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts -on'"),
     c("4", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts'"),
     ...sharedClipboardManipulators,
+    c("k", ["command", "shift", "control"], `/bin/sh ${setupKarabinerScriptPath}`),
   ];
 
 function c(key: string, mandatory: string[], command: string) {
