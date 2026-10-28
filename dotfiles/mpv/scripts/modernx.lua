@@ -551,6 +551,8 @@ local osc_styles = {
 local state = {
     showtime = nil,                          -- time of last invocation (last mouse move)
     osc_visible = false,
+    timeline_only = false,
+    timeline_timer = nil, ---@type mp.Timer?
     anistart = nil,                          -- time when the animation started
     anitype = nil,                           -- current type of animation
     animation = nil,                         -- current animation alpha
@@ -1392,6 +1394,14 @@ local function draw_sponsorblock_ranges(element, elem_ass, xp, rh)
     end
 end
 
+local timeline_elements = {
+    seekbarbg = true,
+    seekbar = true,
+    tc_left = true,
+    tc_right = true,
+    chapter_title = true,
+}
+
 function render_elements(master_ass)
     -- when the slider is dragged or hovered and we have a target chapter name
     -- then we use it instead of the normal title. we calculate it before the
@@ -1430,8 +1440,18 @@ function render_elements(master_ass)
     end
     state.touchingprogressbar = false
 
-    for n = 1, #elements do
-        local element = elements[n]
+    local rendered_elements = elements
+    if state.timeline_only then
+        rendered_elements = {}
+        for _, element in ipairs(elements) do
+            if timeline_elements[element.name] then
+                table.insert(rendered_elements, element)
+            end
+        end
+    end
+
+    for n = 1, #rendered_elements do
+        local element = rendered_elements[n]
         local style_ass = mp.assdraw.ass_new()
         style_ass:merge(element.style_ass)
         ass_append_alpha(style_ass, element.layout.alpha, 0)
@@ -4550,6 +4570,12 @@ function show_osc()
     -- show when disabled can happen (e.g. mouse_move) due to async/delayed unbinding
     if not state.enabled then return end
 
+    state.timeline_only = false
+    if state.timeline_timer then
+        state.timeline_timer:kill()
+        state.timeline_timer = nil
+    end
+
     mp.msg.trace('show_osc')
     --remember last time of invocation (mouse move)
     state.showtime = mp.get_time()
@@ -4559,6 +4585,25 @@ function show_osc()
     if (user_opts.fade_duration > 0) then
         state.anitype = nil
     end
+end
+
+local function show_timeline(duration)
+    if not state.enabled then return end
+
+    state.timeline_only = true
+    state.showtime = nil
+    osc_visible(true)
+    kill_animation()
+
+    if state.timeline_timer then
+        state.timeline_timer:kill()
+    end
+    state.timeline_timer = mp.add_timeout(duration, function()
+        state.timeline_timer = nil
+        if state.timeline_only then
+            hide_osc()
+        end
+    end)
 end
 
 function hide_osc()
@@ -4585,6 +4630,9 @@ end
 function osc_visible(visible)
     if state.osc_visible ~= visible then
         state.osc_visible = visible
+        if not visible then
+            state.timeline_only = false
+        end
         adjust_subtitles(true) -- raise subtitles
     end
     request_tick()
@@ -4743,18 +4791,19 @@ local function render()
 
     -- mouse input area
     local mouse_over_osc = false
+    local osc_interactive = state.osc_visible and not state.timeline_only
 
     for _, cords in ipairs(osc_param.areas['input']) do
-        if state.osc_visible then -- activate only when OSC is actually visible
+        if osc_interactive then -- timeline-only feedback is not interactive
             set_virt_mouse_area(cords.x1, cords.y1, cords.x2, cords.y2, 'input')
         end
-        if state.osc_visible ~= state.input_enabled then
-            if state.osc_visible then
+        if osc_interactive ~= state.input_enabled then
+            if osc_interactive then
                 mp.enable_key_bindings('input')
             else
                 mp.disable_key_bindings('input')
             end
-            state.input_enabled = state.osc_visible
+            state.input_enabled = osc_interactive
         end
 
         if (mouse_hit_coords(cords.x1, cords.y1, cords.x2, cords.y2) and user_opts.osc_keep_with_cursor) then
@@ -4764,7 +4813,7 @@ local function render()
 
     if osc_param.areas['window-controls'] then
         for _, cords in ipairs(osc_param.areas['window-controls']) do
-            if state.osc_visible then -- activate only when OSC is actually visible
+            if osc_interactive then -- activate only when the full OSC is visible
                 set_virt_mouse_area(cords.x1, cords.y1, cords.x2, cords.y2, 'window-controls')
                 mp.enable_key_bindings('window-controls')
             else
@@ -5228,6 +5277,9 @@ mp.register_script_message("thumbfast-info", function(json)
 end)
 
 mp.register_script_message("sponsorblock-done", make_sponsorblock_segments)
+mp.register_script_message("show-timeline", function(duration)
+    show_timeline(math.max(tonumber(duration) or 2, 0.1))
+end)
 
 set_virt_mouse_area(0, 0, 0, 0, 'input')
 set_virt_mouse_area(0, 0, 0, 0, 'window-controls')

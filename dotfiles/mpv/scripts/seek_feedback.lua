@@ -1,6 +1,7 @@
 -- Show the actual distance and destination whenever configured seek keys run.
 
 local generation = 0
+local timeline_duration = 2
 
 local function format_delta(seconds)
     local sign = seconds >= 0 and "+" or "-"
@@ -46,6 +47,7 @@ local function run_seek(command, value)
     generation = generation + 1
     local request = generation
     mp.commandv(command, tostring(value))
+    mp.commandv("script-message-to", "modernx", "show-timeline", tostring(timeline_duration))
     mp.add_timeout(0, function()
         show_result(before, 0, request)
     end)
