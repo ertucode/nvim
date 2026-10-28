@@ -1795,6 +1795,7 @@ local function startupevents()
     end
 
     mp.set_property_bool("auto-window-resize", false)
+    show_osc()
 end
 
 local mpv_default_title = "${?media-title:${media-title}}${!media-title:No file} - mpv"
