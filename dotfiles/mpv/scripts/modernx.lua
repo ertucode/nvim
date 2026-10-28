@@ -3167,15 +3167,15 @@ layouts["original"] = function()
     -- Volumebar
     if user_opts.volume_control then
         lo = new_element("volumebarbg", "box")
-        lo.visible = (osc_param.playresx >= 950 - outeroffset) and user_opts.volume_control
+        lo.visible = user_opts.volume_control
         lo = add_layout("volumebarbg")
-        lo.geometry = { x = 200, y = refY - 40, an = 4, w = 80, h = 2 }
+        lo.geometry = { x = 188, y = refY - 40, an = 4, w = 80, h = 2 }
         lo.layer = 13
         lo.alpha[1] = 128
         lo.style = user_opts.volumebar_match_seek_color and osc_styles.seekbar_bg or osc_styles.volumebar_bg
 
         lo = add_layout("volumebar")
-        lo.geometry = { x = 200, y = refY - 40, an = 4, w = 80, h = 8 }
+        lo.geometry = { x = 188, y = refY - 40, an = 4, w = 80, h = 8 }
         lo.style = user_opts.volumebar_match_seek_color and osc_styles.seekbar_fg or osc_styles.volumebar_fg
         lo.slider.gap = 3
         lo.slider.tooltip_style = osc_styles.tooltip
@@ -3462,15 +3462,15 @@ layouts["reduced"] = function()
     -- Volumebar
     if user_opts.volume_control then
         lo = new_element("volumebarbg", "box")
-        lo.visible = (osc_param.playresx >= 950 - outeroffset) and user_opts.volume_control
+        lo.visible = user_opts.volume_control
         lo = add_layout("volumebarbg")
-        lo.geometry = { x = 200, y = refY - 40, an = 4, w = 80, h = 2 }
+        lo.geometry = { x = 188, y = refY - 40, an = 4, w = 80, h = 2 }
         lo.layer = 13
         lo.alpha[1] = 128
         lo.style = user_opts.volumebar_match_seek_color and osc_styles.seekbar_bg or osc_styles.volumebar_bg
 
         lo = add_layout("volumebar")
-        lo.geometry = { x = 200, y = refY - 40, an = 4, w = 80, h = 8 }
+        lo.geometry = { x = 188, y = refY - 40, an = 4, w = 80, h = 8 }
         lo.style = user_opts.volumebar_match_seek_color and osc_styles.seekbar_fg or osc_styles.volumebar_fg
         lo.slider.gap = 3
         lo.slider.tooltip_style = osc_styles.tooltip
@@ -3911,7 +3911,7 @@ local function osc_init()
     ne.off = (get_track('audio') == 0)
     ne.visible = (osc_param.playresx >= 500 - outeroffset)
     ne.content = function()
-        return icons.audio .. string.format("{\\fn%s\\fs12} %d/%d", user_opts.font,
+        return icons.audio .. string.format("{\\fn%s\\fs10}\\N%d/%d", user_opts.font,
             get_track("audio"), #tracks_osc.audio)
     end
     ne.tooltip_style = osc_styles.tooltip
@@ -3972,7 +3972,7 @@ local function osc_init()
     ne.off = get_track('sub') == 0
     ne.visible = (osc_param.playresx >= 600 - outeroffset)
     ne.content = function()
-        return icons.subtitle .. string.format("{\\fn%s\\fs12} %d/%d", user_opts.font,
+        return icons.subtitle .. string.format("{\\fn%s\\fs10}\\N%d/%d", user_opts.font,
             get_track("sub"), #tracks_osc.sub)
     end
     ne.tooltip_style = osc_styles.tooltip
@@ -4362,7 +4362,7 @@ local function osc_init()
         local volume_max_setting = mp.get_property_number("volume-max")
         local volume_max = volume_max_setting and volume_max_setting > 0 and volume_max_setting or 100
         ne = new_element("volumebar", "slider")
-        ne.visible = (osc_param.playresx >= 950 - outeroffset) and user_opts.volume_control
+        ne.visible = user_opts.volume_control
         ne.enabled = get_track('audio') > 0
         ne.slider = { min = { value = 0 }, max = { value = volume_max } }
         ne.slider.markerF = function() return {} end
