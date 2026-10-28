@@ -14,7 +14,7 @@ export async function setupTmux() {
   const installPluginsPath = normalizePath(
     "~/.tmux/plugins/tpm/bin/install_plugins",
   );
-  runCommand(installPluginsPath);
+  runCommand(installPluginsPath, { prefix: installPluginsPath });
 
   runCommand("gcc  -framework Carbon CheckModKeys.m -o CheckModKeys", {
     cwd: "~/.config/nvim/ts/feat/tmux/dracula",

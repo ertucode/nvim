@@ -3,7 +3,7 @@ export const sharedClipboardImagePath =
   "/Users/Shared/shared-clipboard-image.png";
 export const sharedClipboardTypePath = "/Users/Shared/shared-clipboard.type";
 export const sharedClipboardImageScriptPath =
-  "/Users/Shared/shared-clipboard-image.js";
+  "/Users/Shared/scripts/shared-clipboard-image.js";
 
 export const sharedClipboardImageScript = `ObjC.import("AppKit");
 ObjC.import("Foundation");

@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as os from "os";
 import { link, writeFile } from "../../utils/file-system";
 import { runCommand } from "../../utils/setup-pc-utils";
 import { createKarabiner } from "./create-karabiner";
@@ -12,9 +13,13 @@ import {
 import { setupDefaultApps } from "./setup-default-apps";
 
 const sharedKarabinerPath = "/Users/Shared/karabiner.json";
-const setupKarabinerScriptPath = "/Users/Shared/setup-karabiner.sh";
+const sharedScriptsPath = "/Users/Shared/scripts";
+const setupKarabinerScriptPath = `${sharedScriptsPath}/setup-karabiner.sh`;
+const sharedMpvPath = "/Users/Shared/mpv";
+const setupMpvScriptPath = `${sharedScriptsPath}/setup-mpv.sh`;
+const refreshSharedConfigsScriptPath = `${sharedScriptsPath}/refresh-configs.sh`;
 // Run once from another user's account; future updates can use Cmd+Shift+Ctrl+K:
-// /bin/sh /Users/Shared/setup-karabiner.sh
+// /bin/sh /Users/Shared/scripts/refresh-configs.sh
 
 const setupKarabinerScript = `#!/bin/sh
 set -eu
@@ -51,6 +56,44 @@ if [ "$needs_restart" = true ]; then
 fi
 `;
 
+const setupMpvScript = `#!/bin/sh
+set -eu
+
+config_directory="$HOME/.config/mpv"
+shared_directory="/Users/Shared/mpv"
+
+if [ -L "$config_directory" ]; then
+  link_target="$(/usr/bin/readlink "$config_directory")"
+  if [ "$link_target" = "$shared_directory" ]; then
+    /bin/rm "$config_directory"
+  else
+    # Keep dotfile-managed configurations intact.
+    exit 0
+  fi
+fi
+
+/bin/mkdir -p "$config_directory"
+
+for source in "$shared_directory"/*; do
+  [ -e "$source" ] || continue
+  name="$(/usr/bin/basename "$source")"
+  destination="$config_directory/$name"
+  temporary="$config_directory/.$name.$$"
+
+  /bin/rm -rf "$temporary"
+  /bin/cp -R "$source" "$temporary"
+  /bin/rm -rf "$destination"
+  /bin/mv "$temporary" "$destination"
+done
+`;
+
+const refreshSharedConfigsScript = `#!/bin/sh
+set -eu
+
+/bin/sh /Users/Shared/scripts/setup-karabiner.sh
+/bin/sh /Users/Shared/scripts/setup-mpv.sh
+`;
+
 function ensureSharedClipboardFile(path: string, initialContent = "") {
   const file = fs.openSync(path, "a", 0o666);
   fs.closeSync(file);
@@ -77,6 +120,31 @@ function writeSharedFile(destination: string, content: string, mode: number) {
   }
 }
 
+function writeSharedMpvConfig() {
+  const sourceDirectory = `${os.homedir()}/.config/nvim/dotfiles/mpv`;
+  const temporaryDirectory = `${sharedMpvPath}.${process.pid}-${Date.now()}.tmp`;
+  const managedEntries = ["input.conf", "mpv.conf", "script-opts", "scripts"];
+
+  try {
+    fs.mkdirSync(temporaryDirectory, { recursive: true, mode: 0o755 });
+
+    for (const entry of managedEntries) {
+      const source = `${sourceDirectory}/${entry}`;
+      if (fs.existsSync(source)) {
+        fs.cpSync(source, `${temporaryDirectory}/${entry}`, {
+          recursive: true,
+        });
+      }
+    }
+
+    fs.rmSync(sharedMpvPath, { recursive: true, force: true });
+    fs.renameSync(temporaryDirectory, sharedMpvPath);
+    fs.chmodSync(sharedMpvPath, 0o755);
+  } finally {
+    fs.rmSync(temporaryDirectory, { recursive: true, force: true });
+  }
+}
+
 export async function setupMac() {
   // setupOptionOverlay();
   await setupDefaultApps();
@@ -87,6 +155,7 @@ export async function setupMac() {
   const karabinerJson = JSON.stringify(karabiner);
 
   writeFile("~/.config/nvim/dotfiles/karabiner/karabiner.json", karabinerJson);
+  fs.mkdirSync(sharedScriptsPath, { recursive: true, mode: 0o755 });
   ensureSharedClipboardFile(sharedClipboardPath);
   ensureSharedClipboardFile(sharedClipboardImagePath);
   ensureSharedClipboardFile(sharedClipboardTypePath, "text");
@@ -97,6 +166,13 @@ export async function setupMac() {
   );
   writeSharedFile(sharedKarabinerPath, karabinerJson, 0o666);
   writeSharedFile(setupKarabinerScriptPath, setupKarabinerScript, 0o755);
+  writeSharedMpvConfig();
+  writeSharedFile(setupMpvScriptPath, setupMpvScript, 0o755);
+  writeSharedFile(
+    refreshSharedConfigsScriptPath,
+    refreshSharedConfigsScript,
+    0o755,
+  );
   link("~/.config/nvim/dotfiles/karabiner", "~/.config/karabiner", {
     replaceDirectory: true,
   });

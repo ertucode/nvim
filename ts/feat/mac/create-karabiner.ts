@@ -2,7 +2,8 @@ import baseKarabiner from "./base-karabiner.json";
 import { sharedClipboardManipulators } from "./shared-clipboard";
 
 // https://karabiner-elements.pqrs.org/docs/json/
-const setupKarabinerScriptPath = "/Users/Shared/setup-karabiner.sh";
+const refreshSharedConfigsScriptPath =
+  "/Users/Shared/scripts/refresh-configs.sh";
 
 // prettier-ignore
 const manipulators = [
@@ -15,7 +16,7 @@ const manipulators = [
     c("v", ["option"                ], "open -a 'Visual Studio Code'"),
     c("s", ["option"                ], "open -a 'Simulator'"),
     c("b", ["option"                ], "open -a 'IntelliJ IDEA'"),
-    c("q", ["option"                ], "open -a 'IINA'"),
+    c("q", ["option"                ], "open -a 'Mpv'"),
     c("k", ["option"                ], "open -a 'Karabiner-Elements'"),
     c("n", ["option"                ], "~/.config/nvim/scripts/open_chrome_tab.sh 'https://notes.ertu.codes'"),
     c("g", ["option"                ], "open -a 'DataGrip'"),
@@ -37,7 +38,7 @@ const manipulators = [
     c("t", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts -on'"),
     c("4", ["option", "left_control"], "~/.config/nvim/scripts/open_ghostty_command.sh 'cd ~/dev/myscripts && /opt/homebrew/bin/bun run scripts/tmux-kill-sessions.ts'"),
     ...sharedClipboardManipulators,
-    c("k", ["command", "shift", "control"], `/bin/sh ${setupKarabinerScriptPath}`),
+    c("k", ["command", "shift", "control"], `/bin/sh ${refreshSharedConfigsScriptPath}`),
   ];
 
 function c(key: string, mandatory: string[], command: string) {

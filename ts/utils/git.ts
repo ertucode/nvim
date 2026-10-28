@@ -6,7 +6,10 @@ export function cloneRepo({ repo, path }: { repo: string; path: string }) {
 }
 
 export async function pullRepo({ path }: { path: string }) {
-  const res = await runCommandWithStreaming(["git", "pull"], { cwd: path });
+  const res = await runCommandWithStreaming(["git", "pull"], {
+    cwd: path,
+    prefix: "git pull",
+  });
 
   return res.stdout.includes("Already up to date.");
 }

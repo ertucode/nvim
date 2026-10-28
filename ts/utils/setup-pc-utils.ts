@@ -1,23 +1,67 @@
 import * as fs from "fs";
 import {
   execSync,
+  spawnSync,
   type ExecSyncOptionsWithBufferEncoding,
 } from "child_process";
 import * as os from "os";
-import { logWithHeader, rgb } from "./log";
+import { logWithHeader, logWithHeaderAndSource, rgb } from "./log";
 import type { SpawnOptions } from "bun";
 import { normalizePath } from "./file-system";
 import { spawn } from "bun";
 
 export function runCommand(
   command: string,
-  options?: Omit<ExecSyncOptionsWithBufferEncoding, "stdio"> & { cwd?: string },
+  options?: Omit<ExecSyncOptionsWithBufferEncoding, "stdio"> & {
+    cwd?: string;
+    prefix?: string;
+  },
 ) {
   logWithHeader("COMMAND", command, rgb(255, 255, 0), rgb(0, 180, 255));
-  if (options?.cwd) {
-    options.cwd = normalizePath(options.cwd!);
+  const { prefix, ...commandOptions } = options ?? {};
+  if (commandOptions.cwd) {
+    commandOptions.cwd = normalizePath(commandOptions.cwd);
   }
-  execSync(command, { stdio: "inherit", ...options });
+
+  if (!prefix) {
+    execSync(command, { stdio: "inherit", ...commandOptions });
+    return;
+  }
+
+  const result = spawnSync(command, {
+    ...commandOptions,
+    shell: true,
+    encoding: "utf8",
+    stdio: ["inherit", "pipe", "pipe"],
+  });
+
+  logPrefixedOutput(prefix, result.stdout);
+  logPrefixedOutput(prefix, result.stderr);
+
+  if (result.error) throw result.error;
+  if (result.status !== 0) {
+    throw new Error(`Command failed with exit code ${result.status}: ${command}`);
+  }
+}
+
+function logPrefixedOutput(prefix: string, output: string | null) {
+  if (!output) return;
+
+  const lines = output.replace(/\r?\n$/, "").split(/\r?\n/);
+  for (const line of lines) {
+    logCommandOutput(prefix, line);
+  }
+}
+
+function logCommandOutput(command: string, output: string) {
+  logWithHeaderAndSource(
+    "COMMAND",
+    command,
+    output,
+    rgb(255, 255, 0),
+    rgb(0, 180, 255),
+    rgb(255, 255, 255),
+  );
 }
 
 export async function getCommand(command: string[]) {
@@ -75,20 +119,21 @@ export function runCommandWithOutput(
 
 export async function runCommandWithStreaming(
   cmd: string[],
-  options?: Pick<SpawnOptions.OptionsObject, "timeout" | "signal" | "cwd">,
+  options?: Pick<SpawnOptions.OptionsObject, "timeout" | "signal" | "cwd"> & {
+    prefix?: string;
+  },
   onChunk?: (text: string, isStdout: boolean) => void,
 ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
   logWithHeader("COMMAND", cmd.join(" "), rgb(255, 255, 0), rgb(0, 180, 255));
-  if (options?.cwd) {
-    options.cwd = normalizePath(options.cwd!);
+  const { prefix, ...spawnOptions } = options ?? {};
+  if (spawnOptions.cwd) {
+    spawnOptions.cwd = normalizePath(spawnOptions.cwd);
   }
   const proc: Bun.Subprocess<any, "pipe", "pipe"> = Bun.spawn(cmd, {
     stdout: "pipe",
     stderr: "pipe",
-    ...options,
+    ...spawnOptions,
   } as const);
-
-  const decoder = new TextDecoder();
 
   const readStream = async (
     stream: ReadableStream<Uint8Array> | null,
@@ -97,16 +142,36 @@ export async function runCommandWithStreaming(
   ): Promise<string> => {
     if (!stream) return "";
     const reader = stream.getReader();
+    const decoder = new TextDecoder();
     let result = "";
+    let pendingLine = "";
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      const text = decoder.decode(value);
-      _onChunk(text);
+      const text = decoder.decode(value, { stream: true });
+      if (prefix) {
+        const lines = `${pendingLine}${text}`.split(/\r?\n/);
+        pendingLine = lines.pop() ?? "";
+        for (const line of lines) {
+          logCommandOutput(prefix, line);
+        }
+      } else {
+        _onChunk(text);
+      }
       onChunk?.(text, isStdout);
       result += text;
     }
+
+    const finalText = decoder.decode();
+    result += finalText;
+    pendingLine += finalText;
+    if (prefix && pendingLine) {
+      logCommandOutput(prefix, pendingLine);
+    } else if (!prefix && finalText) {
+      _onChunk(finalText);
+    }
+    if (finalText) onChunk?.(finalText, isStdout);
 
     return result;
   };

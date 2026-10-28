@@ -14,7 +14,7 @@ export async function brewInstallIfNotInstalled(
     let command = "brew install";
     if (opts?.cask) command += " --cask";
     command += ` ${pkg}`;
-    runCommand(command);
+    runCommand(command, { prefix: command });
   }
 }
 

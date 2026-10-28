@@ -30,6 +30,26 @@ export function logWithHeader(
   );
 }
 
+export function logWithHeaderAndSource(
+  header: string,
+  source: string,
+  message: string,
+  headerColor: Color,
+  sourceColor: Color,
+  messageColor: Color,
+) {
+  coloredLogFromParts(
+    headerColor,
+    `${header.padEnd(8, " ")} |   `,
+    sourceColor,
+    source,
+    headerColor,
+    "   |   ",
+    messageColor,
+    message,
+  );
+}
+
 export function logInfo(message: string) {
   logWithHeader("INFO", message, rgb(255, 255, 0), rgb(0, 180, 255));
 }
