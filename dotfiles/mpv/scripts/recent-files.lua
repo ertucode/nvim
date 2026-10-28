@@ -1,7 +1,8 @@
 local mp = require("mp")
 local utils = require("mp.utils")
 
-local state_dir = os.getenv("HOME") .. "/.local/state/mpv"
+local state_home = os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")
+local state_dir = state_home .. "/mpv"
 local history_path = state_dir .. "/recent-files.txt"
 local playlist_history_path = state_dir .. "/recent-playlists.json"
 
@@ -43,7 +44,7 @@ local function truncate(text, length)
 	if #text <= length then
 		return text
 	end
-	return "…" .. text:sub(-(length - 1))
+	return text:sub(1, length - 1) .. "…"
 end
 
 local function rectangle(x, y, width, height, color, alpha)
