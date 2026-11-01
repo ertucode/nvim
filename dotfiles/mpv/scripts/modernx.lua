@@ -3251,7 +3251,7 @@ local function layout()
     lo = add_layout("tc_left")
     local left_time_w = 35 + (state.tc_ms and 30 or 0) + (show_hours and 20 or 0)
     local time_x = 175
-    lo.geometry = { x = time_x, y = refY - 30, an = 7, w = left_time_w, h = 20 }
+    lo.geometry = { x = time_x, y = refY - 20, an = 4, w = left_time_w, h = 20 }
     lo.style = osc_styles.time
 
     local show_remhours = (state.tc_right_rem and remsec >= 3600) or (not state.tc_right_rem and dur >= 3600) or
@@ -3260,8 +3260,8 @@ local function layout()
     local right_time_w = 35 + (state.tc_ms and 30 or 0) + (show_remhours and 25 or 0)
     lo.geometry = {
         x = time_x + left_time_w,
-        y = refY - 30,
-        an = 7,
+        y = refY - 20,
+        an = 4,
         w = right_time_w,
         h = 20
     }
@@ -3272,14 +3272,14 @@ local function layout()
         lo = add_layout("chapter_title")
         geo = {
             x = chapter_x,
-            y = refY - 30,
-            an = 7,
+            y = refY - 20,
+            an = 4,
             w = chapter_title_w,
             h = 20
         }
         lo.geometry = geo
         lo.style = string.format("%s{\\clip(%f,%f,%f,%f)}", osc_styles.chapter_title,
-            geo.x, geo.y, geo.x + geo.w, geo.y + geo.h)
+            geo.x, geo.y - geo.h / 2, geo.x + geo.w, geo.y + geo.h / 2)
     end
 
     -- Audio/Subtitle
