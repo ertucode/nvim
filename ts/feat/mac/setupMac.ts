@@ -18,6 +18,8 @@ const setupKarabinerScriptPath = `${sharedScriptsPath}/setup-karabiner.sh`;
 const sharedMpvPath = "/Users/Shared/mpv";
 const setupMpvScriptPath = `${sharedScriptsPath}/setup-mpv.sh`;
 const refreshSharedConfigsScriptPath = `${sharedScriptsPath}/refresh-configs.sh`;
+const macOSDimmerSourcePath = `${os.homedir()}/.config/nvim/apps/macOS Dimmer`;
+const macOSDimmerAppPath = `${os.homedir()}/Applications/macOS Dimmer.app`;
 // Run once from another user's account; future updates can use Cmd+Shift+Ctrl+K:
 // /bin/sh /Users/Shared/scripts/refresh-configs.sh
 
@@ -145,11 +147,46 @@ function writeSharedMpvConfig() {
   }
 }
 
+export function setupMacOSDimmer() {
+  runCommand("/usr/bin/swift build -c release", {
+    cwd: macOSDimmerSourcePath,
+  });
+
+  const temporaryAppPath = `${macOSDimmerAppPath}.${process.pid}.tmp`;
+  const contentsPath = `${temporaryAppPath}/Contents`;
+  const executablePath = `${contentsPath}/MacOS/MacOSDimmer`;
+
+  try {
+    fs.rmSync(temporaryAppPath, { recursive: true, force: true });
+    fs.mkdirSync(`${contentsPath}/MacOS`, { recursive: true, mode: 0o755 });
+    fs.copyFileSync(
+      `${macOSDimmerSourcePath}/.build/release/MacOSDimmer`,
+      executablePath,
+    );
+    fs.chmodSync(executablePath, 0o755);
+    fs.copyFileSync(
+      `${macOSDimmerSourcePath}/Info.plist`,
+      `${contentsPath}/Info.plist`,
+    );
+
+    runCommand(`/usr/bin/codesign --force --sign - "${temporaryAppPath}"`);
+    fs.rmSync(macOSDimmerAppPath, { recursive: true, force: true });
+    fs.renameSync(temporaryAppPath, macOSDimmerAppPath);
+  } finally {
+    fs.rmSync(temporaryAppPath, { recursive: true, force: true });
+  }
+
+  runCommand(
+    `/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "${macOSDimmerAppPath}"`,
+  );
+}
+
 export async function setupMac() {
   // setupOptionOverlay();
   await setupDefaultApps();
   runCommand("chmod +x ~/.config/nvim/scripts/focus_teams_meeting.sh");
   runCommand("chmod +x ~/.config/nvim/scripts/open_ghostty_command.sh");
+  setupMacOSDimmer();
 
   const karabiner = createKarabiner();
   const karabinerJson = JSON.stringify(karabiner);

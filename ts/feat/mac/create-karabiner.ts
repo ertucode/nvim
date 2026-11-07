@@ -7,6 +7,10 @@ const refreshSharedConfigsScriptPath =
 
 // prettier-ignore
 const manipulators = [
+    brightness("f1", "decrease", 122),
+    brightness("f2", "increase", 120),
+    brightness("down_arrow", "decrease", 122),
+    brightness("up_arrow", "increase", 120),
     c("a", ["option"                ], "open -a 'Ghostty'"),
     c("w", ["option"                ], "open -a 'Google Chrome' || open -a 'Zen' || open -a 'Firefox'"),
     c("f", ["option"                ], "~/.config/nvim/scripts/open_koda.sh"),
@@ -40,6 +44,34 @@ const manipulators = [
     ...sharedClipboardManipulators,
     c("k", ["command", "shift", "control"], `/bin/sh ${refreshSharedConfigsScriptPath}`),
   ];
+
+function brightness(
+  key: "f1" | "f2" | "down_arrow" | "up_arrow",
+  action: "decrease" | "increase",
+  systemKeyCode: 122 | 120,
+) {
+  const openDimmer =
+    `/usr/bin/open 'macos-dimmer://start-${action}' 2>/dev/null`;
+  const changeSystemBrightness =
+    `/usr/bin/osascript -e 'tell application "System Events" to key code ${systemKeyCode} using {option down, shift down}'`;
+
+  return {
+    from: {
+      key_code: key,
+      modifiers: { mandatory: ["fn"] },
+    },
+    to: [
+      { shell_command: `${openDimmer} || ${changeSystemBrightness}` },
+    ],
+    to_after_key_up: [
+      {
+        shell_command:
+          "/usr/bin/open 'macos-dimmer://stop' >/dev/null 2>&1 || :",
+      },
+    ],
+    type: "basic",
+  } as const;
+}
 
 function c(key: string, mandatory: string[], command: string) {
   return {
