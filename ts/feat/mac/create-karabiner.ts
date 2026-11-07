@@ -51,7 +51,7 @@ function brightness(
   systemKeyCode: 122 | 120,
 ) {
   const openDimmer =
-    `/usr/bin/open 'macos-dimmer://start-${action}' 2>/dev/null`;
+    `/usr/bin/open -g 'macos-dimmer://start-${action}' 2>/dev/null`;
   const changeSystemBrightness =
     `/usr/bin/osascript -e 'tell application "System Events" to key code ${systemKeyCode} using {option down, shift down}'`;
 
@@ -66,7 +66,7 @@ function brightness(
     to_after_key_up: [
       {
         shell_command:
-          "/usr/bin/open 'macos-dimmer://stop' >/dev/null 2>&1 || :",
+          "/usr/bin/open -g 'macos-dimmer://stop' >/dev/null 2>&1 || :",
       },
     ],
     type: "basic",
