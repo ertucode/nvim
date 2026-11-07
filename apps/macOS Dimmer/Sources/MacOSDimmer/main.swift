@@ -287,7 +287,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     panel.setFrameOrigin(
       NSPoint(
         x: screenFrame.midX - panelSize.width / 2,
-        y: screenFrame.minY + screenFrame.height * 0.32 - panelSize.height / 2
+        y: screenFrame.minY + screenFrame.height * 0.22 - panelSize.height / 2
       )
     )
   }

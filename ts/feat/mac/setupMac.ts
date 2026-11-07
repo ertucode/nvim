@@ -3,6 +3,7 @@ import * as os from "os";
 import { link, writeFile } from "../../utils/file-system";
 import { runCommand } from "../../utils/setup-pc-utils";
 import { createKarabiner } from "./create-karabiner";
+import { setupMacOSDimmer } from "./setup-macos-dimmer";
 import {
   sharedClipboardImagePath,
   sharedClipboardImageScript,
@@ -12,14 +13,14 @@ import {
 } from "./shared-clipboard";
 import { setupDefaultApps } from "./setup-default-apps";
 
+export { setupMacOSDimmer };
+
 const sharedKarabinerPath = "/Users/Shared/karabiner.json";
 const sharedScriptsPath = "/Users/Shared/scripts";
 const setupKarabinerScriptPath = `${sharedScriptsPath}/setup-karabiner.sh`;
 const sharedMpvPath = "/Users/Shared/mpv";
 const setupMpvScriptPath = `${sharedScriptsPath}/setup-mpv.sh`;
 const refreshSharedConfigsScriptPath = `${sharedScriptsPath}/refresh-configs.sh`;
-const macOSDimmerSourcePath = `${os.homedir()}/.config/nvim/apps/macOS Dimmer`;
-const macOSDimmerAppPath = `${os.homedir()}/Applications/macOS Dimmer.app`;
 // Run once from another user's account; future updates can use Cmd+Shift+Ctrl+K:
 // /bin/sh /Users/Shared/scripts/refresh-configs.sh
 
@@ -145,40 +146,6 @@ function writeSharedMpvConfig() {
   } finally {
     fs.rmSync(temporaryDirectory, { recursive: true, force: true });
   }
-}
-
-export function setupMacOSDimmer() {
-  runCommand("/usr/bin/swift build -c release", {
-    cwd: macOSDimmerSourcePath,
-  });
-
-  const temporaryAppPath = `${macOSDimmerAppPath}.${process.pid}.tmp`;
-  const contentsPath = `${temporaryAppPath}/Contents`;
-  const executablePath = `${contentsPath}/MacOS/MacOSDimmer`;
-
-  try {
-    fs.rmSync(temporaryAppPath, { recursive: true, force: true });
-    fs.mkdirSync(`${contentsPath}/MacOS`, { recursive: true, mode: 0o755 });
-    fs.copyFileSync(
-      `${macOSDimmerSourcePath}/.build/release/MacOSDimmer`,
-      executablePath,
-    );
-    fs.chmodSync(executablePath, 0o755);
-    fs.copyFileSync(
-      `${macOSDimmerSourcePath}/Info.plist`,
-      `${contentsPath}/Info.plist`,
-    );
-
-    runCommand(`/usr/bin/codesign --force --sign - "${temporaryAppPath}"`);
-    fs.rmSync(macOSDimmerAppPath, { recursive: true, force: true });
-    fs.renameSync(temporaryAppPath, macOSDimmerAppPath);
-  } finally {
-    fs.rmSync(temporaryAppPath, { recursive: true, force: true });
-  }
-
-  runCommand(
-    `/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "${macOSDimmerAppPath}"`,
-  );
 }
 
 export async function setupMac() {
