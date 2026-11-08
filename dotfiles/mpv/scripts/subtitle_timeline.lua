@@ -653,25 +653,42 @@ end
 
 local function selected_subtitle()
     local tracks = mp.get_property_native("track-list") or {}
+    local embedded_subtitle_index = 0
+    local fallback
     for _, track in ipairs(tracks) do
-        if track.type == "sub" and track.selected then
-            return track
+        if track.type == "sub" then
+            if track.selected then
+                local selected = {
+                    track = track,
+                    embedded_index = embedded_subtitle_index,
+                }
+                if track["main-selection"] == 0 then
+                    return selected
+                end
+                fallback = fallback or selected
+            end
+            if not track.external then
+                embedded_subtitle_index = embedded_subtitle_index + 1
+            end
         end
     end
-    return nil
+    return fallback
 end
 
 local function load_cues()
-    local track = selected_subtitle()
-    if not track then
+    local subtitle = selected_subtitle()
+    if not subtitle then
         loading = false
         subtitle_cues = {}
         cues = {}
         render_menu()
         return
     end
+    local track = subtitle.track
 
-    local source = track["external-filename"] or mp.get_property("path")
+    local source = track["external-filename"]
+        or mp.get_property("stream-open-filename")
+        or mp.get_property("path")
     source = normalize_path(source)
     if not source then
         loading = false
@@ -681,7 +698,14 @@ local function load_cues()
         return
     end
 
-    local map = track["external-filename"] and "0:s:0" or ("0:" .. tostring(track["ff-index"] or "s:0"))
+    local map
+    if track["external-filename"] then
+        map = "0:s:0"
+    elseif track["ff-index"] ~= nil then
+        map = "0:" .. tostring(track["ff-index"])
+    else
+        map = "0:s:" .. tostring(subtitle.embedded_index)
+    end
     local generation = load_generation
     local function finish_loading(contents)
         if generation ~= load_generation or not menu_visible then
@@ -721,6 +745,13 @@ local function load_cues()
         capture_stderr = true,
         playback_only = true,
     }, function(success, result)
+        if generation ~= load_generation or not menu_visible then
+            return
+        end
+        if not success or not result or result.status ~= 0 then
+            local error_message = result and result.stderr or "Could not start ffmpeg"
+            mp.msg.error("Could not extract selected subtitle track: " .. error_message)
+        end
         finish_loading(success and result and result.stdout or "")
     end)
 end

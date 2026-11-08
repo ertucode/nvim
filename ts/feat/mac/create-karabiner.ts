@@ -1,5 +1,6 @@
 import baseKarabiner from "./base-karabiner.json";
 import { sharedClipboardManipulators } from "./shared-clipboard";
+import { writeFile } from "../../utils/file-system";
 
 // https://karabiner-elements.pqrs.org/docs/json/
 const refreshSharedConfigsScriptPath =
@@ -89,4 +90,11 @@ export function createKarabiner() {
   base.profiles[0].complex_modifications.rules[0].manipulators = manipulators;
 
   return base;
+}
+
+if (import.meta.main) {
+  writeFile(
+    "~/.config/nvim/dotfiles/karabiner/karabiner.json",
+    JSON.stringify(createKarabiner()),
+  );
 }
