@@ -1,10 +1,91 @@
+import * as fs from "fs";
 import baseKarabiner from "./base-karabiner.json";
-import { sharedClipboardManipulators } from "./shared-clipboard";
 import { writeFile } from "../../utils/file-system";
+import {
+  sharedClipboardImagePath,
+  sharedClipboardImageScript,
+  sharedClipboardImageScriptPath,
+  sharedClipboardManipulators,
+  sharedClipboardPath,
+  sharedClipboardTypePath,
+} from "./shared-clipboard";
+import {
+  sharedScriptsPath,
+  writeRefreshSharedConfigsScript,
+  writeSharedFile,
+} from "./shared-config";
 
 // https://karabiner-elements.pqrs.org/docs/json/
+const sharedKarabinerPath = "/Users/Shared/karabiner.json";
+const setupKarabinerScriptPath = `${sharedScriptsPath}/setup-karabiner.sh`;
 const refreshSharedConfigsScriptPath =
   "/Users/Shared/scripts/refresh-configs.sh";
+
+const setupKarabinerScript = `#!/bin/sh
+set -eu
+
+config_directory="$HOME/.config/karabiner"
+destination="$config_directory/karabiner.json"
+temporary_file="$destination.$$"
+agent_label="codes.ertu.shared-karabiner"
+agents_directory="$HOME/Library/LaunchAgents"
+agent_path="$agents_directory/$agent_label.plist"
+
+sync_config() {
+  if [ -L "$config_directory" ]; then
+    if [ "$(/usr/bin/readlink "$config_directory")" = "/Users/Shared/karabiner" ]; then
+      /bin/rm "$config_directory"
+    fi
+  fi
+
+  /bin/mkdir -p "$config_directory"
+  trap '/bin/rm -f "$temporary_file"' EXIT
+  /bin/cp /Users/Shared/karabiner.json "$temporary_file"
+  /bin/chmod 600 "$temporary_file"
+  /bin/mv "$temporary_file" "$destination"
+
+  /bin/launchctl kickstart -k "gui/$(/usr/bin/id -u)/org.pqrs.service.agent.karabiner_console_user_server" >/dev/null 2>&1 || true
+}
+
+if [ "\${1:-}" = "--sync" ]; then
+  sync_config
+  exit 0
+fi
+
+/bin/mkdir -p "$agents_directory"
+temporary_agent="$agent_path.$$"
+trap '/bin/rm -f "$temporary_agent"' EXIT
+/bin/cat > "$temporary_agent" <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>codes.ertu.shared-karabiner</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>/Users/Shared/scripts/setup-karabiner.sh</string>
+    <string>--sync</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>2</integer>
+  <key>WatchPaths</key>
+  <array>
+    <string>/Users/Shared/karabiner.json</string>
+  </array>
+</dict>
+</plist>
+PLIST
+/bin/chmod 644 "$temporary_agent"
+/bin/mv "$temporary_agent" "$agent_path"
+
+user_domain="gui/$(/usr/bin/id -u)"
+/bin/launchctl bootout "$user_domain/$agent_label" >/dev/null 2>&1 || true
+/bin/launchctl bootstrap "$user_domain" "$agent_path"
+`;
 
 // prettier-ignore
 const manipulators = [
@@ -14,7 +95,7 @@ const manipulators = [
     brightness("up_arrow", "increase", 120),
     c("a", ["option"                ], "open -a 'Ghostty'"),
     c("w", ["option"                ], "open -a 'Google Chrome' || open -a 'Zen' || open -a 'Firefox'"),
-    c("f", ["option"                ], "~/.config/nvim/scripts/open_koda.sh"),
+    c("f", ["option"                ], "open '/Applications/Koda.app'"),
     c("t", ["option"                ], "open -a 'Microsoft Teams'"),
     c("o", ["option"                ], "open -a 'Microsoft Outlook'"),
     c("p", ["option"                ], "~/.config/nvim/scripts/open_kova.sh"),
@@ -51,19 +132,15 @@ function brightness(
   action: "decrease" | "increase",
   systemKeyCode: 122 | 120,
 ) {
-  const openDimmer =
-    `/usr/bin/open -g 'macos-dimmer://start-${action}' 2>/dev/null`;
-  const changeSystemBrightness =
-    `/usr/bin/osascript -e 'tell application "System Events" to key code ${systemKeyCode} using {option down, shift down}'`;
+  const openDimmer = `/usr/bin/open -g 'macos-dimmer://start-${action}' 2>/dev/null`;
+  const changeSystemBrightness = `/usr/bin/osascript -e 'tell application "System Events" to key code ${systemKeyCode} using {option down, shift down}'`;
 
   return {
     from: {
       key_code: key,
       modifiers: { mandatory: ["fn"] },
     },
-    to: [
-      { shell_command: `${openDimmer} || ${changeSystemBrightness}` },
-    ],
+    to: [{ shell_command: `${openDimmer} || ${changeSystemBrightness}` }],
     to_after_key_up: [
       {
         shell_command:
@@ -92,9 +169,38 @@ export function createKarabiner() {
   return base;
 }
 
-if (import.meta.main) {
-  writeFile(
-    "~/.config/nvim/dotfiles/karabiner/karabiner.json",
-    JSON.stringify(createKarabiner()),
+function ensureSharedClipboardFile(path: string, initialContent = "") {
+  const file = fs.openSync(path, "a", 0o666);
+  fs.closeSync(file);
+
+  if (initialContent && fs.statSync(path).size === 0) {
+    fs.writeFileSync(path, initialContent);
+  }
+
+  const fileMode = fs.statSync(path).mode & 0o666;
+  if (fileMode !== 0o666) {
+    fs.chmodSync(path, 0o666);
+  }
+}
+
+export function setupKarabiner() {
+  const karabinerJson = JSON.stringify(createKarabiner());
+
+  writeFile("~/.config/nvim/dotfiles/karabiner/karabiner.json", karabinerJson);
+  fs.mkdirSync(sharedScriptsPath, { recursive: true, mode: 0o755 });
+  ensureSharedClipboardFile(sharedClipboardPath);
+  ensureSharedClipboardFile(sharedClipboardImagePath);
+  ensureSharedClipboardFile(sharedClipboardTypePath, "text");
+  writeSharedFile(
+    sharedClipboardImageScriptPath,
+    sharedClipboardImageScript,
+    0o644,
   );
+  writeSharedFile(sharedKarabinerPath, karabinerJson, 0o666);
+  writeSharedFile(setupKarabinerScriptPath, setupKarabinerScript, 0o755);
+  writeRefreshSharedConfigsScript();
+}
+
+if (import.meta.main) {
+  setupKarabiner();
 }
