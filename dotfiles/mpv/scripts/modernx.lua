@@ -301,6 +301,9 @@ local icons_modern = {
     pinned_off = "\238\166\129",
     pinned_on = "\238\165\190",
 
+    pip_enter = "\238\165\190",
+    pip_exit = "\238\166\129",
+
     screenshot = "\239\154\142",
     playlist = "\238\161\159", -- currently unused
 
@@ -3114,16 +3117,17 @@ local function layout()
     local outeroffset = chapter_skip_buttons and 0 or 100
 
     -- Fixed right-side group, ordered left-to-right as playlist previous,
-    -- playlist, playlist next, audio, subtitles, and fullscreen.
+    -- playlist, playlist next, audio, subtitles, PiP, and fullscreen.
     local fullscreen_x = osc_geo.w - 37
-    local subtitle_x = osc_geo.w - 82
-    local audio_x = osc_geo.w - 127
-    local playlist_next_x = osc_geo.w - 172
-    local playlist_x = osc_geo.w - 217
-    local playlist_prev_x = osc_geo.w - 262
+    local pip_x = osc_geo.w - 82
+    local subtitle_x = osc_geo.w - 127
+    local audio_x = osc_geo.w - 172
+    local playlist_next_x = osc_geo.w - 217
+    local playlist_x = osc_geo.w - 262
+    local playlist_prev_x = osc_geo.w - 307
 
     -- Optional controls continue to the left of the fixed right-side group.
-    local next_right_x = osc_geo.w - 307
+    local next_right_x = osc_geo.w - 352
     local function take_right_slot(enabled)
         if not enabled then return nil end
         local x = next_right_x
@@ -3303,7 +3307,12 @@ local function layout()
     lo.style = osc_styles.control_3
     lo.visible = (osc_param.playresx >= 800 - outeroffset)
 
-    -- Fullscreen/Loop/Info
+    -- Picture-in-picture/Fullscreen/Loop/Info
+    lo = add_layout('tog_pip')
+    lo.geometry = { x = pip_x, y = refY - 20, an = 5, w = 24, h = 24 }
+    lo.style = osc_styles.control_3
+    lo.visible = (osc_param.playresx >= 295 - outeroffset)
+
     lo = add_layout('tog_fs')
     lo.geometry = { x = fullscreen_x, y = refY - 20, an = 5, w = 24, h = 24 }
     lo.style = osc_styles.control_3
@@ -3752,6 +3761,24 @@ local function osc_init()
     ne.visible = (osc_param.playresx >= 250)
     ne.eventresponder['mbtn_left_up'] =
         function() mp.commandv('cycle', 'fullscreen') end
+
+    -- picture-in-picture
+    ne = new_element('tog_pip', 'button')
+    ne.content = function()
+        if mp.get_property_bool("user-data/picture-in-picture", false) then
+            return icons_modern.pip_exit
+        end
+        return icons_modern.pip_enter
+    end
+    ne.visible = (osc_param.playresx >= 295)
+    ne.tooltip_style = osc_styles.tooltip
+    ne.tooltipF = function()
+        return mp.get_property_bool("user-data/picture-in-picture", false)
+            and "Exit picture in picture" or "Picture in picture"
+    end
+    ne.eventresponder['mbtn_left_up'] = function()
+        mp.commandv("script-message-to", "picture_in_picture", "toggle")
+    end
 
     --tog_loop
     ne = new_element('tog_loop', 'button')
