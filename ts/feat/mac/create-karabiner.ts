@@ -89,8 +89,6 @@ user_domain="gui/$(/usr/bin/id -u)"
 
 // prettier-ignore
 const manipulators = [
-    brightness("f1", "decrease", 122),
-    brightness("f2", "increase", 120),
     brightness("down_arrow", "decrease", 122),
     brightness("up_arrow", "increase", 120),
     c("a", ["option"                ], "open -a 'Ghostty'"),
@@ -129,7 +127,7 @@ const manipulators = [
   ];
 
 function brightness(
-  key: "f1" | "f2" | "down_arrow" | "up_arrow",
+  key: "down_arrow" | "up_arrow",
   action: "decrease" | "increase",
   systemKeyCode: 122 | 120,
 ) {
