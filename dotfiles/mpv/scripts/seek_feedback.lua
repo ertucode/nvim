@@ -51,6 +51,17 @@ local function run_seek(command, value)
     end)
 end
 
+local function run_subtitle_seek(direction)
+    local subtitle_is_active = mp.get_property_number("sid")
+        and mp.get_property_bool("sub-visibility")
+
+    if subtitle_is_active then
+        run_seek("sub-seek", direction)
+    else
+        run_seek("seek", direction * 30)
+    end
+end
+
 mp.add_key_binding(nil, "forward", function()
     run_seek("seek", 5)
 end, {repeatable = true})
@@ -60,9 +71,9 @@ mp.add_key_binding(nil, "backward", function()
 end, {repeatable = true})
 
 mp.add_key_binding(nil, "next-subtitle", function()
-    run_seek("sub-seek", 1)
+    run_subtitle_seek(1)
 end, {repeatable = true})
 
 mp.add_key_binding(nil, "previous-subtitle", function()
-    run_seek("sub-seek", -1)
+    run_subtitle_seek(-1)
 end, {repeatable = true})
