@@ -1,0 +1,17 @@
+[package]
+name = "macos-utils"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[patch.crates-io]
+winit = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+parley_engine = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+wgpu-hal = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+accesskit_windows = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+accesskit_macos = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+
+[dependencies]
+rune = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+rune-kit = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
+rune-theme-opencode = { git = "https://github.com/anomalyco/rune.git", rev = "eb5ae6c9f77b1a0051d8e1e5ee936ebea086bb90" }
