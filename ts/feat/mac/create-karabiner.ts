@@ -123,6 +123,7 @@ const manipulators = [
     c("k", ["option", "left_control"], "~/.local/bin/macos-utils processes"),
     c("t", ["option", "left_control"], "~/.local/bin/macos-utils tmux-dev"),
     c("4", ["option", "left_control"], "~/.local/bin/macos-utils tmux"),
+    c("a", ["option", "left_control"], "open -a 'Pixel 8 Emulator'"),
     ...sharedClipboardManipulators,
     c("k", ["command", "shift", "control"], `/bin/sh ${refreshSharedConfigsScriptPath}`),
   ];

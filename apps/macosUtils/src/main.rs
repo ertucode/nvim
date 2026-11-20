@@ -343,7 +343,14 @@ fn init() -> AppState {
 }
 
 fn on_reopen(state: &mut AppState, _: bool, _: &mut rune::Tx) -> bool {
-    state.status = state.general.refresh().err().map(|error| (error, true));
+    state.status = None;
+    match state.pane {
+        Pane::General => {
+            state.status = state.general.refresh().err().map(|error| (error, true));
+        }
+        Pane::Processes => state.processes.refresh(),
+        Pane::Tmux => state.tmux.refresh(),
+    }
     false
 }
 

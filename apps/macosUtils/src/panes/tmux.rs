@@ -311,6 +311,10 @@ fn sockets() -> Vec<PathBuf> {
 
 fn run_on(socket: Option<&Path>, args: &[&str]) -> Result<String, String> {
     let mut command = Command::new(program());
+    // LaunchServices does not provide LANG. In the resulting C locale tmux
+    // renders the tab separators in our formats as underscores, so every row
+    // is rejected by the parsers below.
+    command.env("LC_ALL", "en_US.UTF-8");
     if let Some(socket) = socket {
         command.arg("-S").arg(socket);
     }
