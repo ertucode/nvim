@@ -2,6 +2,7 @@
 name = "macos-utils"
 version = "0.1.0"
 edition = "2024"
+default-run = "macos-utils"
 license = "MIT"
 
 [patch.crates-io]
