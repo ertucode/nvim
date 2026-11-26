@@ -146,23 +146,17 @@ mouseJiggler()
 
 function mouseJiggler() {
   return {
-    description: "Toggle mouse jiggler",
-    manipulators: [
+    type: "basic",
+    from: {
+      key_code: "m",
+      modifiers: {
+        mandatory: ["left_control", "option"],
+      },
+    },
+    to: [
       {
-        type: "basic",
-        from: {
-          key_code: "m",
-          modifiers: {
-            mandatory: ["left_control", "option"],
-          },
-        },
-        to: [
-          {
-            shell_command:
-              "pkill -f '[o]sascript.*karabiner/scripts/jiggle.js' || (nohup /usr/bin/osascript -l JavaScript ~/.config/karabiner/scripts/jiggle.js >/dev/null 2>&1 &)",
-            repeat: false,
-          },
-        ],
+        shell_command: '/bin/bash "$HOME/.config/karabiner/scripts/jiggle.sh"',
+        repeat: false,
       },
     ],
   };
