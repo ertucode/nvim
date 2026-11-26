@@ -87,10 +87,25 @@ user_domain="gui/$(/usr/bin/id -u)"
 /bin/launchctl bootstrap "$user_domain" "$agent_path"
 `;
 
+// run 'make create-karabiner' after update
 // prettier-ignore
 const manipulators = [
     brightness("down_arrow", "decrease", 122),
     brightness("up_arrow", "increase", 120),
+    {
+      type: "basic",
+      from: {
+        key_code: "p",
+        modifiers: { mandatory: ["control"] },
+      },
+      to: [{ key_code: "a", modifiers: ["command", "shift"] }],
+      conditions: [
+        {
+          type: "frontmost_application_if",
+          bundle_identifiers: ["^com\\.google\\.Chrome$"],
+        },
+      ],
+    },
     c("a", ["option"                ], "open -a 'Ghostty'"),
     c("w", ["option"                ], "open -a 'Google Chrome' || open -a 'Zen' || open -a 'Firefox'"),
     c("f", ["option"                ], "open '/Applications/Koda.app'"),
@@ -126,7 +141,32 @@ const manipulators = [
     c("a", ["option", "left_control"], "open -a 'Pixel 8 Emulator'"),
     ...sharedClipboardManipulators,
     c("k", ["command", "shift", "control"], `/bin/sh ${refreshSharedConfigsScriptPath}`),
+mouseJiggler()
   ];
+
+function mouseJiggler() {
+  return {
+    description: "Toggle mouse jiggler",
+    manipulators: [
+      {
+        type: "basic",
+        from: {
+          key_code: "m",
+          modifiers: {
+            mandatory: ["left_control", "option"],
+          },
+        },
+        to: [
+          {
+            shell_command:
+              "pkill -f '[o]sascript.*karabiner/scripts/jiggle.js' || (nohup /usr/bin/osascript -l JavaScript ~/.config/karabiner/scripts/jiggle.js >/dev/null 2>&1 &)",
+            repeat: false,
+          },
+        ],
+      },
+    ],
+  };
+}
 
 function brightness(
   key: "down_arrow" | "up_arrow",
