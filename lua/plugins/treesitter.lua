@@ -1,41 +1,65 @@
+local parsers = {
+	"bash",
+	"c",
+	"cpp",
+	"css",
+	"diff",
+	"dockerfile",
+	"git_config",
+	"gitcommit",
+	"gitignore",
+	"html",
+	"idl",
+	"ini",
+	"java",
+	"javascript",
+	"json",
+	"lua",
+	"make",
+	"markdown",
+	"matlab",
+	"objc",
+	"php",
+	"python",
+	"query",
+	"rust",
+	"ssh_config",
+	"swift",
+	"toml",
+	"tsx",
+	"typescript",
+	"vim",
+	"vimdoc",
+	"vue",
+	"xml",
+	"yaml",
+	"zig",
+}
+
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "main",
+	lazy = false,
 	build = ":TSUpdate",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-context",
-	},
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = {
-				"lua",
-				"javascript",
-				"typescript",
-				"vim",
-				"vimdoc",
-				"query",
-				"markdown",
-				"json",
-				"tsx",
-				"dockerfile",
-				"html",
-				"css",
-			},
-			sync_install = false,
-			auto_install = true,
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
-			autopairs = { enable = true },
-			indent = { enable = true },
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					-- node_decremental = "<c-bs>", -- doesnt work
-				},
-			},
+		local treesitter = require("nvim-treesitter")
+
+		treesitter.setup({})
+		treesitter.install(parsers)
+
+		vim.keymap.set({ "n", "x" }, "<C-Space>", function()
+			vim.treesitter.select("parent", vim.v.count1)
+		end, { desc = "Expand Tree-sitter selection" })
+
+		vim.api.nvim_create_autocmd("FileType", {
+			group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
+			pattern = "*",
+			callback = function(args)
+				local ok = pcall(vim.treesitter.start, args.buf)
+				if ok then
+					vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+			end,
 		})
 	end,
 }

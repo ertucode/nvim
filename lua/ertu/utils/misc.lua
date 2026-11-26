@@ -57,8 +57,7 @@ function M.is_string_node(node)
 end
 
 function M.get_string_under_cursor()
-	local ts_utils = require("nvim-treesitter.ts_utils")
-	local node = ts_utils.get_node_at_cursor()
+	local node = vim.treesitter.get_node()
 	if not node then
 		return nil
 	end
@@ -71,8 +70,7 @@ function M.get_string_under_cursor()
 end
 
 function M.replace_string_under_cursor(new_string)
-	local ts_utils = require("nvim-treesitter.ts_utils")
-	local node = ts_utils.get_node_at_cursor()
+	local node = vim.treesitter.get_node()
 	if not node then
 		return nil
 	end
